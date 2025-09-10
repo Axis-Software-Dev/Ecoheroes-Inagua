@@ -4,7 +4,6 @@ using TMPro;
 
 public class SquirrelTrigger : MonoBehaviour
 {
-
     [Header("UI Elements")]
     public GameObject dialoguePanel; // Drag UI Panel here
     public TextMeshProUGUI dialogueText; // Drag TextMeshPro component here
