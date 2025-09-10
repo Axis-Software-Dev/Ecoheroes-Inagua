@@ -129,15 +129,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 47d65ade3cee6904185fa88f2fbba588, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.003
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 47d65ade3cee6904185fa88f2fbba588, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.003
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 47d65ade3cee6904185fa88f2fbba588, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.003
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 47d65ade3cee6904185fa88f2fbba588, type: 3}
       propertyPath: m_LocalPosition.x
@@ -190,7 +190,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 47d65ade3cee6904185fa88f2fbba588, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 683634143}
   m_SourcePrefab: {fileID: 100100000, guid: 47d65ade3cee6904185fa88f2fbba588, type: 3}
 --- !u!4 &35433633 stripped
 Transform:
@@ -915,7 +918,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &397728716
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2254,6 +2257,28 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!1 &683634142 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 47d65ade3cee6904185fa88f2fbba588, type: 3}
+  m_PrefabInstance: {fileID: 35433632}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &683634143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 683634142}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7792aa177eacf0646a57d2c7116659f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpeechBubbleAnimator
+  growScale: {x: 0.003, y: 0.003, z: 0.003}
+  growDuration: 0.3
+  shakeDuration: 0.2
+  shakeIntensity: 0.005
+  shrinkDuration: 0.2
 --- !u!1001 &684785417
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2536,8 +2561,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.15, y: 0.61}
-  m_SizeDelta: {x: 2.15, y: 0.6}
+  m_AnchoredPosition: {x: 1.15, y: 0.63}
+  m_SizeDelta: {x: 1.85, y: 0.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &738725842
 MonoBehaviour:
@@ -2559,7 +2584,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "La fuente no tiene agua, est\xE1 seca. Sin Agua, no puede haber vida."
+  m_text: "La fuente no tiene agua, est\xE1 seca. Sin agua, no puede haber vida."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2784,9 +2809,11 @@ MonoBehaviour:
   dialogueText: {fileID: 738725842}
   squirrelAnimator: {fileID: 789413645}
   animationTriggerName: Triste
-  dialogueMessage: "La fuente no tiene agua, est\xE1 seca. Sin Agua, no puede haber
+  dialogueMessage: "La fuente no tiene agua, est\xE1 seca. Sin agua, no puede haber
     vida."
   dialogueDisplayTime: 5
+  typingSpeed: 0.05
+  speechBubbleAnimator: {fileID: 683634143}
 --- !u!135 &789413648
 SphereCollider:
   m_ObjectHideFlags: 0

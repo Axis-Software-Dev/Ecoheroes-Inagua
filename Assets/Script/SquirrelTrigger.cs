@@ -16,6 +16,10 @@ public class SquirrelTrigger : MonoBehaviour
     [TextArea(3, 10)]
     public string dialogueMessage = "Ayúdanos, nos quedamos sin agua en el estado y no sobreviviremos las plantas y animales si siguen así";
     public float dialogueDisplayTime = 5f;
+    public float typingSpeed = 0.05f;
+
+    [Header("Bubble Animation")]
+    public SpeechBubbleAnimator speechBubbleAnimator;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -32,14 +36,23 @@ public class SquirrelTrigger : MonoBehaviour
         }
 
         // Step 2: Show the dialogue text
-        if (dialoguePanel != null)
+        if (dialoguePanel != null && speechBubbleAnimator != null)
         {
             dialoguePanel.SetActive(true);
-            dialogueText.text = dialogueMessage;
+            speechBubbleAnimator.AnimateIn();
+            yield return StartCoroutine(TypeText(dialogueMessage));
         }
 
         // Step 3: Wait for a few seconds
         yield return new WaitForSeconds(dialogueDisplayTime);
+
+        if (speechBubbleAnimator != null)
+        {
+            yield return StartCoroutine(UntypeText());
+            speechBubbleAnimator.AnimateOut();
+        }
+
+        yield return new WaitForSeconds(speechBubbleAnimator.shrinkDuration);
 
         // Step 4: Hide the dialogue panel
         if (dialoguePanel != null)
@@ -48,5 +61,24 @@ public class SquirrelTrigger : MonoBehaviour
             squirrelAnimator.SetTrigger("Idle");
         }
 
+    }
+    private IEnumerator TypeText(string textToType)
+    {
+        dialogueText.text = "";
+        yield return new WaitForSeconds(.3f);
+        foreach (char letter in textToType.ToCharArray())
+        {
+            dialogueText.text += letter;
+            yield return new WaitForSeconds(typingSpeed);
+        }
+    }
+
+    private IEnumerator UntypeText()
+    {
+        while (dialogueText.text.Length > 0)
+        {
+            dialogueText.text = dialogueText.text.Substring(0, dialogueText.text.Length - 1);
+            yield return new WaitForSeconds(typingSpeed / 4);
+        }
     }
 }
