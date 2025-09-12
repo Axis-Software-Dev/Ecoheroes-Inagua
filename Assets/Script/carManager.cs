@@ -1,4 +1,5 @@
 using System.Collections;
+using System.ComponentModel;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -12,7 +13,7 @@ public class carManager : MonoBehaviour
     public float timer = 0;
     [HideInInspector]
     public float timeToSpawn=1f;
-
+    int lastCarSpawnedRight, lastCarSpawnedStraight;
     public float minSpeed = 0.5f, maxSpeed = 1.5f, minTimeToSpawn = 1f, maxTimeToSpawn = 5f, timeToDestroy = 10f;
     bool timerActive = false;
     
@@ -72,8 +73,26 @@ public class carManager : MonoBehaviour
     }
     void spawnCarStraight()
     {
-        int randNum = Mathf.FloorToInt(Random.Range(0, carModelStraight.Length));
+        int randNum= Mathf.FloorToInt(Random.Range(0, carModelStraight.Length));
+        if (randNum==lastCarSpawnedStraight)
+        {
+                int upOrDown = Mathf.FloorToInt(Random.Range(0, 1));
+                
+                if(upOrDown==1) randNum -= 1;
+                if (upOrDown == 0) randNum += 1;
+
+            if (randNum < 0)
+                {
+             randNum = carModelStraight.Length-1;
+            }else if (randNum > carModelStraight.Length - 1)
+            {
+             randNum = 0;
+            }  
+
+        }
+            
         
+        lastCarSpawnedStraight = randNum;
         int randSpawn = Mathf.FloorToInt(Random.Range(0, spawnerStraight.Length));
         GameObject mostRecentObject = Instantiate(carModelStraight[randNum], spawnerStraight[randSpawn].position, spawnerStraight[randSpawn].rotation);
         //float randomSpeed = Random.Range(minSpeed, maxSpeed);
@@ -84,6 +103,24 @@ public class carManager : MonoBehaviour
     void spawnCarRight()
     {
         int randNum = Mathf.FloorToInt(Random.Range(0, carModelRight.Length));
+        if (randNum == lastCarSpawnedRight)
+        {
+            int upOrDown = Mathf.FloorToInt(Random.Range(0, 1));
+
+            if (upOrDown == 1) randNum -= 1;
+            if (upOrDown == 0) randNum += 1;
+
+            if (randNum < 0)
+            {
+                randNum = carModelRight.Length - 1;
+            }
+            else if (randNum > carModelRight.Length - 1)
+            {
+                randNum = 0;
+            }
+
+        }
+        lastCarSpawnedRight = randNum;
         int randSpawn = Mathf.FloorToInt(Random.Range(0, spawnerRight.Length));
         GameObject mostRecentObject = Instantiate(carModelRight[randNum], spawnerRight[randSpawn].position, spawnerRight[randSpawn].rotation);
         //float randomSpeed = Random.Range(minSpeed, maxSpeed);
