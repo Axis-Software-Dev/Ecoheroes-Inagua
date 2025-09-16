@@ -4,17 +4,17 @@
     <img alt='Logo Axis' src='Assets/Logo/Images/AXIS LOGO PNG 2025.png' width='300'/>
     <br/><br/>
 
-    <a href="https://github.com/your-username/your-repo/actions">
-        <img alt="GitHub Actions Status" src="https://img.shields.io/github/workflow/status/your-username/your-repo/CI?style=for-the-badge"/>
+    <a href="github.com/Axis-Software-Dev/Ecoheroes-Inagua/actions">
+        <img alt="GitHub Actions Status" src="https://img.shields.io/github/workflow/status/Axis-Software-Dev/Ecoheroes-Inagua/CI?style=for-the-badge"/>
     </a>
-    <a href="https://github.com/your-username/your-repo/releases">
-        <img alt="GitHub Release" src="https://img.shields.io/github/v/release/your-username/your-repo?style=for-the-badge"/>
+    <a href="https://github.com/Axis-Software-Dev/Ecoheroes-Inagua/releases">
+        <img alt="GitHub Release" src="https://img.shields.io/github/v/release/Axis-Software-Dev/Ecoheroes-Inagua?style=for-the-badge"/>
     </a>
-    <a href="https://github.com/your-username/your-repo/issues">
-        <img alt="GitHub issues" src="https://img.shields.io/github/issues/your-username/your-repo?style=for-the-badge"/>
+    <a href="https://github.com/Axis-Software-Dev/Ecoheroes-Inagua/issues">
+        <img alt="GitHub issues" src="https://img.shields.io/github/issues/Axis-Software-Dev/Ecoheroes-Inagua?style=for-the-badge"/>
     </a>
-    <a href="https://github.com/your-username/your-repo/blob/main/LICENSE.md">
-        <img alt="License" src="https://img.shields.io/github/license/your-username/your-repo?style=for-the-badge"/>
+    <a href="https://github.com/Axis-Software-Dev/Ecoheroes-Inagua/blob/main/LICENSE.md">
+        <img alt="License" src="https://img.shields.io/github/license/Axis-Software-Dev/Ecoheroes-Inagua?style=for-the-badge"/>
     </a>
 
 </div>
@@ -48,7 +48,7 @@ Team up with an extraterrestrial named Hidrolito to stop the villainous "Calor I
 
 ### Installation Instructions
 
-1.  Download the `EcoHéroes.apk` file from our [Releases page](https://www.google.com/search?q=https://github.com/your-username/your-repo/releases).
+1.  Download the `EcoHéroes.apk` file from our [Releases page](https://www.google.com/search?q=https://github.com/Axis-Software-Dev/Ecoheroes-Inagua/releases).
 2.  Connect your Meta Quest 3 to your PC via a USB-C cable.
 3.  Use SideQuest to sideload the `EcoHéroes.apk` file onto your headset.
 4.  Once installed, the game will appear in the "Unknown Sources" section of your headset's app library.
