@@ -1,6 +1,22 @@
 <div align="center">
     <img alt='EcoHéroes' src='Assets/Logo/Images/LOGOTYPE ECOHEROES UNITY.png'/>
-    <img style='max-width:300px; margin:50px' alt='Logo Axis' src='Assets/Logo/Images/AXIS LOGO PNG 2025.png'/>
+    <br/><br/><br/><br/>
+    <img alt='Logo Axis' src='Assets/Logo/Images/AXIS LOGO PNG 2025.png' width='300'/>
+    <br/><br/>
+
+    <a href="https://github.com/your-username/your-repo/actions">
+        <img alt="GitHub Actions Status" src="https://img.shields.io/github/workflow/status/your-username/your-repo/CI?style=for-the-badge"/>
+    </a>
+    <a href="https://github.com/your-username/your-repo/releases">
+        <img alt="GitHub Release" src="https://img.shields.io/github/v/release/your-username/your-repo?style=for-the-badge"/>
+    </a>
+    <a href="https://github.com/your-username/your-repo/issues">
+        <img alt="GitHub issues" src="https://img.shields.io/github/issues/your-username/your-repo?style=for-the-badge"/>
+    </a>
+    <a href="https://github.com/your-username/your-repo/blob/main/LICENSE.md">
+        <img alt="License" src="https://img.shields.io/github/license/your-username/your-repo?style=for-the-badge"/>
+    </a>
+
 </div>
 
 ## About the Project
