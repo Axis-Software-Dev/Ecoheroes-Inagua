@@ -2,9 +2,9 @@
     <img alt='EcoHéroes' src='Assets/Logo/Images/LOGOTYPE ECOHEROES UNITY.png'/>
     <br/><br/><br/><br/>
     <img alt='Logo Axis' src='Assets/Logo/Images/AXIS LOGO PNG 2025.png' width='300'/>
-    <br/><br/>
-
-    <a href="github.com/Axis-Software-Dev/Ecoheroes-Inagua/actions">
+    <br/><br/><br/><br/>
+    <!-- Main badges -->
+    <a href="https://github.com/Axis-Software-Dev/Ecoheroes-Inagua/actions">
         <img alt="GitHub Actions Status" src="https://img.shields.io/github/workflow/status/Axis-Software-Dev/Ecoheroes-Inagua/CI?style=for-the-badge"/>
     </a>
     <a href="https://github.com/Axis-Software-Dev/Ecoheroes-Inagua/releases">
@@ -16,7 +16,23 @@
     <a href="https://github.com/Axis-Software-Dev/Ecoheroes-Inagua/blob/main/LICENSE.md">
         <img alt="License" src="https://img.shields.io/github/license/Axis-Software-Dev/Ecoheroes-Inagua?style=for-the-badge"/>
     </a>
-
+    <br/><br/>
+    <!-- Extra interesting badges -->
+    <a href="https://github.com/Axis-Software-Dev/Ecoheroes-Inagua/graphs/contributors">
+        <img alt="Contributors" src="https://img.shields.io/github/contributors/Axis-Software-Dev/Ecoheroes-Inagua?style=for-the-badge"/>
+    </a>
+    <a href="https://github.com/Axis-Software-Dev/Ecoheroes-Inagua/stargazers">
+        <img alt="GitHub stars" src="https://img.shields.io/github/stars/Axis-Software-Dev/Ecoheroes-Inagua?style=for-the-badge"/>
+    </a>
+    <a href="https://github.com/Axis-Software-Dev/Ecoheroes-Inagua/network/members">
+        <img alt="Forks" src="https://img.shields.io/github/forks/Axis-Software-Dev/Ecoheroes-Inagua?style=for-the-badge"/>
+    </a>
+    <a href="https://github.com/Axis-Software-Dev/Ecoheroes-Inagua/releases">
+        <img alt="Downloads" src="https://img.shields.io/github/downloads/Axis-Software-Dev/Ecoheroes-Inagua/total?style=for-the-badge"/>
+    </a>
+    <a href="https://github.com/Axis-Software-Dev/Ecoheroes-Inagua/commits/main">
+        <img alt="Last Commit" src="https://img.shields.io/github/last-commit/Axis-Software-Dev/Ecoheroes-Inagua?style=for-the-badge"/>
+    </a>
 </div>
 
 ## About the Project
@@ -48,10 +64,10 @@ Team up with an extraterrestrial named Hidrolito to stop the villainous "Calor I
 
 ### Installation Instructions
 
-1.  Download the `EcoHéroes.apk` file from our [Releases page](https://www.google.com/search?q=https://github.com/Axis-Software-Dev/Ecoheroes-Inagua/releases).
-2.  Connect your Meta Quest 3 to your PC via a USB-C cable.
-3.  Use SideQuest to sideload the `EcoHéroes.apk` file onto your headset.
-4.  Once installed, the game will appear in the "Unknown Sources" section of your headset's app library.
+1. Download the `EcoHéroes.apk` file from our [Releases page](https://github.com/Axis-Software-Dev/Ecoheroes-Inagua/releases).
+2. Connect your Meta Quest 3 to your PC via a USB-C cable.
+3. Use SideQuest to sideload the `EcoHéroes.apk` file onto your headset.
+4. Once installed, the game will appear in the "Unknown Sources" section of your headset's app library.
 
 ---
 
