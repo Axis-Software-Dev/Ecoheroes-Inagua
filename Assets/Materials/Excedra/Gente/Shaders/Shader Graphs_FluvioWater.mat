@@ -27,9 +27,9 @@ Material:
   m_Shader: {fileID: -6465566751694194690, guid: 420b6382bf90d0743a6caa0c2ad26f76, type: 3}
   m_Parent: {fileID: -876546973899608171, guid: 420b6382bf90d0743a6caa0c2ad26f76, type: 3}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords:
+  m_ValidKeywords: []
+  m_InvalidKeywords:
   - _DISABLE_SSR_TRANSPARENT
-  m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -52,6 +52,7 @@ Material:
     - _DstBlend: 0
     - _DstBlend2: 0
     - _FillFluvio: -0.19
+    - _QueueControl: 0
     - _RenderQueueType: 1
     - _RippleDensity: 25
     - _RippleSpeed: 4
@@ -66,3 +67,16 @@ Material:
     - _RippleColor: {r: 0.3726415, g: 0.9190503, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
+--- !u!114 &3990526531319176428
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Editor::UnityEditor.Rendering.Universal.AssetVersion
+  version: 10
