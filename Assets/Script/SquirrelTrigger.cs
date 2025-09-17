@@ -20,10 +20,16 @@ public class SquirrelTrigger : MonoBehaviour
 
     [Header("Bubble Animation")]
     public SpeechBubbleAnimator speechBubbleAnimator;
+    private bool isTyping = false;
 
     private void OnTriggerEnter(Collider other)
     {
-        StartCoroutine(SquirrelSequence());
+        if (!isTyping)
+        {
+            isTyping = true;
+            StartCoroutine(SquirrelSequence());
+            Debug.Log("Squirrel triggered, starting coroutine");
+        }
     }
 
     // This is a coroutine that handles the timed events.
@@ -33,6 +39,7 @@ public class SquirrelTrigger : MonoBehaviour
         if (squirrelAnimator != null)
         {
             squirrelAnimator.SetTrigger(animationTriggerName);
+            Debug.Log("Trigger " + animationTriggerName + " set");
         }
 
         // Step 2: Show the dialogue text
@@ -58,14 +65,16 @@ public class SquirrelTrigger : MonoBehaviour
         if (dialoguePanel != null)
         {
             dialoguePanel.SetActive(false);
+            Debug.Log("Dialog hidden");
             squirrelAnimator.SetTrigger("Idle");
+            isTyping = false;
         }
 
     }
     private IEnumerator TypeText(string textToType)
     {
         dialogueText.text = "";
-        yield return new WaitForSeconds(.3f);
+        yield return new WaitForSeconds(2f);
         foreach (char letter in textToType.ToCharArray())
         {
             dialogueText.text += letter;
