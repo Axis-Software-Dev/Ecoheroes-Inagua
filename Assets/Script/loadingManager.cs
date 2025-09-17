@@ -11,12 +11,13 @@ public class loadingManager : MonoBehaviour
     void Start()
     {
         persistanceScene = Resources.Load<persistanceData>("persistanceData");
+	StartCoroutine(loadPersistanceScene());
     }
 
     // Update is called once per frame
     void Update()
     {
-        StartCoroutine(loadPersistanceScene());
+        
     }
     IEnumerator loadPersistanceScene()
     {
