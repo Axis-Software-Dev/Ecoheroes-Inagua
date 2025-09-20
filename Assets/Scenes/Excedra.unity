@@ -2134,8 +2134,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 12ace5790e377c24d9129a77fa41ecf1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 935459501}
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 12ace5790e377c24d9129a77fa41ecf1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1207494057}
     - targetCorrespondingSourceObject: {fileID: 5191872570045293054, guid: 12ace5790e377c24d9129a77fa41ecf1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 576273218}
@@ -2900,6 +2906,61 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1af8b043bae203a42b5f3717d0f4e88e, type: 3}
   m_PrefabInstance: {fileID: 930144954}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &935459500
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 935459501}
+  - component: {fileID: 935459502}
+  m_Layer: 0
+  m_Name: hidrolitoAudioExedraManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &935459501
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 935459500}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 684785418}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &935459502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 935459500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d30bb4fa9e1cb54d9ff4a0b0e88aed2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::hydrolitoAudioManager
+  sounds:
+  - name: Saludo
+    clip: {fileID: 8300000, guid: dd3ada03a92fd5642b3d12d3e7916bec, type: 3}
+    volume: 1
+    pitch: 1
+    source: {fileID: 8300000, guid: dd3ada03a92fd5642b3d12d3e7916bec, type: 3}
+  - name: Ayuda
+    clip: {fileID: 8300000, guid: d91c04843e0b88b4695cf66cc452d927, type: 3}
+    volume: 1
+    pitch: 1
+    source: {fileID: 8300000, guid: dd3ada03a92fd5642b3d12d3e7916bec, type: 3}
 --- !u!1 &943266826 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 001747b105bb82e4a9fae8106b59ad9c, type: 3}
@@ -3403,6 +3464,25 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 597c9c5939812744e92db2e99f2f2a55, type: 3}
   m_PrefabInstance: {fileID: 1183965373}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1207494056 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 12ace5790e377c24d9129a77fa41ecf1, type: 3}
+  m_PrefabInstance: {fileID: 684785417}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1207494057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1207494056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 816f702443b795e4594f94ddbd99a080, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::hydrolitoExedraScript
+  hydroAnimator: {fileID: 0}
+  startGreetingAnimation: 0
 --- !u!1001 &1214897285
 PrefabInstance:
   m_ObjectHideFlags: 0
