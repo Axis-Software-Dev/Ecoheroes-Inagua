@@ -15,6 +15,7 @@ public class hydrolitoAudioManager : MonoBehaviour
             s.source.clip= s.clip;
             s.source.volume=s.volume;
             s.source.pitch= s.pitch;
+            s.source.time = s.timeToSkip;
         }
     }
     void Start()
@@ -30,7 +31,9 @@ public class hydrolitoAudioManager : MonoBehaviour
     public void audioPlay(string audioName)
     {
         Sound toPlaySound =Array.Find(sounds, sound => sound.name==audioName);
-        toPlaySound.source.Play();
+        if (!toPlaySound.source.isPlaying) {
+            toPlaySound.source.Play();
+        }
     }
 
 }
