@@ -4,23 +4,27 @@ public class hydrolitoExedraScript : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
+    [HideInInspector]
     public Animator hydroAnimator;
+    [HideInInspector]
     public GameObject[] toFollowPosition;
+
+    [HideInInspector]
     public SkinnedMeshRenderer[] skinMeshRenderedArray;
-    public float speed = 1.5f,defaultSpeed;
+    public float speed = 1.5f;
+    //[HideInInspector]
     public float[] interval;
     hydrolitoAudioManager hydroAudio;
     
-    [SerializeField] float timer = 0f;
-    float step;
+    float timer = 0f;
+    float step, defaultSpeed;
     bool activeTimer = false, animationHasStarted = false, animationIsPlaying = false, allowLookAtPlayer = false;
     public bool startGreetingAnimation = false;
-    [SerializeField] GameObject player;
+    GameObject player;
     Vector3 lookToPlayer;
     Quaternion saveRotation;
-    public GameObject nave;
-    [Range(0f,50f)]
-    public float Offsetx,Offsety,Offsetz;
+    
+    
     private void Awake()
     {
         saveRotation = this.transform.rotation;
@@ -70,7 +74,7 @@ public class hydrolitoExedraScript : MonoBehaviour
                 {
                     skin.enabled = true;
                 }
-                Walk(1);
+                //Teleport Animation
             }
             else if (timer >= interval[1] && timer <= interval[2])
             {
@@ -82,7 +86,7 @@ public class hydrolitoExedraScript : MonoBehaviour
             else if (timer >= interval[2] && timer <= interval[3])
             {
                 
-                Walk(2);
+                Walk(1,false);
             }
             else if (timer >= interval[3] && timer <= interval[4])
             {
@@ -113,14 +117,14 @@ public class hydrolitoExedraScript : MonoBehaviour
                 
                 speed = 2.5f;
                 allowLookAtPlayer = false;
-                Walk(1);
+                Walk(0,true);
 
             }
             else if (timer >= interval[9] && timer <= interval[10])
             {
                 
-                Walk(0);
-
+                
+                //Teleport Animation
             }
             if (timer >= interval[interval.Length - 1])
             {
@@ -139,8 +143,7 @@ public class hydrolitoExedraScript : MonoBehaviour
             LookAtPlayer();
         }
 
-        nave.transform.localPosition = new Vector3(nave.transform.localPosition.x + 2f, nave.transform.localPosition.y, nave.transform.localPosition.z);
-    }
+   }
     void startTimer()
     {
         activeTimer = true;
@@ -161,10 +164,13 @@ public class hydrolitoExedraScript : MonoBehaviour
     {
         this.transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookToPlayer), 2 * Time.deltaTime);
     }
-    void Walk(int positionToMove)
+    void Walk(int positionToMove, bool lookToDirection)
     {
-       
-        this.transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(toFollowPosition[positionToMove].transform.position - this.transform.position), 2 * Time.deltaTime);
+        if (lookToDirection)
+        {
+            this.transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(toFollowPosition[positionToMove].transform.position - this.transform.position), 2 * Time.deltaTime);
+
+        }
         transform.position = Vector3.MoveTowards(transform.position, toFollowPosition[positionToMove].transform.position, step);
 
 
