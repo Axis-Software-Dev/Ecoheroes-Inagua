@@ -3231,6 +3231,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 42d52ed814e9cd84db44b6b56d1144fb, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 961efe646ee05a0409e20ef02d1d76f3, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 42d52ed814e9cd84db44b6b56d1144fb, type: 3}
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
       objectReference: {fileID: 2100000, guid: b23fe575f7e567d44a834a170e4d1764, type: 2}
@@ -3238,6 +3242,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[2]'
       value: 
       objectReference: {fileID: 2100000, guid: e64b3b560aab67c44abe93688e6855cf, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 42d52ed814e9cd84db44b6b56d1144fb, type: 3}
+      propertyPath: 'm_Materials.Array.data[4]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 961efe646ee05a0409e20ef02d1d76f3, type: 2}
     - target: {fileID: 919132149155446097, guid: 42d52ed814e9cd84db44b6b56d1144fb, type: 3}
       propertyPath: m_Name
       value: ArbolesExedraLow
@@ -3815,7 +3823,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 001747b105bb82e4a9fae8106b59ad9c, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7288,7 +7296,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f5a41bfa295abbe4397cede3fdddcd53, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.04
+      value: -0.03
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f5a41bfa295abbe4397cede3fdddcd53, type: 3}
       propertyPath: m_LocalPosition.z
@@ -7336,7 +7344,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: f5a41bfa295abbe4397cede3fdddcd53, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
