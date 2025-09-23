@@ -6,25 +6,35 @@ public class hydrolitoExedraScript : MonoBehaviour
 
     public Animator hydroAnimator;
     public GameObject[] toFollowPosition;
+    public SkinnedMeshRenderer[] skinMeshRenderedArray;
     public float speed = 1.5f,defaultSpeed;
     public float[] interval;
     hydrolitoAudioManager hydroAudio;
-
+    
     [SerializeField] float timer = 0f;
     float step;
     bool activeTimer = false, animationHasStarted = false, animationIsPlaying = false, allowLookAtPlayer = false;
     public bool startGreetingAnimation = false;
     [SerializeField] GameObject player;
     Vector3 lookToPlayer;
+    Quaternion saveRotation;
+    public GameObject nave;
+    [Range(0f,50f)]
+    public float Offsetx,Offsety,Offsetz;
     private void Awake()
     {
+        saveRotation = this.transform.rotation;
         foreach (GameObject position in toFollowPosition)
         {
             position.GetComponent<MeshRenderer>().enabled = false;
         }
+        foreach (SkinnedMeshRenderer skin in skinMeshRenderedArray)
+        {
+            skin.enabled = false;
+        } 
         hydroAnimator = GetComponentInChildren<Animator>();
         hydroAudio = GetComponentInChildren<hydrolitoAudioManager>();
-        player = GameObject.FindWithTag("Player");
+        player = GameObject.FindWithTag("MainCamera");
         defaultSpeed = speed;
     }
 
@@ -37,6 +47,7 @@ public class hydrolitoExedraScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         lookToPlayer = player.transform.position - this.transform.position;
         Debug.DrawRay(this.transform.position, lookToPlayer, Color.blue);
 
@@ -55,37 +66,60 @@ public class hydrolitoExedraScript : MonoBehaviour
         {
             if (timer >= interval[0] && timer <= interval[1])
             {
-                Walk( 1);
+                foreach (SkinnedMeshRenderer skin in skinMeshRenderedArray)
+                {
+                    skin.enabled = true;
+                }
+                Walk(1);
             }
             else if (timer >= interval[1] && timer <= interval[2])
             {
-                allowLookAtPlayer = true;
+                speed = 2f;
+                allowLookAtPlayer=true;
+                hydroAnimator.SetBool("StartAnimation", true);
+                hydroAudio.audioPlay("Saludo");
             }
             else if (timer >= interval[2] && timer <= interval[3])
             {
-                hydroAnimator.SetBool("stayIdle", false);
+                
+                Walk(2);
             }
             else if (timer >= interval[3] && timer <= interval[4])
+            {
+                
+            }
+            else if (timer >= interval[4] && timer <= interval[5])
+            {
+                
+                hydroAnimator.SetBool("stayIdle", false);
+            }
+            else if (timer >= interval[5] && timer <= interval[6])
             {
 
                 hydroAudio.audioPlay("Ayuda");
             }
-            else if (timer >= interval[4] && timer <= interval[5])
+            else if (timer >= interval[6] && timer <= interval[7])
             {
                 hydroAnimator.SetBool("stayAviso", false);
                 hydroAnimator.SetBool("stayIdle", true);
 
             }
-            else if (timer >= interval[5] && timer <= interval[6])
+            else if (timer >= interval[7] && timer <= interval[8])
             {
-                //Pause
+                //Pausa
+            }
+            else if (timer >= interval[8] && timer <= interval[9])
+            {
+                
+                speed = 2.5f;
+                allowLookAtPlayer = false;
+                Walk(1);
 
             }
-            else if (timer >= interval[6] && timer <= interval[7])
+            else if (timer >= interval[9] && timer <= interval[10])
             {
-                speed = 2f;
-                allowLookAtPlayer = false;
-                Walk(2);
+                
+                Walk(0);
 
             }
             if (timer >= interval[interval.Length - 1])
@@ -98,10 +132,14 @@ public class hydrolitoExedraScript : MonoBehaviour
     }
     private void LateUpdate()
     {
+
+       
         if (allowLookAtPlayer)
         {
             LookAtPlayer();
         }
+
+        nave.transform.localPosition = new Vector3(nave.transform.localPosition.x + 2f, nave.transform.localPosition.y, nave.transform.localPosition.z);
     }
     void startTimer()
     {
@@ -116,8 +154,7 @@ public class hydrolitoExedraScript : MonoBehaviour
     void startAnimation()
     {
         startTimer();
-        hydroAnimator.SetBool("StartAnimation", true);
-        hydroAudio.audioPlay("Saludo");
+       
 
     }
     void LookAtPlayer()

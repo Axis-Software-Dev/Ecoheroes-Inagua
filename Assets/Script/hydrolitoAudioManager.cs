@@ -16,6 +16,7 @@ public class hydrolitoAudioManager : MonoBehaviour
             s.source.volume=s.volume;
             s.source.pitch= s.pitch;
             s.source.time = s.timeToSkip;
+	    s.source.spatialBlend=s.spatialSound;
         }
     }
     void Start()

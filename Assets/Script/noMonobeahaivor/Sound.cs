@@ -16,7 +16,9 @@ public class Sound
     public AudioSource source;
 
     public float timeToSkip;
-    
+    [Range(0f,1f)]
+    public float spatialSound;
+       
 
 
 
