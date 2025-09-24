@@ -2,37 +2,38 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Audio;
 using System;
-public class hydrolitoAudioManager : MonoBehaviour
+public class FluvioAudioManager : MonoBehaviour
 {
     public Sound[] sounds;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    
+
     private void Awake()
     {
         foreach (Sound s in sounds)
         {
-            s.source=gameObject.AddComponent<AudioSource>();
-            s.source.clip= s.clip;
-            s.source.volume=s.volume;
-            s.source.pitch= s.pitch;
+            s.source = gameObject.AddComponent<AudioSource>();
+            s.source.clip = s.clip;
+            s.source.volume = s.volume;
+            s.source.pitch = s.pitch;
             s.source.time = s.timeToSkip;
-	    s.source.spatialBlend=s.spatialSound;
+            s.source.spatialBlend = s.spatialSound;
         }
     }
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
     public void audioPlay(string audioName)
     {
-        Sound toPlaySound =Array.Find(sounds, sound => sound.name==audioName);
-        if (!toPlaySound.source.isPlaying) {
+        Sound toPlaySound = Array.Find(sounds, sound => sound.name == audioName);
+        if (!toPlaySound.source.isPlaying)
+        {
             toPlaySound.source.Play();
         }
     }

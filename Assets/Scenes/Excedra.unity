@@ -3782,6 +3782,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 816f702443b795e4594f94ddbd99a080, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::hydrolitoExedraScript
+  sounds:
+  - name: Saludo
+    clip: {fileID: 8300000, guid: dd3ada03a92fd5642b3d12d3e7916bec, type: 3}
+    volume: 1
+    pitch: 1
+    source: {fileID: 0}
+    timeToSkip: 0.5
+    spatialSound: 1
+  - name: Ayuda
+    clip: {fileID: 8300000, guid: d91c04843e0b88b4695cf66cc452d927, type: 3}
+    volume: 1
+    pitch: 1
+    source: {fileID: 0}
+    timeToSkip: 0.55
+    spatialSound: 1
+  - name: Teleport1
+    clip: {fileID: 8300000, guid: 89312130dbad5f44f97add51c5ef3c1b, type: 3}
+    volume: 1
+    pitch: 1
+    source: {fileID: 0}
+    timeToSkip: 0
+    spatialSound: 1
+  - name: Teleport2
+    clip: {fileID: 8300000, guid: be18b400f1cb0c046a651bfd420fed5c, type: 3}
+    volume: 1
+    pitch: 1
+    source: {fileID: 0}
+    timeToSkip: 0
+    spatialSound: 1
   hydroAnimator: {fileID: 0}
   toFollowPosition:
   - {fileID: 1476827897}

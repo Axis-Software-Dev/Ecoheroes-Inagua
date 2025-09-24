@@ -1,10 +1,10 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class characterSelector : MonoBehaviour
+public class CharacterSelector : MonoBehaviour
 {
     persistanceData characterData;
-    bool modelRotation=false;
+    bool modelRotation = false;
     persistanceData.Character selectedCharacter = persistanceData.Character.none;
     public SceneField newScene;
     GameObject[] showCharacterModels = new GameObject[2];
@@ -19,7 +19,7 @@ public class characterSelector : MonoBehaviour
         showCharacterModels[0] = GameObject.Find("LluviaSelection 1");
         showCharacterModels[1] = GameObject.Find("AguitaSelection 1");
         sceneManagerEdit = GameObject.Find("sceneManager").GetComponent<sceneManager>();
-        modelBasePosition[0]=showCharacterModels[0].transform;
+        modelBasePosition[0] = showCharacterModels[0].transform;
         modelBasePosition[1] = showCharacterModels[1].transform;
 
     }
@@ -48,7 +48,7 @@ public class characterSelector : MonoBehaviour
             else
             {
                 modelRotation = false;
-               
+
             }
         }
     }
@@ -57,7 +57,7 @@ public class characterSelector : MonoBehaviour
         if (selectedCharacter == persistanceData.Character.lluvia)
         {
             showCharacterModels[0].SetActive(true);
-           
+
             showCharacterModels[1].SetActive(false);
         }
         else if (selectedCharacter == persistanceData.Character.aguita)
@@ -67,15 +67,15 @@ public class characterSelector : MonoBehaviour
         }
         if (selectedCharacter == persistanceData.Character.lluvia)
 
-        showCharacterModels[0].transform.rotation = Quaternion.Euler(0f, -180f, 0f);
-        showCharacterModels[1].transform.rotation = Quaternion.Euler(0f,-180f,0f);
-        
+            showCharacterModels[0].transform.rotation = Quaternion.Euler(0f, -180f, 0f);
+        showCharacterModels[1].transform.rotation = Quaternion.Euler(0f, -180f, 0f);
+
         activateRotation();
-        
+
     }
     public void lluviaSelected()
     {
-        selectedCharacter= persistanceData.Character.lluvia;
+        selectedCharacter = persistanceData.Character.lluvia;
         selectCharacter();
     }
     public void aguitaSelected()
@@ -88,8 +88,9 @@ public class characterSelector : MonoBehaviour
         characterData.changeCharacter(selectedCharacter);
         if (selectedCharacter != persistanceData.Character.none)
         {
-            
-            sceneManagerEdit.loadingScene(newScene);        }
+
+            sceneManagerEdit.loadingScene(newScene);
+        }
     }
     void rotateModel(GameObject objectToRotate)
     {
@@ -102,4 +103,4 @@ public class characterSelector : MonoBehaviour
         timeForRotation = 0f;
         modelRotation = true;
     }
- }
+}
