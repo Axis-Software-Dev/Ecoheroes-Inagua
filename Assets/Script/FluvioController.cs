@@ -1,217 +1,412 @@
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Audio;
 using System;
+using System.Collections.Generic;
+public class FluvioSound
+{
+    public string name;
+    public AudioClip clip;
+    [Range(0f, 1f)] public float volume = 1f;
+    public float pitch = 1f;
+    public float timeToSkip = 0f;
+    [Range(0f, 1f)] public float spatialSound = 0f;
+
+    [HideInInspector] public AudioSource source;
+}
 
 public class FluvioController : MonoBehaviour
 {
     [Header("Audio Settings")]
     public Sound[] sounds;
 
+    [Header("Position Settings")]
+    [Tooltip("Target positions (world-space by default). If PositionsAreLocal is true, these are local to PositionsReference.")]
+    public Vector3[] toFollowPositions;
+    [Tooltip("If true, toFollowPositions are interpreted as local positions relative to PositionsReference.")]
+    public bool PositionsAreLocal = false;
+    [Tooltip("Reference transform used when PositionsAreLocal is true.")]
+    public Transform PositionsReference;
+
     [Header("Animation Settings")]
+    [Tooltip("Animator (will be fetched from children if empty).")]
     public Animator hydroAnimator;
-    public GameObject[] toFollowPosition;
     public SkinnedMeshRenderer[] skinMeshRenderedArray;
     public float speed = 1.5f;
+    [Tooltip("A sorted list of timestamps (seconds). Intervals are read as ranges [interval[i], interval[i+1]). The last element is treated as the final stop threshold.")]
     public float[] interval;
 
-    [Header("Flags")]
+    [Header("Options")]
     public bool startGreetingAnimation = false;
+    public float rotationSpeed = 2f;
+    public bool drawPositionGizmos = true;
 
-    // Internals
+    // internals
+    private Dictionary<string, Sound> soundMap;
+    private Transform playerTransform;
     private float timer = 0f;
-    private float step, defaultSpeed;
-    private bool activeTimer = false, animationHasStarted = false, animationIsPlaying = false, allowLookAtPlayer = false;
+    private float defaultSpeed;
+    private bool animationIsPlaying = false;
+    private bool animationHasStarted = false;
+    private bool allowLookAtPlayer = false;
+    private int lastRangeIndex = -1;
+    private int activeWalkTarget = -1; // -1 = not walking
+    private bool activeWalkShouldLook = false;
 
-    private GameObject player;
-    private Vector3 lookToPlayer;
-    private Quaternion saveRotation;
-
-    // Audio system
+    #region Unity callbacks
     private void Awake()
     {
-        // Audio initialization
-        foreach (Sound s in sounds)
+        // Audio map
+        soundMap = new Dictionary<string, Sound>(StringComparer.OrdinalIgnoreCase);
+        if (sounds != null)
         {
-            s.source = gameObject.AddComponent<AudioSource>();
-            s.source.clip = s.clip;
-            s.source.volume = s.volume;
-            s.source.pitch = s.pitch;
-            s.source.time = s.timeToSkip;
-            s.source.spatialBlend = s.spatialSound;
+            foreach (var s in sounds)
+            {
+                if (s == null) continue;
+                s.source = gameObject.AddComponent<AudioSource>();
+                s.source.clip = s.clip;
+                s.source.volume = s.volume;
+                s.source.pitch = s.pitch;
+                s.source.time = s.timeToSkip;
+                s.source.spatialBlend = s.spatialSound;
+
+                if (!string.IsNullOrEmpty(s.name))
+                {
+                    if (!soundMap.ContainsKey(s.name)) soundMap.Add(s.name, s);
+                    else Debug.LogWarning($"Duplicate sound name '{s.name}' in {name}");
+                }
+            }
         }
 
-        // Animation initialization
-        saveRotation = this.transform.rotation;
-        foreach (GameObject position in toFollowPosition)
-        {
-            position.GetComponent<MeshRenderer>().enabled = false;
-        }
-        foreach (SkinnedMeshRenderer skin in skinMeshRenderedArray)
-        {
-            skin.enabled = false;
-        }
+        if (hydroAnimator == null)
+            hydroAnimator = GetComponentInChildren<Animator>();
 
-        hydroAnimator = GetComponentInChildren<Animator>();
-        player = GameObject.FindWithTag("MainCamera");
+        // find main camera transform safely
+        playerTransform = Camera.main != null ? Camera.main.transform :
+            GameObject.FindWithTag("MainCamera")?.transform;
+
         defaultSpeed = speed;
+
+        // disable skins by default (maintains old behaviour)
+        SetSkinsActive(false);
     }
 
     private void Start()
     {
-        transform.position = toFollowPosition[0].transform.position;
-        transform.rotation = toFollowPosition[0].transform.rotation;
+        if (toFollowPositions != null && toFollowPositions.Length > 0)
+        {
+            Vector3 startPos = GetWorldPosition(0);
+            transform.position = startPos;
+            // keep current rotation or optionally set to face next position; preserving old behaviour by setting to position[0] rotation:
+            if (toFollowPositions.Length > 1)
+            {
+                Vector3 dir = GetWorldPosition(1) - transform.position;
+                if (dir.sqrMagnitude > 0.0001f)
+                    transform.rotation = Quaternion.LookRotation(dir);
+            }
+        }
     }
 
     private void Update()
     {
-        // Look direction vector
-        lookToPlayer = player.transform.position - this.transform.position;
-        Debug.DrawRay(this.transform.position, lookToPlayer, Color.blue);
-
-        step = speed * Time.deltaTime;
-
-        // Timer control
-        if (activeTimer == true)
+        // update look vector
+        if (playerTransform != null)
         {
-            timer += Time.deltaTime;
+            Vector3 look = playerTransform.position - transform.position;
+            // only set allow look if permitted
+            if (allowLookAtPlayer && look.sqrMagnitude > 0.0001f)
+            {
+                // LateUpdate handles slerp to avoid jittering transform during physics updates
+            }
         }
 
-        // Greeting animation trigger
+#if UNITY_EDITOR
+        if (drawPositionGizmos) DrawDebugRayToNext();
+#endif
+
+        // timer & animation start
         if (startGreetingAnimation && !animationHasStarted)
-        {
-            startAnimation();
-        }
+            StartAnimation();
+
         animationHasStarted = startGreetingAnimation;
 
-        // Play animation sequence
-        if (animationIsPlaying)
-        {
-            if (timer >= interval[0] && timer <= interval[1])
-            {
-                foreach (SkinnedMeshRenderer skin in skinMeshRenderedArray)
-                {
-                    skin.enabled = true;
-                }
-                audioPlay("Teleport1");
-            }
-            else if (timer >= interval[1] && timer <= interval[2])
-            {
-                allowLookAtPlayer = true;
-                hydroAnimator.SetBool("StartAnimation", true);
-                audioPlay("Saludo");
-            }
-            else if (timer >= interval[2] && timer <= interval[3])
-            {
-                Walk(1, false);
-            }
-            else if (timer >= interval[3] && timer <= interval[4])
-            {
-                // Reserved step
-            }
-            else if (timer >= interval[4] && timer <= interval[5])
-            {
-                hydroAnimator.SetBool("stayIdle", false);
-            }
-            else if (timer >= interval[5] && timer <= interval[6])
-            {
-                audioPlay("Ayuda");
-            }
-            else if (timer >= interval[6] && timer <= interval[7])
-            {
-                hydroAnimator.SetBool("stayAviso", false);
-                hydroAnimator.SetBool("stayIdle", true);
-            }
-            else if (timer >= interval[7] && timer <= interval[8])
-            {
-                // Pause
-            }
-            else if (timer >= interval[8] && timer <= interval[9])
-            {
-                speed = 1f;
-                allowLookAtPlayer = false;
-                Walk(2, true);
-            }
-            else if (timer >= interval[9] && timer <= interval[10])
-            {
-                audioPlay("Teleport2");
-                foreach (SkinnedMeshRenderer skin in skinMeshRenderedArray)
-                {
-                    skin.enabled = false;
-                }
-            }
+        if (!animationIsPlaying) return; // nothing to do if stopped
 
-            if (timer >= interval[interval.Length - 1])
-            {
-                stopTimer();
-                speed = defaultSpeed;
-            }
+        // safety: need at least two interval values for ranges
+        if (interval == null || interval.Length < 2) return;
+
+        timer += Time.deltaTime;
+
+        // if timer surpasses final stop threshold -> stop
+        if (timer >= interval[interval.Length - 1])
+        {
+            StopTimer();
+            speed = defaultSpeed;
+            return;
         }
+
+        // find the active range index: interval[i] <= timer < interval[i+1]
+        int currentRange = GetRangeIndexForTime(timer);
+
+        if (currentRange != lastRangeIndex)
+        {
+            // entered a new range
+            OnEnterRange(currentRange);
+            lastRangeIndex = currentRange;
+        }
+
+        // perform continuous behaviors for current range (walk, etc.)
+        DoRangeBehavior(currentRange);
     }
 
     private void LateUpdate()
     {
-        if (allowLookAtPlayer)
+        // smooth look at player if allowed
+        if (allowLookAtPlayer && playerTransform != null)
         {
-            LookAtPlayer();
+            Vector3 lookDir = playerTransform.position - transform.position;
+            if (lookDir.sqrMagnitude > 0.0001f)
+            {
+                Quaternion targetRot = Quaternion.LookRotation(lookDir);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, rotationSpeed * Time.deltaTime);
+            }
         }
     }
 
-    // ----------------------
-    // Audio functions
-    // ----------------------
-    public void audioPlay(string audioName)
+    private void OnDrawGizmos()
     {
-        Sound toPlaySound = Array.Find(sounds, sound => sound.name == audioName);
-        if (toPlaySound != null && !toPlaySound.source.isPlaying)
+        if (!drawPositionGizmos || toFollowPositions == null) return;
+
+        Gizmos.color = Color.cyan;
+        for (int i = 0; i < toFollowPositions.Length; i++)
         {
-            toPlaySound.source.Play();
+            Vector3 world = (Application.isPlaying) ? GetWorldPosition(i) : (PositionsAreLocal && PositionsReference != null ? PositionsReference.TransformPoint(toFollowPositions[i]) : toFollowPositions[i]);
+            Gizmos.DrawWireSphere(world, 0.1f);
+#if UNITY_EDITOR
+            UnityEditor.Handles.Label(world + Vector3.up * 0.15f, $"P[{i}]");
+#endif
+        }
+    }
+    #endregion
+
+    #region Range & behavior logic
+    private int GetRangeIndexForTime(float t)
+    {
+        // linear search; interval is expected sorted ascending
+        for (int i = 0; i < interval.Length - 1; i++)
+        {
+            if (t >= interval[i] && t < interval[i + 1]) return i;
+        }
+        return -1;
+    }
+
+    private void OnEnterRange(int rangeIndex)
+    {
+        // map the original behaviour into enter-range actions
+        // NOTE: these indices follow the original code: range 0 -> interval[0..1], range 1 -> interval[1..2], ...
+        switch (rangeIndex)
+        {
+            case 0:
+                SetSkinsActive(true);
+                AudioPlay("Teleport1");
+                activeWalkTarget = -1;
+                break;
+
+            case 1:
+                allowLookAtPlayer = true;
+                if (hydroAnimator != null) hydroAnimator.SetBool("StartAnimation", true);
+                AudioPlay("Saludo");
+                break;
+
+            case 2:
+                // start walking toward toFollowPositions[1], do not rotate toward movement
+                StartWalkingTo(1, lookTowardsTarget: false);
+                break;
+
+            case 3:
+                // stop walking (reserved step)
+                StopWalking();
+                break;
+
+            case 4:
+                if (hydroAnimator != null) hydroAnimator.SetBool("stayIdle", false);
+                break;
+
+            case 5:
+                AudioPlay("Ayuda");
+                break;
+
+            case 6:
+                if (hydroAnimator != null)
+                {
+                    hydroAnimator.SetBool("stayAviso", false);
+                    hydroAnimator.SetBool("stayIdle", true);
+                }
+                break;
+
+            case 7:
+                // pause — stop walking if any
+                StopWalking();
+                break;
+
+            case 8:
+                // start walking toward toFollowPositions[2], rotate to face direction while walking
+                speed = 1f;
+                allowLookAtPlayer = false;
+                StartWalkingTo(2, lookTowardsTarget: true);
+                break;
+
+            case 9:
+                AudioPlay("Teleport2");
+                SetSkinsActive(false);
+                StopWalking();
+                break;
+
+            default:
+                // ranges outside defined mapping: do nothing on enter
+                break;
         }
     }
 
-    // ----------------------
-    // Animation functions
-    // ----------------------
-    void startTimer()
+    private void DoRangeBehavior(int rangeIndex)
     {
-        activeTimer = true;
+        // continuous behaviors while inside a range
+        if (activeWalkTarget >= 0)
+        {
+            MoveTowardsActiveTarget();
+        }
+    }
+    #endregion
+
+    #region Walking / movement
+    private void StartWalkingTo(int index, bool lookTowardsTarget)
+    {
+        if (toFollowPositions == null || index < 0 || index >= toFollowPositions.Length)
+        {
+            Debug.LogWarning($"StartWalkingTo: invalid index {index}. toFollowPositions length = {(toFollowPositions == null ? 0 : toFollowPositions.Length)}");
+            activeWalkTarget = -1;
+            return;
+        }
+
+        activeWalkTarget = index;
+        activeWalkShouldLook = lookTowardsTarget;
+    }
+
+    private void StopWalking()
+    {
+        activeWalkTarget = -1;
+        activeWalkShouldLook = false;
+    }
+
+    private void MoveTowardsActiveTarget()
+    {
+        if (activeWalkTarget < 0 || toFollowPositions == null || activeWalkTarget >= toFollowPositions.Length) return;
+
+        Vector3 target = GetWorldPosition(activeWalkTarget);
+        float moveStep = speed * Time.deltaTime;
+
+        // optionally rotate towards movement direction
+        if (activeWalkShouldLook)
+        {
+            Vector3 dir = target - transform.position;
+            if (dir.sqrMagnitude > 0.00001f)
+            {
+                Quaternion targetRot = Quaternion.LookRotation(dir);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, rotationSpeed * Time.deltaTime);
+            }
+        }
+
+        // move
+        transform.position = Vector3.MoveTowards(transform.position, target, moveStep);
+    }
+    #endregion
+
+    #region Audio
+    public void AudioPlay(string audioName)
+    {
+        if (string.IsNullOrEmpty(audioName)) return;
+        if (soundMap == null) return;
+        if (soundMap.TryGetValue(audioName, out var sound))
+        {
+            if (sound?.source != null && !sound.source.isPlaying)
+                sound.source.Play();
+        }
+        else
+        {
+            Debug.LogWarning($"AudioPlay: sound '{audioName}' not found (check names).");
+        }
+    }
+    #endregion
+
+    #region Helpers
+    private Vector3 GetWorldPosition(int index)
+    {
+        if (toFollowPositions == null || index < 0 || index >= toFollowPositions.Length) return transform.position;
+        if (PositionsAreLocal)
+        {
+            if (PositionsReference != null)
+                return PositionsReference.TransformPoint(toFollowPositions[index]);
+            else
+                return transform.TransformPoint(toFollowPositions[index]); // fallback to this transform as reference
+        }
+        else
+        {
+            return toFollowPositions[index];
+        }
+    }
+
+    private void SetSkinsActive(bool active)
+    {
+        if (skinMeshRenderedArray == null) return;
+        foreach (var s in skinMeshRenderedArray)
+            if (s != null) s.enabled = active;
+    }
+
+    [ContextMenu("Populate positions from child transforms (world)")]
+    private void PopulatePositionsFromChildrenWorld()
+    {
+        List<Vector3> list = new List<Vector3>();
+        foreach (Transform child in transform)
+            list.Add(child.position);
+        toFollowPositions = list.ToArray();
+        PositionsAreLocal = false;
+        Debug.Log($"Populated {toFollowPositions.Length} positions from children (world-space).");
+    }
+
+    [ContextMenu("Populate positions from child transforms (local to this)")]
+    private void PopulatePositionsFromChildrenLocal()
+    {
+        List<Vector3> list = new List<Vector3>();
+        foreach (Transform child in transform)
+            list.Add(transform.InverseTransformPoint(child.position));
+        toFollowPositions = list.ToArray();
+        PositionsAreLocal = true;
+        PositionsReference = transform;
+        Debug.Log($"Populated {toFollowPositions.Length} positions from children (local to this).");
+    }
+
+    private void DrawDebugRayToNext()
+    {
+        if (toFollowPositions == null || toFollowPositions.Length == 0) return;
+        Vector3 next = GetWorldPosition(0);
+        Debug.DrawLine(transform.position, next, Color.green);
+    }
+
+    public void StartAnimation()
+    {
+        // public convenience method to start
+        timer = 0f;
+        lastRangeIndex = -1;
         animationIsPlaying = true;
+        activeWalkTarget = -1;
+        allowLookAtPlayer = false;
     }
 
-    void stopTimer()
+    private void StopTimer()
     {
-        activeTimer = false;
         animationIsPlaying = false;
+        activeWalkTarget = -1;
+        allowLookAtPlayer = false;
+        // restore speed if needed
+        speed = defaultSpeed;
     }
-
-    void startAnimation()
-    {
-        startTimer();
-    }
-
-    void LookAtPlayer()
-    {
-        this.transform.rotation = Quaternion.Slerp(
-            transform.rotation,
-            Quaternion.LookRotation(lookToPlayer),
-            2 * Time.deltaTime
-        );
-    }
-
-    void Walk(int positionToMove, bool lookToDirection)
-    {
-        if (lookToDirection)
-        {
-            this.transform.rotation = Quaternion.Slerp(
-                transform.rotation,
-                Quaternion.LookRotation(toFollowPosition[positionToMove].transform.position - this.transform.position),
-                2 * Time.deltaTime
-            );
-        }
-        transform.position = Vector3.MoveTowards(
-            transform.position,
-            toFollowPosition[positionToMove].transform.position,
-            step
-        );
-    }
+    #endregion
 }
