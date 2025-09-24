@@ -6,7 +6,7 @@ public class hydrolitoExedraScript : MonoBehaviour
 
     [HideInInspector]
     public Animator hydroAnimator;
-    [HideInInspector]
+    //[HideInInspector]
     public GameObject[] toFollowPosition;
 
     [HideInInspector]
@@ -74,11 +74,13 @@ public class hydrolitoExedraScript : MonoBehaviour
                 {
                     skin.enabled = true;
                 }
+                hydroAudio.audioPlay("Teleport1");
                 //Teleport Animation
+
             }
             else if (timer >= interval[1] && timer <= interval[2])
             {
-                speed = 2f;
+                
                 allowLookAtPlayer=true;
                 hydroAnimator.SetBool("StartAnimation", true);
                 hydroAudio.audioPlay("Saludo");
@@ -115,15 +117,19 @@ public class hydrolitoExedraScript : MonoBehaviour
             else if (timer >= interval[8] && timer <= interval[9])
             {
                 
-                speed = 2.5f;
+                speed = 1f;
                 allowLookAtPlayer = false;
-                Walk(0,true);
+                Walk(2,true);
 
             }
             else if (timer >= interval[9] && timer <= interval[10])
             {
-                
-                
+
+                hydroAudio.audioPlay("Teleport2");
+                foreach (SkinnedMeshRenderer skin in skinMeshRenderedArray)
+                {
+                    skin.enabled = false;
+                }
                 //Teleport Animation
             }
             if (timer >= interval[interval.Length - 1])
