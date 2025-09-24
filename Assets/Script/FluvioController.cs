@@ -150,6 +150,7 @@ public class FluvioController : MonoBehaviour
         {
             // entered a new range
             OnEnterRange(currentRange);
+            Debug.Log("Executing step " + currentRange);
             lastRangeIndex = currentRange;
         }
 
@@ -212,49 +213,35 @@ public class FluvioController : MonoBehaviour
 
             case 1:
                 allowLookAtPlayer = true;
-                if (hydroAnimator != null) hydroAnimator.SetBool("StartAnimation", true);
+                hydroAnimator.SetBool("StartAnimation", true);
                 AudioPlay("Saludo");
+                hydroAnimator.SetTrigger("Saludo");
+                Debug.Log("Saludando");
                 break;
 
             case 2:
-                // start walking toward toFollowPositions[1], do not rotate toward movement
                 StartWalkingTo(1, lookTowardsTarget: false);
                 break;
 
             case 3:
-                // stop walking (reserved step)
-                StopWalking();
-                break;
-
-            case 4:
-                if (hydroAnimator != null) hydroAnimator.SetBool("stayIdle", false);
-                break;
-
-            case 5:
                 AudioPlay("Ayuda");
                 break;
 
-            case 6:
-                if (hydroAnimator != null)
-                {
-                    hydroAnimator.SetBool("stayAviso", false);
-                    hydroAnimator.SetBool("stayIdle", true);
-                }
+            case 4:
+                hydroAnimator.SetTrigger("Panico");
                 break;
 
-            case 7:
-                // pause — stop walking if any
+            case 5:
                 StopWalking();
                 break;
 
-            case 8:
-                // start walking toward toFollowPositions[2], rotate to face direction while walking
+            case 6:
                 speed = 1f;
                 allowLookAtPlayer = false;
                 StartWalkingTo(2, lookTowardsTarget: true);
                 break;
 
-            case 9:
+            case 7:
                 AudioPlay("Teleport2");
                 SetSkinsActive(false);
                 StopWalking();
