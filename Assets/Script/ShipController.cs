@@ -9,16 +9,14 @@ public class SpaceshipController : MonoBehaviour
     public AudioClip departureSound;
 
     [Header("Movement")]
-    public Transform arrivalPoint;   // where the ship arrives
-    public Transform departurePoint; // where it leaves
+    public Vector3 arrivalPoint;   // where the ship arrives
+    public Vector3 departurePoint; // where it leaves
     public float moveSpeed = 5f;
 
     [Header("Hover/Shake")]
     public float hoverTime = 3f;
     public float shakeIntensity = 0.1f;
     public float shakeSpeed = 20f;
-
-    private Vector3 originalPosition;
 
     private void Start()
     {
@@ -36,13 +34,10 @@ public class SpaceshipController : MonoBehaviour
         }
 
         // Arrive
-        yield return MoveTo(arrivalPoint.position);
+        yield return MoveTo(arrivalPoint);
 
         // First shake
         yield return Shake(1f);
-
-        // Hover for a while
-        originalPosition = transform.position;
         yield return new WaitForSeconds(hoverTime);
 
         // Second shake
@@ -56,7 +51,7 @@ public class SpaceshipController : MonoBehaviour
         }
 
         // Leave
-        yield return MoveTo(departurePoint.position);
+        yield return MoveTo(departurePoint);
 
         Debug.Log("Spaceship sequence finished 🚀");
     }
