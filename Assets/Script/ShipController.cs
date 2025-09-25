@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 public class ShipSound
 {
     public string name;
@@ -40,6 +41,8 @@ public class ShipController : MonoBehaviour
     public Color positionGizmosColor = Color.red;
     [Header("Fluvio")]
     public FluvioController fluvioController;
+    [Header("Scene to load")]
+    public SceneField newScene;
 
     // internals
     private Dictionary<string, Sound> soundMap;
@@ -198,6 +201,8 @@ public class ShipController : MonoBehaviour
                 break;
 
             case 3:
+                sceneManager sceneManagerEdit = GameObject.Find("sceneManager").GetComponent<sceneManager>();
+                sceneManagerEdit.loadingScene(newScene);
 
                 break;
 

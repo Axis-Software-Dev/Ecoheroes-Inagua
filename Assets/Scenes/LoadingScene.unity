@@ -345,8 +345,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0.08, y: 1.48}
   m_SizeDelta: {x: 1460, y: 582}
   m_Pivot: {x: 0.5, y: 0.5}
-<<<<<<< Updated upstream
-=======
 --- !u!114 &504654387
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -368,7 +366,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 657184242118504721, guid: d6878e1999eb4b44a9f5a263af86c185, type: 3}
   m_PrefabInstance: {fileID: 1264664172}
   m_PrefabAsset: {fileID: 0}
->>>>>>> Stashed changes
 --- !u!1 &769452718
 GameObject:
   m_ObjectHideFlags: 0
@@ -717,7 +714,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1861617918}
   - component: {fileID: 1861617917}
-  - component: {fileID: 1861617919}
   - component: {fileID: 1861617920}
   m_Layer: 0
   m_Name: Directional Light
@@ -806,18 +802,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!114 &1861617919
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1861617916}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a68c43fe1f2a47cfa234b5eeaa98012, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEngine.Rendering.HighDefinition.HDAdditionalLightData
 --- !u!114 &1861617920
 MonoBehaviour:
   m_ObjectHideFlags: 0
