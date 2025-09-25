@@ -150,7 +150,7 @@ public class FluvioController : MonoBehaviour
         {
             // entered a new range
             OnEnterRange(currentRange);
-            Debug.Log("Executing step " + currentRange);
+            Debug.Log("Executing step " + currentRange + " at " + interval[currentRange]);
             lastRangeIndex = currentRange;
         }
 
@@ -207,16 +207,15 @@ public class FluvioController : MonoBehaviour
         {
             case 0:
                 SetSkinsActive(true);
+                hydroAnimator.SetTrigger("Idle");
                 AudioPlay("Teleport1");
                 activeWalkTarget = -1;
                 break;
 
             case 1:
                 allowLookAtPlayer = true;
-                hydroAnimator.SetBool("StartAnimation", true);
                 AudioPlay("Saludo");
                 hydroAnimator.SetTrigger("Saludo");
-                Debug.Log("Saludando");
                 break;
 
             case 2:
@@ -224,31 +223,36 @@ public class FluvioController : MonoBehaviour
                 break;
 
             case 3:
-                AudioPlay("Ayuda");
-                break;
-
-            case 4:
+                AudioPlay("Alarma");
                 hydroAnimator.SetTrigger("Panico");
                 break;
 
+            case 4:
+                hydroAnimator.SetTrigger("Aviso");
+                AudioPlay("Ayuda");
+                break;
+
             case 5:
-                StopWalking();
+                hydroAnimator.SetTrigger("Apuntando");
                 break;
 
             case 6:
                 speed = 1f;
                 allowLookAtPlayer = false;
                 StartWalkingTo(2, lookTowardsTarget: true);
+                Debug.Log("Ya me voy");
                 break;
 
             case 7:
                 AudioPlay("Teleport2");
+                Debug.Log("Fluvio uso TP");
                 SetSkinsActive(false);
                 StopWalking();
                 break;
 
             default:
                 // ranges outside defined mapping: do nothing on enter
+                // que loopee aviso, que se lleve las manos a la cabeza en la alarma, tu en tu
                 break;
         }
     }
