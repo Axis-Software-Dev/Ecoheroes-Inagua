@@ -23,7 +23,7 @@ public class SquirrelTrigger : MonoBehaviour
     private bool isTyping = false;
 
     [Header("Alien slave")]
-    public FluvioController fluvioController;
+    public ShipController shipController;
     private void OnTriggerEnter(Collider other)
     {
         if (!isTyping)
@@ -71,7 +71,7 @@ public class SquirrelTrigger : MonoBehaviour
             squirrelAnimator.SetTrigger("Idle");
             isTyping = false;
         }
-        fluvioController.startGreetingAnimation = true;
+        shipController.startAnimation = true;
     }
     private IEnumerator TypeText(string textToType)
     {
