@@ -2126,6 +2126,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0.203
       objectReference: {fileID: 0}
+    - target: {fileID: 799494665785465998, guid: 12ace5790e377c24d9129a77fa41ecf1, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 12ace5790e377c24d9129a77fa41ecf1, type: 3}
       propertyPath: m_Name
       value: Fluvi-o
@@ -3480,6 +3484,13 @@ MonoBehaviour:
     source: {fileID: 0}
     timeToSkip: 0
     spatialSound: 1
+  - name: Alarma
+    clip: {fileID: 8300000, guid: 53aaa5723aae0684a9f2f80b99e414e3, type: 3}
+    volume: 1
+    pitch: 1
+    source: {fileID: 0}
+    timeToSkip: 0
+    spatialSound: 1
   toFollowPositions:
   - {x: 8.8, y: 5.6629753, z: 0.091778755}
   - {x: 3, y: 3.4614964, z: 0.48262596}
@@ -3496,14 +3507,12 @@ MonoBehaviour:
   - 0
   - 2
   - 3
-  - 10
+  - 8
   - 12
-  - 14.1
-  - 18.74
-  - 20
+  - 16.5
+  - 18
   - 22
-  - 27
-  - 30
+  - 23
   startGreetingAnimation: 0
   rotationSpeed: 2
   drawPositionGizmos: 1
