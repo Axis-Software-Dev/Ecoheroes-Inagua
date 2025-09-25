@@ -344,6 +344,30 @@ RectTransform:
   m_AnchoredPosition: {x: 0.08, y: 1.48}
   m_SizeDelta: {x: 1460, y: 582}
   m_Pivot: {x: 0.5, y: 0.5}
+<<<<<<< Updated upstream
+=======
+--- !u!114 &504654387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 504654382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4bd59685a4c4a34dbee6f37f972f1af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CanvasOrbitController
+  targetCamera: {fileID: 685125279}
+  distance: 1.3
+  heightOffset: 0
+  followSpeed: 5
+--- !u!4 &685125279 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 657184242118504721, guid: d6878e1999eb4b44a9f5a263af86c185, type: 3}
+  m_PrefabInstance: {fileID: 1264664172}
+  m_PrefabAsset: {fileID: 0}
+>>>>>>> Stashed changes
 --- !u!1 &769452718
 GameObject:
   m_ObjectHideFlags: 0
