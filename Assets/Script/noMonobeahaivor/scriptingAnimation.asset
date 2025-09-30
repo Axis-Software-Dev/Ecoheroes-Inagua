@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: scriptingAnimation
+  m_EditorClassIdentifier: Assembly-CSharp::scriptingAnimation
+  Intervals: []
+  listOfActions:
+  - Order: 0
+    Actions:
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 7526055021244852452, guid: 0d3f662a0fd942c4ba158dc557707d2d, type: 3}
+          m_TargetAssemblyTypeName: FluvioController, Assembly-CSharp
+          m_MethodName: AudioPlay
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 7526055021244852452, guid: 0d3f662a0fd942c4ba158dc557707d2d, type: 3}
+          m_TargetAssemblyTypeName: FluvioController, Assembly-CSharp
+          m_MethodName: StartAnimation
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - Order: 1
+    Actions: []
