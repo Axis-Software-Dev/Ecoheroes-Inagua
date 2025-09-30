@@ -304,7 +304,7 @@ public class FluvioController : MonoBehaviour
     #endregion
 
     #region Walking / movement
-    public void StartWalkingTo(int index, bool lookTowardsTarget)
+    public void StartWalkingTo(int index)
     {
         if (toFollowPositions == null || index < 0 || index >= toFollowPositions.Length)
         {
@@ -314,10 +314,14 @@ public class FluvioController : MonoBehaviour
         }
 
         activeWalkTarget = index;
+        
+    }
+    public void setLookToTarget(bool lookTowardsTarget)
+    {
         activeWalkShouldLook = lookTowardsTarget;
     }
 
-    private void StopWalking()
+    public void StopWalking()
     {
         activeWalkTarget = -1;
         activeWalkShouldLook = false;
@@ -398,7 +402,14 @@ public class FluvioController : MonoBehaviour
     {
         allowLookAtPlayer = active;
     }
-
+    public void setSpeed(float newSpeed)
+    {
+        speed = newSpeed;
+    }
+    public void writeDevug(string Message)
+    {
+       Debug.Log(Message);
+    }
     [ContextMenu("Populate positions from child transforms (world)")]
     private void PopulatePositionsFromChildrenWorld()
     {
