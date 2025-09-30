@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using UnityEngine.Events;
 public class FluvioSound
 {
     public string name;
@@ -32,9 +33,8 @@ public class FluvioController : MonoBehaviour
     public SkinnedMeshRenderer[] skinMeshRenderedArray;
     public float speed = 1.5f;
     [Tooltip("A sorted list of timestamps (seconds). Intervals are read as ranges [interval[i], interval[i+1]). The last element is treated as the final stop threshold.")]
-    public scriptingAnimation scriptToFollow;
     public float[] interval;
-
+    public scriptingAnimation scriptToFollow;
     [Header("Options")]
     public bool startGreetingAnimation = false;
     public float rotationSpeed = 2f;
@@ -88,6 +88,8 @@ public class FluvioController : MonoBehaviour
 
         // disable skins by default (maintains old behaviour)
         SetSkinsActive(false);
+
+        interval=scriptToFollow.Intervals;
     }
 
     private void Start()
@@ -209,6 +211,7 @@ public class FluvioController : MonoBehaviour
         {
             if(actionSet.Order == rangeIndex)
             {
+                Debug.Log($"Se encontro la accion{rangeIndex}");
                 actionSet.Actions.Invoke();
             }
         }
@@ -216,7 +219,7 @@ public class FluvioController : MonoBehaviour
 
 
 
-
+        
 
 
 
