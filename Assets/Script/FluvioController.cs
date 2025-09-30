@@ -43,6 +43,7 @@ public class FluvioController : MonoBehaviour
     // internals
     private Dictionary<string, Sound> soundMap;
     private Transform playerTransform;
+    [SerializeField]
     private float timer = 0f;
     private float defaultSpeed;
     private bool animationIsPlaying = false;
@@ -90,6 +91,8 @@ public class FluvioController : MonoBehaviour
         SetSkinsActive(false);
 
         interval=scriptToFollow.Intervals;
+       
+        
     }
 
     private void Start()
@@ -110,6 +113,7 @@ public class FluvioController : MonoBehaviour
 
     private void Update()
     {
+
         // update look vector
         if (playerTransform != null)
         {
@@ -135,7 +139,7 @@ public class FluvioController : MonoBehaviour
 
         // safety: need at least two interval values for ranges
         if (interval == null || interval.Length < 2) return;
-
+        Debug.Log("Hola");
         timer += Time.deltaTime;
 
         // if timer surpasses final stop threshold -> stop
@@ -206,94 +210,16 @@ public class FluvioController : MonoBehaviour
     {
         // map the original behaviour into enter-range actions
         // NOTE: these indices follow the original code: range 0 -> interval[0..1], range 1 -> interval[1..2], ...
-
-        foreach(var actionSet in scriptToFollow.listOfActions)
+        Debug.Log("Se encontro la accion");
+        foreach (var actionSet in scriptToFollow.listOfActions)
         {
-            if(actionSet.Order == rangeIndex)
+            
+            if (actionSet.Order == rangeIndex)
             {
-                Debug.Log($"Se encontro la accion{rangeIndex}");
+                
                 actionSet.Actions.Invoke();
             }
         }
-
-
-
-
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        /*switch (rangeIndex)
-    {
-        case 0:
-            SetSkinsActive(true);
-            hydroAnimator.SetTrigger("Idle");
-            AudioPlay("Teleport1");
-            activeWalkTarget = -1;
-            break;
-
-        case 1:
-            allowLookAtPlayer = true;
-            AudioPlay("Saludo");
-            hydroAnimator.SetTrigger("Saludo");
-            break;
-
-        case 2:
-            StartWalkingTo(1, lookTowardsTarget: false);
-            break;
-
-        case 3:
-            AudioPlay("Alarma");
-            hydroAnimator.SetTrigger("Panico");
-            break;
-
-        case 4:
-            hydroAnimator.SetTrigger("Aviso");
-            AudioPlay("Ayuda");
-            break;
-
-        case 5:
-            hydroAnimator.SetTrigger("Apuntando");
-            break;
-
-        case 6:
-            speed = 1f;
-            allowLookAtPlayer = false;
-            StartWalkingTo(2, lookTowardsTarget: true);
-            Debug.Log("Ya me voy");
-            break;
-
-        case 7:
-            AudioPlay("Teleport2");
-            Debug.Log("Fluvio uso TP");
-            SetSkinsActive(false);
-            StopWalking();
-            break;
-
-        default:
-            // ranges outside defined mapping: do nothing on enter
-            // que loopee aviso, que se lleve las manos a la cabeza en la alarma, tu en tu
-            break;
-    }*/
     }
 
     private void DoRangeBehavior(int rangeIndex)
