@@ -40,11 +40,12 @@ Material:
   m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
   m_Parent: {fileID: 2100000, guid: 21f89988389a63d4e8534199ad9a4f46, type: 2}
   m_ModifiedSerializedProperties: 2
-  m_ValidKeywords: []
+  m_ValidKeywords:
+  - _EMISSION
   m_InvalidKeywords:
   - _DISABLE_SSR_TRANSPARENT
   - _NORMALMAP_TANGENT_SPACE
-  m_LightmapFlags: 0
+  m_LightmapFlags: 1
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -67,9 +68,9 @@ Material:
     - _EmissiveIntensity: 500
     - _Metallic: 0
     m_Colors:
-    - _BaseColor: {r: 0.03476668, g: 0.80480367, b: 0.96981126, a: 1}
-    - _Color: {r: 0.03476668, g: 0.80480367, b: 0.96981126, a: 1}
-    - _EmissionColor: {r: 1024, g: 1024, b: 1024, a: 1}
+    - _BaseColor: {r: 0, g: 0.8235297, b: 1, a: 1}
+    - _Color: {r: 0, g: 0.8235297, b: 1, a: 1}
+    - _EmissionColor: {r: 0, g: 1235.8932, b: 1261.9473, a: 1}
     - _EmissiveColor: {r: 2.802694, g: 20.52848, b: 395.64902, a: 500}
     - _EmissiveColorLDR: {r: 0.06666666, g: 0.22393115, b: 0.9019608, a: 1}
   m_BuildTextureStacks: []
