@@ -22,6 +22,8 @@ public class SquirrelTrigger : MonoBehaviour
     public SpeechBubbleAnimator speechBubbleAnimator;
     private bool isTyping = false;
 
+    [Header("Alien slave")]
+    public ShipController shipController;
     private void OnTriggerEnter(Collider other)
     {
         if (!isTyping)
@@ -69,7 +71,7 @@ public class SquirrelTrigger : MonoBehaviour
             squirrelAnimator.SetTrigger("Idle");
             isTyping = false;
         }
-
+        shipController.startAnimation = true;
     }
     private IEnumerator TypeText(string textToType)
     {
