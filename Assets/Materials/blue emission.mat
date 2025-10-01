@@ -45,7 +45,7 @@ Material:
   m_InvalidKeywords:
   - _DISABLE_SSR_TRANSPARENT
   - _NORMALMAP_TANGENT_SPACE
-  m_LightmapFlags: 1
+  m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -66,11 +66,12 @@ Material:
     - _AlbedoAffectEmissive: 1
     - _EmissiveExposureWeight: 0.851
     - _EmissiveIntensity: 500
-    - _Metallic: 0
+    - _Metallic: 1
+    - _Smoothness: 0
     m_Colors:
     - _BaseColor: {r: 0, g: 0.8235297, b: 1, a: 1}
     - _Color: {r: 0, g: 0.8235297, b: 1, a: 1}
-    - _EmissionColor: {r: 0, g: 1235.8932, b: 1261.9473, a: 1}
+    - _EmissionColor: {r: 0, g: 1204.2637, b: 1532.2136, a: 1}
     - _EmissiveColor: {r: 2.802694, g: 20.52848, b: 395.64902, a: 500}
     - _EmissiveColorLDR: {r: 0.06666666, g: 0.22393115, b: 0.9019608, a: 1}
   m_BuildTextureStacks: []
