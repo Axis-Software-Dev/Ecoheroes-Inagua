@@ -41,7 +41,7 @@ public class FluvioController : MonoBehaviour
     public bool startGreetingAnimation = false;
     public float rotationSpeed = 2f;
     public bool drawPositionGizmos = true;
-
+    
     // internals
     private Dictionary<string, Sound> soundMap;
     private Transform playerTransform;
@@ -54,6 +54,12 @@ public class FluvioController : MonoBehaviour
     private int lastRangeIndex = -1;
     private int activeWalkTarget = -1; // -1 = not walking
     private bool activeWalkShouldLook = false;
+    private SerializedProperty argumentProp;
+    private SerializedProperty persistentCalls;
+
+
+
+
 
     #region Unity callbacks
     private void Awake()
@@ -108,14 +114,15 @@ public class FluvioController : MonoBehaviour
             SerializedObject so = new SerializedObject(scriptToFollow);
             SerializedProperty actionsProp =
                 so.FindProperty($"listOfActions.Array.data[{Array.IndexOf(scriptToFollow.listOfActions, actionSet)}].Actions");
-            SerializedProperty persistentCalls = actionsProp.FindPropertyRelative("m_PersistentCalls.m_Calls");
+            persistentCalls = actionsProp.FindPropertyRelative("m_PersistentCalls.m_Calls");
+
             for (int i = 0; i < persistentCalls.arraySize; i++)
             {
                 SerializedProperty call = persistentCalls.GetArrayElementAtIndex(i);
                 string callData = call.FindPropertyRelative("m_Arguments").FindPropertyRelative("m_ObjectArgumentAssemblyTypeName").stringValue;
-                SerializedProperty argumentProp = call.FindPropertyRelative("m_Arguments");
+                argumentProp = call.FindPropertyRelative("m_Arguments");
                 
-                    Debug.Log($"Action {actionSet.Order} call {i+1}: value:{argumentProp.FindPropertyRelative("m_IntArgument").intValue.ToString()}");
+                Debug.Log($"Action {actionSet.Order} call {i+1}: value:{argumentProp.FindPropertyRelative("m_FloatArgument").floatValue}");
 
                 
                 
@@ -123,10 +130,11 @@ public class FluvioController : MonoBehaviour
             }
 
         }
-
-
-
 #endif
+
+
+
+
 
     }
 
@@ -251,8 +259,11 @@ public class FluvioController : MonoBehaviour
             
             if (actionSet.Order == rangeIndex)
             {
-                Debug.Log("Se encontro la accion " + actionSet.Actions.GetPersistentMethodName(rangeIndex));
-                actionSet.Actions.Invoke();
+                string methodName = actionSet.Actions.GetPersistentMethodName(rangeIndex);
+                getLocalMethods(methodName);
+                //Debug.Log("Se encontro la accion " + actionSet.Actions.GetPersistentMethodName(rangeIndex));
+                //actionSet.Actions.Invoke();
+
             }
         }
     }
@@ -421,6 +432,49 @@ public class FluvioController : MonoBehaviour
         allowLookAtPlayer = false;
         // restore speed if needed
         speed = defaultSpeed;
+    }
+    //TODO: Change
+    public void getLocalMethods(string methodsName)
+    {
+        switch (methodsName)
+        {
+            case "SetSkinsActive":
+               
+                SetSkinsActive(true);
+                break;
+            case "setAnimationTrigger":
+                setAnimationTrigger("Idle");
+                break;
+            case "setActiveWalkTarget":
+                setActiveWalkTarget(-1);
+                break;
+            case "setAllowLookPlayer":
+                setAllowLookPlayer(false);
+                break;
+            case "setSpeed":
+                setSpeed(1);
+                break;
+            case "writeDevug":
+                writeDevug("defaultText");
+                break;
+            case "StartWalkingTo":
+                StartWalkingTo(1);
+                break;
+            case "setLookToTarget":
+                setLookToTarget(true);
+                break;
+            case "AudioPlay":
+                AudioPlay("Saludo");
+                break;
+            case "StopWalking":
+                StopWalking();
+                break;
+            default:
+                Debug.LogWarning($"Action {methodsName} not found" );
+                break;
+    
+            }
+
     }
     #endregion
 }
