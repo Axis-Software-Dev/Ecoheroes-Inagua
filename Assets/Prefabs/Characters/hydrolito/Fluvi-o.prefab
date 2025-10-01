@@ -95,8 +95,10 @@ MonoBehaviour:
   PositionsReference: {fileID: 0}
   hydroAnimator: {fileID: 0}
   skinMeshRenderedArray: []
-  speed: 1.5
+  speed: 1
   interval: []
+  scriptToFollow: {fileID: 11400000, guid: b87bf8e7807c89a478470dc722372a50, type: 2}
   startGreetingAnimation: 0
   rotationSpeed: 2
   drawPositionGizmos: 1
+  timer: 0

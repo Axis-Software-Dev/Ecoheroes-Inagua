@@ -2,6 +2,8 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using UnityEngine.Events;
+using System.Reflection;
+using UnityEditor;
 public class FluvioSound
 {
     public string name;
@@ -90,9 +92,42 @@ public class FluvioController : MonoBehaviour
         // disable skins by default (maintains old behaviour)
         SetSkinsActive(false);
 
-        interval=scriptToFollow.Intervals;
-       
-        
+        if (scriptToFollow?.listOfActions!=null)
+        {
+            interval = scriptToFollow.Intervals;
+        }
+        else
+        {
+            if (scriptToFollow == null) Debug.LogWarning("Not script To follow found");
+            if(scriptToFollow.listOfActions==null) Debug.LogWarning("Not intervals set");
+        }
+
+#if UNITY_EDITOR
+        foreach (var actionSet in scriptToFollow.listOfActions)
+        {
+            SerializedObject so = new SerializedObject(scriptToFollow);
+            SerializedProperty actionsProp =
+                so.FindProperty($"listOfActions.Array.data[{Array.IndexOf(scriptToFollow.listOfActions, actionSet)}].Actions");
+            SerializedProperty persistentCalls = actionsProp.FindPropertyRelative("m_PersistentCalls.m_Calls");
+            for (int i = 0; i < persistentCalls.arraySize; i++)
+            {
+                SerializedProperty call = persistentCalls.GetArrayElementAtIndex(i);
+                string callData = call.FindPropertyRelative("m_Arguments").FindPropertyRelative("m_ObjectArgumentAssemblyTypeName").stringValue;
+                SerializedProperty argumentProp = call.FindPropertyRelative("m_Arguments");
+                
+                    Debug.Log($"Action {actionSet.Order} call {i+1}: value:{argumentProp.FindPropertyRelative("m_IntArgument").intValue.ToString()}");
+
+                
+                
+
+            }
+
+        }
+
+
+
+#endif
+
     }
 
     private void Start()
@@ -139,7 +174,7 @@ public class FluvioController : MonoBehaviour
 
         // safety: need at least two interval values for ranges
         if (interval == null || interval.Length < 2) return;
-        Debug.Log("Hola");
+        
         timer += Time.deltaTime;
 
         // if timer surpasses final stop threshold -> stop
@@ -210,13 +245,13 @@ public class FluvioController : MonoBehaviour
     {
         // map the original behaviour into enter-range actions
         // NOTE: these indices follow the original code: range 0 -> interval[0..1], range 1 -> interval[1..2], ...
-        Debug.Log("Se encontro la accion");
+        
         foreach (var actionSet in scriptToFollow.listOfActions)
         {
             
             if (actionSet.Order == rangeIndex)
             {
-                
+                Debug.Log("Se encontro la accion " + actionSet.Actions.GetPersistentMethodName(rangeIndex));
                 actionSet.Actions.Invoke();
             }
         }
