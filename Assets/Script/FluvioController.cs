@@ -1,9 +1,11 @@
-using UnityEngine;
 using System;
 using System.Collections.Generic;
-using UnityEngine.Events;
+using System.Linq;
 using System.Reflection;
 using UnityEditor;
+using UnityEngine;
+using UnityEngine.DedicatedServer;
+using UnityEngine.Events;
 public class FluvioSound
 {
     public string name;
@@ -257,45 +259,52 @@ public class FluvioController : MonoBehaviour
     {
         // map the original behaviour into enter-range actions
         // NOTE: these indices follow the original code: range 0 -> interval[0..1], range 1 -> interval[1..2], ...
-        
+
         foreach (var actionSet in scriptToFollow.listOfActions)
         {
             
+
             if (actionSet.Order == rangeIndex)
-                
+
             {
-#if UNITY_EDITOR
-                SerializedObject so = new SerializedObject(scriptToFollow);
-                SerializedProperty actionsProp =
-                    so.FindProperty($"listOfActions.Array.data[{Array.IndexOf(scriptToFollow.listOfActions, actionSet)}].Actions");
-                persistentCalls = actionsProp.FindPropertyRelative("m_PersistentCalls.m_Calls");
-                for (int i = 0; i < persistentCalls.arraySize; i++)
+                UnityEvent currentEvent = actionSet.Actions;
+
+
+                FieldInfo callGroupField = typeof(UnityEventBase).GetField("m_PersistentCalls", BindingFlags.NonPublic | BindingFlags.Instance);
+                object callGroup = callGroupField.GetValue(currentEvent);
+                FieldInfo callsField = callGroup.GetType().GetField("m_Calls", BindingFlags.NonPublic | BindingFlags.Instance);
+                System.Collections.IList calls = callsField.GetValue(callGroup) as System.Collections.IList;
+                for (int i = 0; i < calls.Count; i++)
                 {
-                    SerializedProperty call = persistentCalls.GetArrayElementAtIndex(i);
-                    string callData = call.FindPropertyRelative("m_Arguments").FindPropertyRelative("m_ObjectArgumentAssemblyTypeName").stringValue;
-                    argumentProp = call.FindPropertyRelative("m_Arguments");
+                    object call = calls[i];
+                    string methodName = (string)call.GetType().GetField("m_MethodName", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(calls[i]);
+                    FieldInfo argumentsField = call.GetType().GetField("m_Arguments", BindingFlags.NonPublic | BindingFlags.Instance);
+                    object arguments = argumentsField.GetValue(call);
+                    FieldInfo floatArgField = arguments.GetType().GetField("m_FloatArgument", BindingFlags.NonPublic | BindingFlags.Instance);
+                    FieldInfo intArgField = arguments.GetType().GetField("m_IntArgument", BindingFlags.NonPublic | BindingFlags.Instance);
+                    FieldInfo boolArgField = arguments.GetType().GetField("m_BoolArgument", BindingFlags.NonPublic | BindingFlags.Instance);
+                    FieldInfo stringArgField = arguments.GetType().GetField("m_StringArgument", BindingFlags.NonPublic | BindingFlags.Instance);
 
-                    //Debug.Log($"Action {actionSet.Order} call {i + 1}: value:{argumentProp.FindPropertyRelative("m_FloatArgument").floatValue}");
+                    floatVarSave = (float)floatArgField.GetValue(arguments);
+                    intVarSave = (int)intArgField.GetValue(arguments);
+                    boolVarSave = (bool)boolArgField.GetValue(arguments);
+                    stringVarSave = (string)stringArgField.GetValue(arguments);
 
-                    floatVarSave = argumentProp.FindPropertyRelative("m_FloatArgument").floatValue;
-                    intVarSave = argumentProp.FindPropertyRelative("m_IntArgument").intValue;
-                    stringVarSave = argumentProp.FindPropertyRelative("m_StringArgument").stringValue;
-                    boolVarSave = argumentProp.FindPropertyRelative("m_BoolArgument").boolValue;
-
-                    string methodName = actionSet.Actions.GetPersistentMethodName(i);
                     getLocalMethods(methodName);
 
-
-
                 }
-#endif
+
+
+
+
                 //Debug.Log("Se encontro la accion " + actionSet.Actions.GetPersistentMethodName(rangeIndex));
                 //actionSet.Actions.Invoke();
+
 
             }
         }
     }
-
+   
     private void DoRangeBehavior(int rangeIndex)
     {
         // continuous behaviors while inside a range
