@@ -113,31 +113,6 @@ public class FluvioController : MonoBehaviour
             if (scriptToFollow == null) Debug.LogWarning("Not script To follow found");
             if(scriptToFollow.listOfActions==null) Debug.LogWarning("Not intervals set");
         }
-/*
-#if UNITY_EDITOR
-        foreach (var actionSet in scriptToFollow.listOfActions)
-        {
-            SerializedObject so = new SerializedObject(scriptToFollow);
-            SerializedProperty actionsProp =
-                so.FindProperty($"listOfActions.Array.data[{Array.IndexOf(scriptToFollow.listOfActions, actionSet)}].Actions");
-            persistentCalls = actionsProp.FindPropertyRelative("m_PersistentCalls.m_Calls");
-
-            for (int i = 0; i < persistentCalls.arraySize; i++)
-            {
-                SerializedProperty call = persistentCalls.GetArrayElementAtIndex(i);
-                string callData = call.FindPropertyRelative("m_Arguments").FindPropertyRelative("m_ObjectArgumentAssemblyTypeName").stringValue;
-                argumentProp = call.FindPropertyRelative("m_Arguments");
-                
-                Debug.Log($"Action {actionSet.Order} call {i+1}: value:{argumentProp.FindPropertyRelative("m_FloatArgument").floatValue}");
-
-                
-                
-
-            }
-
-        }
-#endif
-*/
 
 
 
@@ -260,6 +235,7 @@ public class FluvioController : MonoBehaviour
         // map the original behaviour into enter-range actions
         // NOTE: these indices follow the original code: range 0 -> interval[0..1], range 1 -> interval[1..2], ...
 
+        //Automaticly call prefabs methods into private methods
         foreach (var actionSet in scriptToFollow.listOfActions)
         {
             
@@ -471,6 +447,10 @@ public class FluvioController : MonoBehaviour
         speed = defaultSpeed;
     }
     //TODO: Change
+
+
+    //Method to call local prefabs methods
+    //Make sure to add the public methods to the switch case || Names are the same as the method to call
     public void getLocalMethods(string methodsName)
     {
         switch (methodsName)

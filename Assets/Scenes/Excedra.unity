@@ -3061,6 +3061,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 001747b105bb82e4a9fae8106b59ad9c, type: 3}
   m_PrefabInstance: {fileID: 1217269269}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1003422843 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7526055021244852452, guid: 0d3f662a0fd942c4ba158dc557707d2d, type: 3}
+  m_PrefabInstance: {fileID: 39937458}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 816f702443b795e4594f94ddbd99a080, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FluvioController
 --- !u!1001 &1076687853
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6345,7 +6356,7 @@ MonoBehaviour:
   rotationSpeed: 2
   drawPositionGizmos: 1
   positionGizmosColor: {r: 1, g: 0, b: 0, a: 1}
-  fluvioController: {fileID: 0}
+  fluvioController: {fileID: 1003422843}
   newScene:
     m_SceneAsset: {fileID: 102900000, guid: 291a4072167b1f44fafda635c4ca04d9, type: 3}
     m_SceneName: Space Ship
