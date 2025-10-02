@@ -56,6 +56,10 @@ public class FluvioController : MonoBehaviour
     private bool activeWalkShouldLook = false;
     private SerializedProperty argumentProp;
     private SerializedProperty persistentCalls;
+    private float floatVarSave;
+    private int intVarSave;
+    private string stringVarSave;
+    private bool boolVarSave;
 
 
 
@@ -107,7 +111,7 @@ public class FluvioController : MonoBehaviour
             if (scriptToFollow == null) Debug.LogWarning("Not script To follow found");
             if(scriptToFollow.listOfActions==null) Debug.LogWarning("Not intervals set");
         }
-
+/*
 #if UNITY_EDITOR
         foreach (var actionSet in scriptToFollow.listOfActions)
         {
@@ -131,7 +135,7 @@ public class FluvioController : MonoBehaviour
 
         }
 #endif
-
+*/
 
 
 
@@ -258,9 +262,33 @@ public class FluvioController : MonoBehaviour
         {
             
             if (actionSet.Order == rangeIndex)
+                
             {
-                string methodName = actionSet.Actions.GetPersistentMethodName(rangeIndex);
-                getLocalMethods(methodName);
+#if UNITY_EDITOR
+                SerializedObject so = new SerializedObject(scriptToFollow);
+                SerializedProperty actionsProp =
+                    so.FindProperty($"listOfActions.Array.data[{Array.IndexOf(scriptToFollow.listOfActions, actionSet)}].Actions");
+                persistentCalls = actionsProp.FindPropertyRelative("m_PersistentCalls.m_Calls");
+                for (int i = 0; i < persistentCalls.arraySize; i++)
+                {
+                    SerializedProperty call = persistentCalls.GetArrayElementAtIndex(i);
+                    string callData = call.FindPropertyRelative("m_Arguments").FindPropertyRelative("m_ObjectArgumentAssemblyTypeName").stringValue;
+                    argumentProp = call.FindPropertyRelative("m_Arguments");
+
+                    //Debug.Log($"Action {actionSet.Order} call {i + 1}: value:{argumentProp.FindPropertyRelative("m_FloatArgument").floatValue}");
+
+                    floatVarSave = argumentProp.FindPropertyRelative("m_FloatArgument").floatValue;
+                    intVarSave = argumentProp.FindPropertyRelative("m_IntArgument").intValue;
+                    stringVarSave = argumentProp.FindPropertyRelative("m_StringArgument").stringValue;
+                    boolVarSave = argumentProp.FindPropertyRelative("m_BoolArgument").boolValue;
+
+                    string methodName = actionSet.Actions.GetPersistentMethodName(i);
+                    getLocalMethods(methodName);
+
+
+
+                }
+#endif
                 //Debug.Log("Se encontro la accion " + actionSet.Actions.GetPersistentMethodName(rangeIndex));
                 //actionSet.Actions.Invoke();
 
@@ -440,31 +468,31 @@ public class FluvioController : MonoBehaviour
         {
             case "SetSkinsActive":
                
-                SetSkinsActive(true);
+                SetSkinsActive(boolVarSave);
                 break;
             case "setAnimationTrigger":
-                setAnimationTrigger("Idle");
+                setAnimationTrigger(stringVarSave);
                 break;
             case "setActiveWalkTarget":
-                setActiveWalkTarget(-1);
+                setActiveWalkTarget(intVarSave);
                 break;
             case "setAllowLookPlayer":
-                setAllowLookPlayer(false);
+                setAllowLookPlayer(boolVarSave);
                 break;
             case "setSpeed":
-                setSpeed(1);
+                setSpeed(floatVarSave);
                 break;
             case "writeDevug":
-                writeDevug("defaultText");
+                writeDevug(stringVarSave);
                 break;
             case "StartWalkingTo":
-                StartWalkingTo(1);
+                StartWalkingTo(intVarSave);
                 break;
             case "setLookToTarget":
-                setLookToTarget(true);
+                setLookToTarget(boolVarSave);
                 break;
             case "AudioPlay":
-                AudioPlay("Saludo");
+                AudioPlay(stringVarSave);
                 break;
             case "StopWalking":
                 StopWalking();
