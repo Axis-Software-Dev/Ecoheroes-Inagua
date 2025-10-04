@@ -1,6 +1,11 @@
-using UnityEngine;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using UnityEditor;
+using UnityEngine;
+using UnityEngine.DedicatedServer;
+using UnityEngine.Events;
 public class FluvioSound
 {
     public string name;
@@ -33,15 +38,16 @@ public class FluvioController : MonoBehaviour
     public float speed = 1.5f;
     [Tooltip("A sorted list of timestamps (seconds). Intervals are read as ranges [interval[i], interval[i+1]). The last element is treated as the final stop threshold.")]
     public float[] interval;
-
+    public scriptingAnimation scriptToFollow;
     [Header("Options")]
     public bool startGreetingAnimation = false;
     public float rotationSpeed = 2f;
     public bool drawPositionGizmos = true;
-
+    
     // internals
     private Dictionary<string, Sound> soundMap;
     private Transform playerTransform;
+    [SerializeField]
     private float timer = 0f;
     private float defaultSpeed;
     private bool animationIsPlaying = false;
@@ -50,6 +56,16 @@ public class FluvioController : MonoBehaviour
     private int lastRangeIndex = -1;
     private int activeWalkTarget = -1; // -1 = not walking
     private bool activeWalkShouldLook = false;
+    private SerializedProperty argumentProp;
+    private SerializedProperty persistentCalls;
+    private float floatVarSave;
+    private int intVarSave;
+    private string stringVarSave;
+    private bool boolVarSave;
+
+
+
+
 
     #region Unity callbacks
     private void Awake()
@@ -87,6 +103,20 @@ public class FluvioController : MonoBehaviour
 
         // disable skins by default (maintains old behaviour)
         SetSkinsActive(false);
+
+        if (scriptToFollow?.listOfActions!=null)
+        {
+            interval = scriptToFollow.Intervals;
+        }
+        else
+        {
+            if (scriptToFollow == null) Debug.LogWarning("Not script To follow found");
+            if(scriptToFollow.listOfActions==null) Debug.LogWarning("Not intervals set");
+        }
+
+
+
+
     }
 
     private void Start()
@@ -107,6 +137,7 @@ public class FluvioController : MonoBehaviour
 
     private void Update()
     {
+
         // update look vector
         if (playerTransform != null)
         {
@@ -132,7 +163,7 @@ public class FluvioController : MonoBehaviour
 
         // safety: need at least two interval values for ranges
         if (interval == null || interval.Length < 2) return;
-
+        
         timer += Time.deltaTime;
 
         // if timer surpasses final stop threshold -> stop
@@ -203,60 +234,53 @@ public class FluvioController : MonoBehaviour
     {
         // map the original behaviour into enter-range actions
         // NOTE: these indices follow the original code: range 0 -> interval[0..1], range 1 -> interval[1..2], ...
-        switch (rangeIndex)
+
+        //Automaticly call prefabs methods into private methods
+        foreach (var actionSet in scriptToFollow.listOfActions)
         {
-            case 0:
-                SetSkinsActive(true);
-                hydroAnimator.SetTrigger("Idle");
-                AudioPlay("Teleport1");
-                activeWalkTarget = -1;
-                break;
+            
 
-            case 1:
-                allowLookAtPlayer = true;
-                AudioPlay("Saludo");
-                hydroAnimator.SetTrigger("Saludo");
-                break;
+            if (actionSet.Order == rangeIndex)
 
-            case 2:
-                StartWalkingTo(1, lookTowardsTarget: false);
-                break;
+            {
+                UnityEvent currentEvent = actionSet.Actions;
 
-            case 3:
-                AudioPlay("Alarma");
-                hydroAnimator.SetTrigger("Panico");
-                break;
 
-            case 4:
-                hydroAnimator.SetTrigger("Aviso");
-                AudioPlay("Ayuda");
-                break;
+                FieldInfo callGroupField = typeof(UnityEventBase).GetField("m_PersistentCalls", BindingFlags.NonPublic | BindingFlags.Instance);
+                object callGroup = callGroupField.GetValue(currentEvent);
+                FieldInfo callsField = callGroup.GetType().GetField("m_Calls", BindingFlags.NonPublic | BindingFlags.Instance);
+                System.Collections.IList calls = callsField.GetValue(callGroup) as System.Collections.IList;
+                for (int i = 0; i < calls.Count; i++)
+                {
+                    object call = calls[i];
+                    string methodName = (string)call.GetType().GetField("m_MethodName", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(calls[i]);
+                    FieldInfo argumentsField = call.GetType().GetField("m_Arguments", BindingFlags.NonPublic | BindingFlags.Instance);
+                    object arguments = argumentsField.GetValue(call);
+                    FieldInfo floatArgField = arguments.GetType().GetField("m_FloatArgument", BindingFlags.NonPublic | BindingFlags.Instance);
+                    FieldInfo intArgField = arguments.GetType().GetField("m_IntArgument", BindingFlags.NonPublic | BindingFlags.Instance);
+                    FieldInfo boolArgField = arguments.GetType().GetField("m_BoolArgument", BindingFlags.NonPublic | BindingFlags.Instance);
+                    FieldInfo stringArgField = arguments.GetType().GetField("m_StringArgument", BindingFlags.NonPublic | BindingFlags.Instance);
 
-            case 5:
-                hydroAnimator.SetTrigger("Apuntando");
-                break;
+                    floatVarSave = (float)floatArgField.GetValue(arguments);
+                    intVarSave = (int)intArgField.GetValue(arguments);
+                    boolVarSave = (bool)boolArgField.GetValue(arguments);
+                    stringVarSave = (string)stringArgField.GetValue(arguments);
 
-            case 6:
-                speed = 1f;
-                allowLookAtPlayer = false;
-                StartWalkingTo(2, lookTowardsTarget: true);
-                Debug.Log("Ya me voy");
-                break;
+                    getLocalMethods(methodName);
 
-            case 7:
-                AudioPlay("Teleport2");
-                Debug.Log("Fluvio uso TP");
-                SetSkinsActive(false);
-                StopWalking();
-                break;
+                }
 
-            default:
-                // ranges outside defined mapping: do nothing on enter
-                // que loopee aviso, que se lleve las manos a la cabeza en la alarma, tu en tu
-                break;
+
+
+
+                //Debug.Log("Se encontro la accion " + actionSet.Actions.GetPersistentMethodName(rangeIndex));
+                //actionSet.Actions.Invoke();
+
+
+            }
         }
     }
-
+   
     private void DoRangeBehavior(int rangeIndex)
     {
         // continuous behaviors while inside a range
@@ -268,7 +292,7 @@ public class FluvioController : MonoBehaviour
     #endregion
 
     #region Walking / movement
-    private void StartWalkingTo(int index, bool lookTowardsTarget)
+    public void StartWalkingTo(int index)
     {
         if (toFollowPositions == null || index < 0 || index >= toFollowPositions.Length)
         {
@@ -278,10 +302,14 @@ public class FluvioController : MonoBehaviour
         }
 
         activeWalkTarget = index;
+        
+    }
+    public void setLookToTarget(bool lookTowardsTarget)
+    {
         activeWalkShouldLook = lookTowardsTarget;
     }
 
-    private void StopWalking()
+    public void StopWalking()
     {
         activeWalkTarget = -1;
         activeWalkShouldLook = false;
@@ -344,13 +372,32 @@ public class FluvioController : MonoBehaviour
         }
     }
 
-    private void SetSkinsActive(bool active)
+    public void SetSkinsActive(bool active)
     {
         if (skinMeshRenderedArray == null) return;
         foreach (var s in skinMeshRenderedArray)
             if (s != null) s.enabled = active;
     }
-
+    public void setAnimationTrigger(string triggerName)
+    {
+        hydroAnimator.SetTrigger(triggerName);
+    }
+    public void setActiveWalkTarget(int index)
+    {
+      activeWalkTarget = index;
+    }
+    public void setAllowLookPlayer(bool active)
+    {
+        allowLookAtPlayer = active;
+    }
+    public void setSpeed(float newSpeed)
+    {
+        speed = newSpeed;
+    }
+    public void writeDevug(string Message)
+    {
+       Debug.Log(Message);
+    }
     [ContextMenu("Populate positions from child transforms (world)")]
     private void PopulatePositionsFromChildrenWorld()
     {
@@ -398,6 +445,53 @@ public class FluvioController : MonoBehaviour
         allowLookAtPlayer = false;
         // restore speed if needed
         speed = defaultSpeed;
+    }
+    //TODO: Change
+
+
+    //Method to call local prefabs methods
+    //Make sure to add the public methods to the switch case || Names are the same as the method to call
+    public void getLocalMethods(string methodsName)
+    {
+        switch (methodsName)
+        {
+            case "SetSkinsActive":
+               
+                SetSkinsActive(boolVarSave);
+                break;
+            case "setAnimationTrigger":
+                setAnimationTrigger(stringVarSave);
+                break;
+            case "setActiveWalkTarget":
+                setActiveWalkTarget(intVarSave);
+                break;
+            case "setAllowLookPlayer":
+                setAllowLookPlayer(boolVarSave);
+                break;
+            case "setSpeed":
+                setSpeed(floatVarSave);
+                break;
+            case "writeDevug":
+                writeDevug(stringVarSave);
+                break;
+            case "StartWalkingTo":
+                StartWalkingTo(intVarSave);
+                break;
+            case "setLookToTarget":
+                setLookToTarget(boolVarSave);
+                break;
+            case "AudioPlay":
+                AudioPlay(stringVarSave);
+                break;
+            case "StopWalking":
+                StopWalking();
+                break;
+            default:
+                Debug.LogWarning($"Action {methodsName} not found" );
+                break;
+    
+            }
+
     }
     #endregion
 }
