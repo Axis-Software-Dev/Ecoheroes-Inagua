@@ -24,7 +24,7 @@ public class FluvioController : MonoBehaviour
     public Sound[] sounds;
 
     [Header("Position Settings")]
-    [Tooltip("Target positions (world-space by default). If PositionsAreLocal is true, these are local to PositionsReference.")]
+    [HideInInspector]
     public Vector3[] toFollowPositions;
     [Tooltip("If true, toFollowPositions are interpreted as local positions relative to PositionsReference.")]
     public bool PositionsAreLocal = false;
@@ -36,7 +36,7 @@ public class FluvioController : MonoBehaviour
     public Animator hydroAnimator;
     public SkinnedMeshRenderer[] skinMeshRenderedArray;
     public float speed = 1.5f;
-    [Tooltip("A sorted list of timestamps (seconds). Intervals are read as ranges [interval[i], interval[i+1]). The last element is treated as the final stop threshold.")]
+    [HideInInspector]
     public float[] interval;
     public scriptingAnimation scriptToFollow;
     [Header("Options")]
@@ -107,6 +107,7 @@ public class FluvioController : MonoBehaviour
         if (scriptToFollow?.listOfActions!=null)
         {
             interval = scriptToFollow.Intervals;
+            toFollowPositions = scriptToFollow.toFollowPosition;
         }
         else
         {
