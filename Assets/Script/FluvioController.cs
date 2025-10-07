@@ -1,497 +1,425 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.DedicatedServer;
 using UnityEngine.Events;
-public class FluvioSound
+using UnityEditor;
+using TMPro;
+using UnityEngine.UIElements;
+using UnityEngine.Splines;
+
+namespace Fluvio
 {
-    public string name;
-    public AudioClip clip;
-    [Range(0f, 1f)] public float volume = 1f;
-    public float pitch = 1f;
-    public float timeToSkip = 0f;
-    [Range(0f, 1f)] public float spatialSound = 0f;
-
-    [HideInInspector] public AudioSource source;
-}
-
-public class FluvioController : MonoBehaviour
-{
-    [Header("Audio Settings")]
-    public Sound[] sounds;
-
-    [Header("Position Settings")]
-    [Tooltip("Target positions (world-space by default). If PositionsAreLocal is true, these are local to PositionsReference.")]
-    public Vector3[] toFollowPositions;
-    [Tooltip("If true, toFollowPositions are interpreted as local positions relative to PositionsReference.")]
-    public bool PositionsAreLocal = false;
-    [Tooltip("Reference transform used when PositionsAreLocal is true.")]
-    public Transform PositionsReference;
-
-    [Header("Animation Settings")]
-    [Tooltip("Animator (will be fetched from children if empty).")]
-    public Animator hydroAnimator;
-    public SkinnedMeshRenderer[] skinMeshRenderedArray;
-    public float speed = 1.5f;
-    [Tooltip("A sorted list of timestamps (seconds). Intervals are read as ranges [interval[i], interval[i+1]). The last element is treated as the final stop threshold.")]
-    public float[] interval;
-    public scriptingAnimation scriptToFollow;
-    [Header("Options")]
-    public bool startGreetingAnimation = false;
-    public float rotationSpeed = 2f;
-    public bool drawPositionGizmos = true;
-    
-    // internals
-    private Dictionary<string, Sound> soundMap;
-    private Transform playerTransform;
-    [SerializeField]
-    private float timer = 0f;
-    private float defaultSpeed;
-    private bool animationIsPlaying = false;
-    private bool animationHasStarted = false;
-    private bool allowLookAtPlayer = false;
-    private int lastRangeIndex = -1;
-    private int activeWalkTarget = -1; // -1 = not walking
-    private bool activeWalkShouldLook = false;
-    private SerializedProperty argumentProp;
-    private SerializedProperty persistentCalls;
-    private float floatVarSave;
-    private int intVarSave;
-    private string stringVarSave;
-    private bool boolVarSave;
-
-
-
-
-
-    #region Unity callbacks
-    private void Awake()
+    [Serializable]
+    public class FluvioSound
     {
-        // Audio map
-        soundMap = new Dictionary<string, Sound>(StringComparer.OrdinalIgnoreCase);
-        if (sounds != null)
-        {
-            foreach (var s in sounds)
-            {
-                if (s == null) continue;
-                s.source = gameObject.AddComponent<AudioSource>();
-                s.source.clip = s.clip;
-                s.source.volume = s.volume;
-                s.source.pitch = s.pitch;
-                s.source.time = s.timeToSkip;
-                s.source.spatialBlend = s.spatialSound;
+        public string name;
+        public AudioClip clip;
+        [Range(0f, 1f)] public float volume = 1f;
+        public float pitch = 1f;
+        public float timeToSkip = 0f;
+        [Range(0f, 1f)] public float spatialSound = 0f;
 
-                if (!string.IsNullOrEmpty(s.name))
+        [NonSerialized] public AudioSource source;
+    }
+
+    [Serializable]
+    public class ActionEntry
+    {
+        public enum ActionType
+        {
+            PlayAudio,
+            ToggleSkins,
+            StartWalkStraight,
+            StartWalkCurve,
+            SetAnimatorBool,
+            SetAnimatorTrigger,
+            InvokeLocalMethod,
+            InvokeUnityEvent
+        }
+
+        public ActionType Type;
+
+        // Common fields used by various actions
+        public string stringArg;          // e.g., audio name, method name, animator param
+        public int intArg;                // e.g., target index
+        public float floatArg;            // e.g., speed or misc
+        public bool boolArg;              // toggle value
+        public Vector3 vectorArg;         // control point or offset (for curve)
+        public UnityEvent unityEvent;     // designer assigned event
+    }
+
+    /// <summary>
+    /// Robust FluvioController: safe runtime script with data-driven actions and both straight and curved walking.
+    /// Replace older scripts with this; wire ActionEntry lists in inspector (or call StartWalkingTo/StartWalkingCurve from code).
+    /// </summary>
+    public class FluvioController : MonoBehaviour
+    {
+        [Header("Audio Settings")]
+        public FluvioSound[] sounds;
+
+        [Header("Animation Settings")]
+        public Animator Animator;
+        public SkinnedMeshRenderer[] skinMeshRenderedArray;
+        public float speed = 1.5f;
+        [Tooltip("Sorted timestamps. Ranges are [interval[i], interval[i+1]). Last entry is stop threshold.")]
+        public float[] interval;
+
+        [Header("Options")]
+        public bool StartAnimationOnFlag = false;
+        public float rotationSpeed = 2f;
+        public bool drawPositionGizmos = true;
+        public Color positionGizmosColor = Color.cyan;
+
+        [Header("Action mapping (data driven)")]
+        [Tooltip("List of actions that can be executed by an external caller or by OnEnterRange.")]
+        public ActionEntry[] actions;
+
+        // internals
+        private Dictionary<string, FluvioSound> _soundMap;
+        private Transform _playerTransform;
+        private float _timer = 0f;
+        private float _defaultSpeed;
+        private bool _animationIsPlaying = false;
+        private bool _animationHasStarted = false;
+        private int _lastRangeIndex = -1;
+
+        // walking internals
+        private bool _activeWalkShouldLook = false;
+        private bool _useCurve = false;
+        private float _walkProgress = 0f;
+        private Vector3 _activeWalkTarget;
+
+        // curve internals
+        private Vector3 _curveStart, _curveControl, _curveEnd;
+
+        // reflection cache for invoking local methods
+        private readonly Dictionary<string, MethodInfo> _methodCache = new Dictionary<string, MethodInfo>(StringComparer.Ordinal);
+
+        #region Unity callbacks
+        private void Awake()
+        {
+            // Build audio map
+            _soundMap = new Dictionary<string, FluvioSound>(StringComparer.OrdinalIgnoreCase);
+            if (sounds != null)
+            {
+                foreach (var s in sounds)
                 {
-                    if (!soundMap.ContainsKey(s.name)) soundMap.Add(s.name, s);
-                    else Debug.LogWarning($"Duplicate sound name '{s.name}' in {name}");
+                    if (s == null) continue;
+                    // create audio source for each sound (small projects okay). Consider pooling if many sounds.
+                    s.source = gameObject.AddComponent<AudioSource>();
+                    s.source.clip = s.clip;
+                    s.source.volume = s.volume;
+                    s.source.pitch = s.pitch;
+                    s.source.time = s.timeToSkip;
+                    s.source.spatialBlend = s.spatialSound;
+
+                    if (!string.IsNullOrEmpty(s.name))
+                    {
+                        if (!_soundMap.ContainsKey(s.name)) _soundMap.Add(s.name, s);
+                        else Debug.LogWarning($"Duplicate sound name '{s.name}' on {name}.");
+                    }
+                }
+            }
+
+            if (Animator == null)
+                Animator = GetComponentInChildren<Animator>();
+
+            _defaultSpeed = speed;
+
+            _playerTransform = Camera.main != null ? Camera.main.transform : GameObject.FindWithTag("MainCamera")?.transform;
+
+            SetSkinsActive(false);
+        }
+
+        private void Update()
+        {
+#if UNITY_EDITOR
+#endif
+            // timer & animation start flag handling
+            if (StartAnimationOnFlag && !_animationHasStarted)
+            {
+                StartAnimation();
+            }
+            _animationHasStarted = StartAnimationOnFlag;
+
+            if (!_animationIsPlaying) return;
+
+            if (interval == null || interval.Length < 2) return;
+
+            _timer += Time.deltaTime;
+
+            // stop if we've passed the final threshold
+            if (_timer >= interval[interval.Length - 1])
+            {
+                StopTimer();
+                speed = _defaultSpeed;
+                return;
+            }
+
+            int currentRange = GetRangeIndexForTime(_timer);
+            if (currentRange != _lastRangeIndex)
+            {
+                if (currentRange >= 0)
+                {
+                    Debug.Log($"Executing step {currentRange} at {interval[currentRange]:F2}");
+                    OnEnterRange(currentRange);
+                }
+                _lastRangeIndex = currentRange;
+            }
+
+            if (_useCurve) MoveAlongCurve();
+            else MoveTowardsActiveTarget();
+        }
+
+        private void OnDrawGizmos()
+        {
+            if (!drawPositionGizmos) return;
+
+            Gizmos.color = positionGizmosColor;
+            for (int i = 0; i < actions.Length; i++)
+            {
+                if (actions[i].vectorArg != null && actions[i].vectorArg != Vector3.zero)
+                {
+                    Vector3 world = actions[i].vectorArg;
+                    Gizmos.DrawWireSphere(world, 0.12f);
+#if UNITY_EDITOR
+                    UnityEditor.Handles.Label(world + Vector3.up * 0.15f, $"P[{i}]");
+#endif
                 }
             }
         }
+        #endregion
 
-        if (hydroAnimator == null)
-            hydroAnimator = GetComponentInChildren<Animator>();
-
-        // find main camera transform safely
-        playerTransform = Camera.main != null ? Camera.main.transform :
-            GameObject.FindWithTag("MainCamera")?.transform;
-
-        defaultSpeed = speed;
-
-        // disable skins by default (maintains old behaviour)
-        SetSkinsActive(false);
-
-        if (scriptToFollow?.listOfActions!=null)
+        #region Range logic
+        private int GetRangeIndexForTime(float t)
         {
-            interval = scriptToFollow.Intervals;
-        }
-        else
-        {
-            if (scriptToFollow == null) Debug.LogWarning("Not script To follow found");
-            if(scriptToFollow.listOfActions==null) Debug.LogWarning("Not intervals set");
-        }
-
-
-
-
-    }
-
-    private void Start()
-    {
-        if (toFollowPositions != null && toFollowPositions.Length > 0)
-        {
-            Vector3 startPos = GetWorldPosition(0);
-            transform.position = startPos;
-            // keep current rotation or optionally set to face next position; preserving old behaviour by setting to position[0] rotation:
-            if (toFollowPositions.Length > 1)
+            if (interval == null) return -1;
+            for (int i = 0; i < interval.Length - 1; i++)
             {
-                Vector3 dir = GetWorldPosition(1) - transform.position;
-                if (dir.sqrMagnitude > 0.0001f)
-                    transform.rotation = Quaternion.LookRotation(dir);
+                if (t >= interval[i] && t < interval[i + 1]) return i;
             }
+            return -1;
         }
-    }
 
-    private void Update()
-    {
-
-        // update look vector
-        if (playerTransform != null)
+        private void OnEnterRange(int rangeIndex)
         {
-            Vector3 look = playerTransform.position - transform.position;
-            // only set allow look if permitted
-            if (allowLookAtPlayer && look.sqrMagnitude > 0.0001f)
+            if (actions != null)
             {
-                // LateUpdate handles slerp to avoid jittering transform during physics updates
-            }
-        }
-
-#if UNITY_EDITOR
-        if (drawPositionGizmos) DrawDebugRayToNext();
-#endif
-
-        // timer & animation start
-        if (startGreetingAnimation && !animationHasStarted)
-            StartAnimation();
-
-        animationHasStarted = startGreetingAnimation;
-
-        if (!animationIsPlaying) return; // nothing to do if stopped
-
-        // safety: need at least two interval values for ranges
-        if (interval == null || interval.Length < 2) return;
-        
-        timer += Time.deltaTime;
-
-        // if timer surpasses final stop threshold -> stop
-        if (timer >= interval[interval.Length - 1])
-        {
-            StopTimer();
-            speed = defaultSpeed;
-            return;
-        }
-
-        // find the active range index: interval[i] <= timer < interval[i+1]
-        int currentRange = GetRangeIndexForTime(timer);
-
-        if (currentRange != lastRangeIndex)
-        {
-            // entered a new range
-            OnEnterRange(currentRange);
-            Debug.Log("Executing step " + currentRange + " at " + interval[currentRange]);
-            lastRangeIndex = currentRange;
-        }
-
-        // perform continuous behaviors for current range (walk, etc.)
-        DoRangeBehavior(currentRange);
-    }
-
-    private void LateUpdate()
-    {
-        // smooth look at player if allowed
-        if (allowLookAtPlayer && playerTransform != null)
-        {
-            Vector3 lookDir = playerTransform.position - transform.position;
-            if (lookDir.sqrMagnitude > 0.0001f)
-            {
-                Quaternion targetRot = Quaternion.LookRotation(lookDir);
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, rotationSpeed * Time.deltaTime);
-            }
-        }
-    }
-
-    private void OnDrawGizmos()
-    {
-        if (!drawPositionGizmos || toFollowPositions == null) return;
-
-        Gizmos.color = Color.cyan;
-        for (int i = 0; i < toFollowPositions.Length; i++)
-        {
-            Vector3 world = (Application.isPlaying) ? GetWorldPosition(i) : (PositionsAreLocal && PositionsReference != null ? PositionsReference.TransformPoint(toFollowPositions[i]) : toFollowPositions[i]);
-            Gizmos.DrawWireSphere(world, 0.1f);
-#if UNITY_EDITOR
-            UnityEditor.Handles.Label(world + Vector3.up * 0.15f, $"P[{i}]");
-#endif
-        }
-    }
-    #endregion
-
-    #region Range & behavior logic
-    private int GetRangeIndexForTime(float t)
-    {
-        // linear search; interval is expected sorted ascending
-        for (int i = 0; i < interval.Length - 1; i++)
-        {
-            if (t >= interval[i] && t < interval[i + 1]) return i;
-        }
-        return -1;
-    }
-
-    private void OnEnterRange(int rangeIndex)
-    {
-        // map the original behaviour into enter-range actions
-        // NOTE: these indices follow the original code: range 0 -> interval[0..1], range 1 -> interval[1..2], ...
-
-        //Automaticly call prefabs methods into private methods
-        foreach (var actionSet in scriptToFollow.listOfActions)
-        {
-            
-
-            if (actionSet.Order == rangeIndex)
-
-            {
-                UnityEvent currentEvent = actionSet.Actions;
-
-
-                FieldInfo callGroupField = typeof(UnityEventBase).GetField("m_PersistentCalls", BindingFlags.NonPublic | BindingFlags.Instance);
-                object callGroup = callGroupField.GetValue(currentEvent);
-                FieldInfo callsField = callGroup.GetType().GetField("m_Calls", BindingFlags.NonPublic | BindingFlags.Instance);
-                System.Collections.IList calls = callsField.GetValue(callGroup) as System.Collections.IList;
-                for (int i = 0; i < calls.Count; i++)
+                foreach (var entry in actions)
                 {
-                    object call = calls[i];
-                    string methodName = (string)call.GetType().GetField("m_MethodName", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(calls[i]);
-                    FieldInfo argumentsField = call.GetType().GetField("m_Arguments", BindingFlags.NonPublic | BindingFlags.Instance);
-                    object arguments = argumentsField.GetValue(call);
-                    FieldInfo floatArgField = arguments.GetType().GetField("m_FloatArgument", BindingFlags.NonPublic | BindingFlags.Instance);
-                    FieldInfo intArgField = arguments.GetType().GetField("m_IntArgument", BindingFlags.NonPublic | BindingFlags.Instance);
-                    FieldInfo boolArgField = arguments.GetType().GetField("m_BoolArgument", BindingFlags.NonPublic | BindingFlags.Instance);
-                    FieldInfo stringArgField = arguments.GetType().GetField("m_StringArgument", BindingFlags.NonPublic | BindingFlags.Instance);
-
-                    floatVarSave = (float)floatArgField.GetValue(arguments);
-                    intVarSave = (int)intArgField.GetValue(arguments);
-                    boolVarSave = (bool)boolArgField.GetValue(arguments);
-                    stringVarSave = (string)stringArgField.GetValue(arguments);
-
-                    getLocalMethods(methodName);
-
+                    if (entry.intArg == rangeIndex)
+                    {
+                        ExecuteAction(entry);
+                    }
                 }
-
-
-
-
-                //Debug.Log("Se encontro la accion " + actionSet.Actions.GetPersistentMethodName(rangeIndex));
-                //actionSet.Actions.Invoke();
-
-
             }
-        }
-    }
-   
-    private void DoRangeBehavior(int rangeIndex)
-    {
-        // continuous behaviors while inside a range
-        if (activeWalkTarget >= 0)
-        {
-            MoveTowardsActiveTarget();
-        }
-    }
-    #endregion
 
-    #region Walking / movement
-    public void StartWalkingTo(int index)
-    {
-        if (toFollowPositions == null || index < 0 || index >= toFollowPositions.Length)
-        {
-            Debug.LogWarning($"StartWalkingTo: invalid index {index}. toFollowPositions length = {(toFollowPositions == null ? 0 : toFollowPositions.Length)}");
-            activeWalkTarget = -1;
-            return;
-        }
-
-        activeWalkTarget = index;
-        
-    }
-    public void setLookToTarget(bool lookTowardsTarget)
-    {
-        activeWalkShouldLook = lookTowardsTarget;
-    }
-
-    public void StopWalking()
-    {
-        activeWalkTarget = -1;
-        activeWalkShouldLook = false;
-    }
-
-    private void MoveTowardsActiveTarget()
-    {
-        if (activeWalkTarget < 0 || toFollowPositions == null || activeWalkTarget >= toFollowPositions.Length) return;
-
-        Vector3 target = GetWorldPosition(activeWalkTarget);
-        float moveStep = speed * Time.deltaTime;
-
-        // optionally rotate towards movement direction
-        if (activeWalkShouldLook)
-        {
-            Vector3 dir = target - transform.position;
-            if (dir.sqrMagnitude > 0.00001f)
+            switch (rangeIndex)
             {
-                Quaternion targetRot = Quaternion.LookRotation(dir);
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, rotationSpeed * Time.deltaTime);
+                default:
+                    break;
             }
         }
+        #endregion
 
-        // move
-        transform.position = Vector3.MoveTowards(transform.position, target, moveStep);
-    }
-    #endregion
-
-    #region Audio
-    public void AudioPlay(string audioName)
-    {
-        if (string.IsNullOrEmpty(audioName)) return;
-        if (soundMap == null) return;
-        if (soundMap.TryGetValue(audioName, out var sound))
+        #region Actions
+        private void ExecuteAction(ActionEntry entry)
         {
-            if (sound?.source != null && !sound.source.isPlaying)
-                sound.source.Play();
+            if (entry == null) return;
+            switch (entry.Type)
+            {
+                case ActionEntry.ActionType.PlayAudio:
+                    if (!string.IsNullOrEmpty(entry.stringArg)) PlayAudio(entry.stringArg);
+                    break;
+                case ActionEntry.ActionType.ToggleSkins:
+                    SetSkinsActive(entry.boolArg);
+                    break;
+                case ActionEntry.ActionType.StartWalkStraight:
+                    StartWalkingTo(entry.vectorArg, entry.boolArg);
+                    break;
+                case ActionEntry.ActionType.StartWalkCurve:
+                    StartWalkingCurve(entry.vectorArg, entry.boolArg);
+                    break;
+                case ActionEntry.ActionType.SetAnimatorBool:
+                    if (Animator != null && !string.IsNullOrEmpty(entry.stringArg))
+                        Animator.SetBool(entry.stringArg, entry.boolArg);
+                    break;
+                case ActionEntry.ActionType.SetAnimatorTrigger:
+                    if (Animator != null && !string.IsNullOrEmpty(entry.stringArg))
+                        Animator.SetTrigger(entry.stringArg);
+                    break;
+                case ActionEntry.ActionType.InvokeLocalMethod:
+                    if (!string.IsNullOrEmpty(entry.stringArg))
+                        InvokeLocalMethodSafe(entry.stringArg);
+                    break;
+                case ActionEntry.ActionType.InvokeUnityEvent:
+                    entry.unityEvent?.Invoke();
+                    break;
+            }
         }
-        else
-        {
-            Debug.LogWarning($"AudioPlay: sound '{audioName}' not found (check names).");
-        }
-    }
-    #endregion
+        #endregion
 
-    #region Helpers
-    private Vector3 GetWorldPosition(int index)
-    {
-        if (toFollowPositions == null || index < 0 || index >= toFollowPositions.Length) return transform.position;
-        if (PositionsAreLocal)
+        #region Audio helpers
+        public void PlayAudio(string audioName)
         {
-            if (PositionsReference != null)
-                return PositionsReference.TransformPoint(toFollowPositions[index]);
+            if (string.IsNullOrEmpty(audioName) || _soundMap == null) return;
+            if (_soundMap.TryGetValue(audioName, out var s) && s?.source != null)
+            {
+                if (!s.source.isPlaying) s.source.Play();
+            }
             else
-                return transform.TransformPoint(toFollowPositions[index]); // fallback to this transform as reference
+            {
+                Debug.LogWarning($"PlayAudio: sound '{audioName}' not found on {name}");
+            }
         }
-        else
+        #endregion
+
+        #region Walking / movement (public API)
+        /// <summary>Begin straight-line walk toward the indexed follow position.</summary>
+        public void StartWalkingTo(Vector3 target, bool lookTowardsTarget)
         {
-            return toFollowPositions[index];
-        }
-    }
-
-    public void SetSkinsActive(bool active)
-    {
-        if (skinMeshRenderedArray == null) return;
-        foreach (var s in skinMeshRenderedArray)
-            if (s != null) s.enabled = active;
-    }
-    public void setAnimationTrigger(string triggerName)
-    {
-        hydroAnimator.SetTrigger(triggerName);
-    }
-    public void setActiveWalkTarget(int index)
-    {
-      activeWalkTarget = index;
-    }
-    public void setAllowLookPlayer(bool active)
-    {
-        allowLookAtPlayer = active;
-    }
-    public void setSpeed(float newSpeed)
-    {
-        speed = newSpeed;
-    }
-    public void writeDevug(string Message)
-    {
-       Debug.Log(Message);
-    }
-    [ContextMenu("Populate positions from child transforms (world)")]
-    private void PopulatePositionsFromChildrenWorld()
-    {
-        List<Vector3> list = new List<Vector3>();
-        foreach (Transform child in transform)
-            list.Add(child.position);
-        toFollowPositions = list.ToArray();
-        PositionsAreLocal = false;
-        Debug.Log($"Populated {toFollowPositions.Length} positions from children (world-space).");
-    }
-
-    [ContextMenu("Populate positions from child transforms (local to this)")]
-    private void PopulatePositionsFromChildrenLocal()
-    {
-        List<Vector3> list = new List<Vector3>();
-        foreach (Transform child in transform)
-            list.Add(transform.InverseTransformPoint(child.position));
-        toFollowPositions = list.ToArray();
-        PositionsAreLocal = true;
-        PositionsReference = transform;
-        Debug.Log($"Populated {toFollowPositions.Length} positions from children (local to this).");
-    }
-
-    private void DrawDebugRayToNext()
-    {
-        if (toFollowPositions == null || toFollowPositions.Length == 0) return;
-        Vector3 next = GetWorldPosition(0);
-        Debug.DrawLine(transform.position, next, Color.green);
-    }
-
-    public void StartAnimation()
-    {
-        // public convenience method to start
-        timer = 0f;
-        lastRangeIndex = -1;
-        animationIsPlaying = true;
-        activeWalkTarget = -1;
-        allowLookAtPlayer = false;
-    }
-
-    private void StopTimer()
-    {
-        animationIsPlaying = false;
-        activeWalkTarget = -1;
-        allowLookAtPlayer = false;
-        // restore speed if needed
-        speed = defaultSpeed;
-    }
-    //TODO: Change
-
-
-    //Method to call local prefabs methods
-    //Make sure to add the public methods to the switch case || Names are the same as the method to call
-    public void getLocalMethods(string methodsName)
-    {
-        switch (methodsName)
-        {
-            case "SetSkinsActive":
-               
-                SetSkinsActive(boolVarSave);
-                break;
-            case "setAnimationTrigger":
-                setAnimationTrigger(stringVarSave);
-                break;
-            case "setActiveWalkTarget":
-                setActiveWalkTarget(intVarSave);
-                break;
-            case "setAllowLookPlayer":
-                setAllowLookPlayer(boolVarSave);
-                break;
-            case "setSpeed":
-                setSpeed(floatVarSave);
-                break;
-            case "writeDevug":
-                writeDevug(stringVarSave);
-                break;
-            case "StartWalkingTo":
-                StartWalkingTo(intVarSave);
-                break;
-            case "setLookToTarget":
-                setLookToTarget(boolVarSave);
-                break;
-            case "AudioPlay":
-                AudioPlay(stringVarSave);
-                break;
-            case "StopWalking":
-                StopWalking();
-                break;
-            default:
-                Debug.LogWarning($"Action {methodsName} not found" );
-                break;
-    
+            if (target == null)
+            {
+                Debug.LogWarning($"StartWalkingTo: invalid target {target}.");
+                _activeWalkTarget = transform.position;
+                _activeWalkShouldLook = false;
+                _useCurve = false;
+                return;
             }
 
+            _activeWalkTarget = target;
+            _activeWalkShouldLook = lookTowardsTarget;
+            _useCurve = false;
+        }
+
+        /// <summary>Begin curved walk using a quadratic Bezier curve (controlPoint is world-space).</summary>
+        public void StartWalkingCurve(Vector3 target, bool lookTowardsTarget)
+        {
+            if (target == null)
+            {
+                Debug.LogWarning($"StartWalkingCurve: invalid target {target}.");
+                _useCurve = false;
+                return;
+            }
+
+            _activeWalkShouldLook = lookTowardsTarget;
+            _walkProgress = 0f;
+            _curveStart = transform.position;
+            _curveEnd = target;
+            _curveControl = (_curveStart + target) * .5f + Vector3.up;
+            _useCurve = true;
+        }
+
+        public void StopWalking()
+        {
+            _activeWalkTarget = transform.position;
+            _useCurve = false;
+        }
+
+        private void MoveTowardsActiveTarget()
+        {
+            if (_activeWalkTarget == Vector3.zero) return;
+            float moveStep = speed * Time.deltaTime;
+
+            if (_activeWalkShouldLook)
+            {
+                Vector3 dir = _activeWalkTarget - transform.position;
+                if (dir.sqrMagnitude > 0.00001f)
+                {
+                    Quaternion targetRot = Quaternion.LookRotation(dir);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, rotationSpeed * Time.deltaTime);
+                }
+            }
+
+            transform.position = Vector3.MoveTowards(transform.position, _activeWalkTarget, moveStep);
+
+            if (Vector3.Distance(transform.position, _activeWalkTarget) < 0.01f)
+            {
+                StopWalking();
+            }
+        }
+
+        private void MoveAlongCurve()
+        {
+            float denom = Vector3.Distance(_curveStart, _curveEnd);
+            if (denom <= 0.0001f) denom = 0.0001f;
+            _walkProgress += Time.deltaTime * (speed / denom);
+            _walkProgress = Mathf.Clamp01(_walkProgress);
+
+            // Quadratic Bezier: (1-t)^2 * P0 + 2(1-t)t * P1 + t^2 * P2
+            float t = _walkProgress;
+            float u = 1f - t;
+            Vector3 pos = u * u * _curveStart + 2f * u * t * _curveControl + t * t * _curveEnd;
+
+            if (_activeWalkShouldLook)
+            {
+                Vector3 dir = _curveEnd - transform.position;
+                if (dir.sqrMagnitude > 0.00001f)
+                {
+                    Quaternion targetRot = Quaternion.LookRotation(dir);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, rotationSpeed * Time.deltaTime);
+                }
+            }
+
+            transform.position = pos;
+
+            if (_walkProgress >= 1f - Mathf.Epsilon)
+            {
+                StopWalking();
+            }
+        }
+        #endregion
+
+        #region Helpers & utilities
+
+        private void SetSkinsActive(bool active)
+        {
+            if (skinMeshRenderedArray == null) return;
+            foreach (var s in skinMeshRenderedArray) if (s != null) s.enabled = active;
+        }
+
+        /// <summary>Public: start the controller animation sequence.</summary>
+        public void StartAnimation()
+        {
+            _timer = 0f;
+            _lastRangeIndex = -1;
+            _animationIsPlaying = true;
+            _useCurve = false;
+        }
+
+        /// <summary>Public: stop the timed animation sequence.</summary>
+        public void StopTimer()
+        {
+            _animationIsPlaying = false;
+            _useCurve = false;
+            speed = _defaultSpeed;
+        }
+
+        private void InvokeLocalMethodSafe(string methodName)
+        {
+            if (string.IsNullOrEmpty(methodName)) return;
+
+            if (!_methodCache.TryGetValue(methodName, out var mi))
+            {
+                mi = GetType().GetMethod(methodName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                if (mi == null)
+                {
+                    Debug.LogWarning($"InvokeLocalMethodSafe: method '{methodName}' not found on {name}.");
+                    return;
+                }
+                _methodCache[methodName] = mi;
+            }
+
+            try
+            {
+                mi.Invoke(this, null);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"Error invoking method '{methodName}' on {name}: {ex}");
+            }
+        }
+        #endregion
     }
-    #endregion
 }

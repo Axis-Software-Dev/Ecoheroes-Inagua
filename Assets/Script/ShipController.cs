@@ -1,4 +1,5 @@
 using UnityEngine;
+using Fluvio;
 using System;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
@@ -193,7 +194,7 @@ public class ShipController : MonoBehaviour
 
             case 1:
 
-                fluvioController.startGreetingAnimation = true;
+                fluvioController.StartAnimationOnFlag = true;
                 break;
 
             case 2:

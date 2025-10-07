@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [System.Serializable]
-public class ActionsInIntervals
+public class ActionsInIntervals : ScriptableObject
 {
     [Tooltip("Starting from 0, the order in which scripts play")]
     public int Order;
