@@ -5,7 +5,7 @@ using UnityEngine.Events;
 [System.Serializable]
 public class ActionsInIntervals
 {
-    [Tooltip("Starting from 0, the order in which scrpts play")]
+    [Tooltip("Starting from 0, the order in which scripts play")]
     public int Order;
     public UnityEvent Actions;
 }
