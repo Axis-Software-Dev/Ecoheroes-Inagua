@@ -244,11 +244,120 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7526055021244852452, guid: 0d3f662a0fd942c4ba158dc557707d2d, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5053399450811536113, guid: 0d3f662a0fd942c4ba158dc557707d2d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 97876222}
   m_SourcePrefab: {fileID: 100100000, guid: 0d3f662a0fd942c4ba158dc557707d2d, type: 3}
+--- !u!1 &97876221 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5053399450811536113, guid: 0d3f662a0fd942c4ba158dc557707d2d, type: 3}
+  m_PrefabInstance: {fileID: 97876220}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &97876222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 97876221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 816f702443b795e4594f94ddbd99a080, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FluvioController
+  sounds:
+  - name: Atencion
+    clip: {fileID: 8300000, guid: 400b51b7386d090448b0be0a3c3a983b, type: 3}
+    volume: 1
+    pitch: 0
+    timeToSkip: 0
+    spatialSound: 1
+  - name: Holograma
+    clip: {fileID: 8300000, guid: 31da312ba5f731044b060d53ba4bcc3e, type: 3}
+    volume: 1
+    pitch: 0.1
+    timeToSkip: 0
+    spatialSound: 1
+  - name: Acuiferos
+    clip: {fileID: 8300000, guid: a2d8620c1a9e17549abc0c6c294ef2af, type: 3}
+    volume: 1
+    pitch: 0
+    timeToSkip: 0
+    spatialSound: 1
+  - name: Aguascalientes
+    clip: {fileID: 8300000, guid: c70c94433070b504e96818f3b5aaf827, type: 3}
+    volume: 1
+    pitch: 0
+    timeToSkip: 0
+    spatialSound: 1
+  - name: Filtracion
+    clip: {fileID: 8300000, guid: 3e98adc0c6eebc049ae42a3fd78b47bf, type: 3}
+    volume: 1
+    pitch: 0
+    timeToSkip: 0
+    spatialSound: 1
+  - name: Construcciones
+    clip: {fileID: 8300000, guid: 154746d1076e5f44e8c0a1973ab46666, type: 3}
+    volume: 1
+    pitch: 0
+    timeToSkip: 0
+    spatialSound: 1
+  - name: Esferas
+    clip: {fileID: 8300000, guid: fe64c065aa3e593438888da07d861062, type: 3}
+    volume: 1
+    pitch: 0
+    timeToSkip: 0
+    spatialSound: 1
+  - name: Metros
+    clip: {fileID: 8300000, guid: 99604cebe3b6ea742a02aa9e4e0ee630, type: 3}
+    volume: 1
+    pitch: 0
+    timeToSkip: 0
+    spatialSound: 1
+  - name: Decadas
+    clip: {fileID: 8300000, guid: 2b0db81a417c7914d9f65eb4629fa356, type: 3}
+    volume: 1
+    pitch: 0
+    timeToSkip: 0
+    spatialSound: 1
+  - name: Distribucion
+    clip: {fileID: 8300000, guid: 9250c6335b33e714f99fa9d368982ef6, type: 3}
+    volume: 1
+    pitch: 0
+    timeToSkip: 0
+    spatialSound: 1
+  - name: Quiz
+    clip: {fileID: 8300000, guid: bbbb7ec1376a2f84e83778439b82c63b, type: 3}
+    volume: 1
+    pitch: 0
+    timeToSkip: 0
+    spatialSound: 1
+  - name: Felicidades
+    clip: {fileID: 8300000, guid: 116cc4ab81be3f345802a0978b0288f7, type: 3}
+    volume: 1
+    pitch: 0
+    timeToSkip: 0
+    spatialSound: 1
+  - name: Amenaza
+    clip: {fileID: 8300000, guid: 6ea906ad90039c646a7ae24108e27378, type: 3}
+    volume: 1
+    pitch: 0
+    timeToSkip: 0
+    spatialSound: 1
+  Animator: {fileID: 0}
+  skinMeshRenderedArray: []
+  speed: 1
+  interval: []
+  StartAnimationOnFlag: 0
+  rotationSpeed: 2
+  drawPositionGizmos: 1
+  positionGizmosColor: {r: 0, g: 1, b: 1, a: 1}
+  actions: []
 --- !u!1001 &112277341
 PrefabInstance:
   m_ObjectHideFlags: 0
