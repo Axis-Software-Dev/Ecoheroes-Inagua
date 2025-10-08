@@ -270,7 +270,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7526055021244852452, guid: 0d3f662a0fd942c4ba158dc557707d2d, type: 3}
       propertyPath: actions.Array.size
-      value: 13
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 7526055021244852452, guid: 0d3f662a0fd942c4ba158dc557707d2d, type: 3}
       propertyPath: interval.Array.size
@@ -426,7 +426,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7526055021244852452, guid: 0d3f662a0fd942c4ba158dc557707d2d, type: 3}
       propertyPath: actions.Array.data[13].Type
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7526055021244852452, guid: 0d3f662a0fd942c4ba158dc557707d2d, type: 3}
+      propertyPath: actions.Array.data[14].Type
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7526055021244852452, guid: 0d3f662a0fd942c4ba158dc557707d2d, type: 3}
       propertyPath: sounds.Array.data[0].volume
@@ -494,15 +498,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7526055021244852452, guid: 0d3f662a0fd942c4ba158dc557707d2d, type: 3}
       propertyPath: actions.Array.data[12].intArg
-      value: 1
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 7526055021244852452, guid: 0d3f662a0fd942c4ba158dc557707d2d, type: 3}
       propertyPath: actions.Array.data[13].intArg
-      value: 1
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 7526055021244852452, guid: 0d3f662a0fd942c4ba158dc557707d2d, type: 3}
       propertyPath: actions.Array.data[14].intArg
-      value: 1
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 7526055021244852452, guid: 0d3f662a0fd942c4ba158dc557707d2d, type: 3}
       propertyPath: actions.Array.data[1].boolArg
@@ -602,15 +606,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7526055021244852452, guid: 0d3f662a0fd942c4ba158dc557707d2d, type: 3}
       propertyPath: actions.Array.data[12].stringArg
-      value: 
+      value: Teleport2
       objectReference: {fileID: 0}
     - target: {fileID: 7526055021244852452, guid: 0d3f662a0fd942c4ba158dc557707d2d, type: 3}
       propertyPath: actions.Array.data[13].stringArg
-      value: Saludo
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7526055021244852452, guid: 0d3f662a0fd942c4ba158dc557707d2d, type: 3}
       propertyPath: actions.Array.data[14].stringArg
-      value: Saludo
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7526055021244852452, guid: 0d3f662a0fd942c4ba158dc557707d2d, type: 3}
       propertyPath: skinMeshRenderedArray.Array.size
