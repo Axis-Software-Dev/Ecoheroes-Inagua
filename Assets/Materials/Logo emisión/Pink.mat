@@ -11,9 +11,10 @@ Material:
   m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
+  m_ValidKeywords:
+  - _EMISSION
   m_InvalidKeywords: []
-  m_LightmapFlags: 4
+  m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -311,7 +312,7 @@ Material:
     - _Color: {r: 0.882353, g: 0.09803919, b: 0.517647, a: 1}
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
-    - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
+    - _EmissionColor: {r: 0.5924529, g: 0, b: 0.439697, a: 1}
     - _EmissiveColor: {r: 374.5098, g: 4.8352814, b: 114.76892, a: 500}
     - _EmissiveColorLDR: {r: 0.88031507, g: 0.09770646, b: 0.51640207, a: 1}
     - _InvPrimScale: {r: 1, g: 1, b: 0, a: 0}
