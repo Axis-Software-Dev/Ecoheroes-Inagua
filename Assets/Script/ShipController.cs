@@ -7,7 +7,7 @@ public class ShipSound
 {
     public string name;
     public AudioClip clip;
-    [Range(0f, 1f)] public float volume = 1f;
+    public float volume;
     public float pitch = 1f;
     public float timeToSkip = 0f;
     [Range(0f, 1f)] public float spatialSound = 0f;
