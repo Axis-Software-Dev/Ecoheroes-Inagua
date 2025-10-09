@@ -405,6 +405,7 @@ namespace Fluvio
         /// <summary>Public: start the controller animation sequence.</summary>
         public void StartAnimation()
         {
+            StartAnimationOnFlag = true;
             _timer = 0f;
             _lastRangeIndex = -1;
             _animationIsPlaying = true;
