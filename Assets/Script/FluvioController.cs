@@ -35,6 +35,7 @@ namespace Fluvio
             SetAnimatorBool,
             SetAnimatorTrigger,
             InvokeLocalMethod,
+            AllowLookAtPlayer,
             InvokeUnityEvent
         }
 
@@ -82,6 +83,7 @@ namespace Fluvio
         private float _defaultSpeed;
         private bool _animationIsPlaying = false;
         private bool _animationHasStarted = false;
+        private bool _allowLookAtPlayer;
         private int _lastRangeIndex = -1;
 
         // walking internals
@@ -168,8 +170,26 @@ namespace Fluvio
                 _lastRangeIndex = currentRange;
             }
 
+            if (_playerTransform != null)
+            {
+                Vector3 look = _playerTransform.position - transform.position;
+            }
+
             if (_useCurve) MoveAlongCurve();
             else MoveTowardsActiveTarget();
+        }
+
+        private void LateUpdate()
+        {
+            if (_allowLookAtPlayer && _playerTransform != null)
+            {
+                Vector3 lookDir = _playerTransform.position - transform.position;
+                if (lookDir.sqrMagnitude > 0.001f)
+                {
+                    Quaternion targetRot = Quaternion.LookRotation(lookDir);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, 2 * Time.deltaTime);
+                }
+            }
         }
 
         private void OnDrawGizmos()
@@ -252,6 +272,9 @@ namespace Fluvio
                 case ActionEntry.ActionType.InvokeLocalMethod:
                     if (!string.IsNullOrEmpty(entry.stringArg))
                         InvokeLocalMethodSafe(entry.stringArg);
+                    break;
+                case ActionEntry.ActionType.AllowLookAtPlayer:
+                    _allowLookAtPlayer = entry.boolArg;
                     break;
                 case ActionEntry.ActionType.InvokeUnityEvent:
                     entry.unityEvent?.Invoke();
