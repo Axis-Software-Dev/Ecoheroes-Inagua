@@ -302,7 +302,7 @@ Light:
   m_Enabled: 1
   serializedVersion: 11
   m_Type: 1
-  m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
+  m_Color: {r: 0.8415094, g: 0.6347925, b: 0.4937913, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
@@ -372,6 +372,63 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1001 &1289147102
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -3910990755373119420, guid: 3d7605a4da9e7684480ed339079d8e60, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.5576234
+      objectReference: {fileID: 0}
+    - target: {fileID: -3910990755373119420, guid: 3d7605a4da9e7684480ed339079d8e60, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -2.56
+      objectReference: {fileID: 0}
+    - target: {fileID: -3910990755373119420, guid: 3d7605a4da9e7684480ed339079d8e60, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 2.4443622
+      objectReference: {fileID: 0}
+    - target: {fileID: -3910990755373119420, guid: 3d7605a4da9e7684480ed339079d8e60, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -3910990755373119420, guid: 3d7605a4da9e7684480ed339079d8e60, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3910990755373119420, guid: 3d7605a4da9e7684480ed339079d8e60, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3910990755373119420, guid: 3d7605a4da9e7684480ed339079d8e60, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3910990755373119420, guid: 3d7605a4da9e7684480ed339079d8e60, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3910990755373119420, guid: 3d7605a4da9e7684480ed339079d8e60, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3910990755373119420, guid: 3d7605a4da9e7684480ed339079d8e60, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8771091787928289351, guid: 3d7605a4da9e7684480ed339079d8e60, type: 3}
+      propertyPath: m_Name
+      value: PozoTestTerreno2
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: -4161369568681901532, guid: 3d7605a4da9e7684480ed339079d8e60, type: 3}
 --- !u!1001 &1819674525
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -429,63 +486,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c10a9a778bd1e69479c04c3101a58311, type: 3}
---- !u!1001 &1869246949
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: -3910990755373119420, guid: bc7c9ef4ad71197439b0eb2dd68acaa0, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 2.8900025
-      objectReference: {fileID: 0}
-    - target: {fileID: -3910990755373119420, guid: bc7c9ef4ad71197439b0eb2dd68acaa0, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -6.52
-      objectReference: {fileID: 0}
-    - target: {fileID: -3910990755373119420, guid: bc7c9ef4ad71197439b0eb2dd68acaa0, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.14
-      objectReference: {fileID: 0}
-    - target: {fileID: -3910990755373119420, guid: bc7c9ef4ad71197439b0eb2dd68acaa0, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -3910990755373119420, guid: bc7c9ef4ad71197439b0eb2dd68acaa0, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -3910990755373119420, guid: bc7c9ef4ad71197439b0eb2dd68acaa0, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -3910990755373119420, guid: bc7c9ef4ad71197439b0eb2dd68acaa0, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -3910990755373119420, guid: bc7c9ef4ad71197439b0eb2dd68acaa0, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -3910990755373119420, guid: bc7c9ef4ad71197439b0eb2dd68acaa0, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -3910990755373119420, guid: bc7c9ef4ad71197439b0eb2dd68acaa0, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8771091787928289351, guid: bc7c9ef4ad71197439b0eb2dd68acaa0, type: 3}
-      propertyPath: m_Name
-      value: PozoTestTerreno
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: -4161369568681901532, guid: bc7c9ef4ad71197439b0eb2dd68acaa0, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -494,4 +494,4 @@ SceneRoots:
   - {fileID: 420900101}
   - {fileID: 330971409}
   - {fileID: 1819674525}
-  - {fileID: 1869246949}
+  - {fileID: 1289147102}
