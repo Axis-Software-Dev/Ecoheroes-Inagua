@@ -259,7 +259,7 @@ namespace Fluvio
                     StartWalkingTo(entry.vectorArg, entry.boolArg);
                     break;
                 case ActionEntry.ActionType.StartWalkCurve:
-                    StartWalkingCurve(entry.vectorArg, entry.boolArg);
+                    StartWalkingCurve(entry.vectorArg, entry.boolArg, entry.stringArg, entry.floatArg);
                     break;
                 case ActionEntry.ActionType.SetAnimatorBool:
                     if (Animator != null && !string.IsNullOrEmpty(entry.stringArg))
@@ -317,7 +317,7 @@ namespace Fluvio
         }
 
         /// <summary>Begin curved walk using a quadratic Bezier curve (controlPoint is world-space).</summary>
-        public void StartWalkingCurve(Vector3 target, bool lookTowardsTarget)
+        public void StartWalkingCurve(Vector3 target, bool lookTowardsTarget, string curveDirection, float arcHeight = 1f)
         {
             if (target == null)
             {
@@ -330,8 +330,24 @@ namespace Fluvio
             _walkProgress = 0f;
             _curveStart = transform.position;
             _curveEnd = target;
-            _curveControl = (_curveStart + target) * .5f + Vector3.up;
+
             _useCurve = true;
+            switch (curveDirection.ToLower())
+            {
+                case "left":
+                    _curveControl = ((_curveStart + _curveEnd) * .5f) - transform.right * arcHeight;
+                    break;
+                case "right":
+                    _curveControl = ((_curveStart + _curveEnd) * .5f) + transform.right * arcHeight;
+                    break;
+                case "up":
+                    _curveControl = ((_curveStart + _curveEnd) * .5f) + Vector3.up * arcHeight;
+                    break;
+                default:
+                    Debug.LogWarning($"Unknown curve direction '{curveDirection}', defaulting to up.");
+                    _curveControl = ((_curveStart + _curveEnd) * .5f) + Vector3.up * arcHeight;
+                    break;
+            }
         }
 
         public void StopWalking()
