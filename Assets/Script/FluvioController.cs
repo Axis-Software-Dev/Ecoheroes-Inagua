@@ -79,7 +79,6 @@ namespace Fluvio
         // internals
         private Dictionary<string, FluvioSound> _soundMap;
         private Transform _playerTransform;
-        [SerializeField]
         private float _timer = 0f;
         private float _defaultSpeed;
         private bool _animationIsPlaying = false;
