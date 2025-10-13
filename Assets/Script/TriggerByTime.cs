@@ -4,16 +4,20 @@ using UnityEngine.Events;
 
 public class TriggerByTime : MonoBehaviour
 {
-    [Range(0f, 10f)] public float delayInSeconds = 0;
+    [Range(0f, 10f)] public float delayInSeconds;
     public UnityEvent eventToExecute;
     void Start()
     {
-        if (eventToExecute != null) StartCoroutine(DelayAndExecute());
+        TriggerEvent(eventToExecute, delayInSeconds);
     }
 
-    IEnumerator DelayAndExecute()
+    public void TriggerEvent(UnityEvent eventToRun, float d)
     {
-        yield return new WaitForSeconds(delayInSeconds);
-        if (eventToExecute != null) eventToExecute.Invoke();
+        StartCoroutine(DelayAndExecute(eventToRun, d));
+    }
+    IEnumerator DelayAndExecute(UnityEvent e, float d)
+    {
+        yield return new WaitForSeconds(d);
+        if (e != null && d > .1f) eventToExecute.Invoke();
     }
 }
