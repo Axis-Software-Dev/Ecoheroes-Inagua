@@ -1530,7 +1530,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 92397281}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.02}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1538,7 +1538,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.668, y: 0.499}
+  m_AnchoredPosition: {x: -0.67, y: 0.5}
   m_SizeDelta: {x: 0.3, y: 0.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &92397283
@@ -1904,7 +1904,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 225517854}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.026}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2697,6 +2697,17 @@ MonoBehaviour:
   dialogueTextMesh: {fileID: 1787453802}
   typingSpeed: 0.05
   planeRenderer: {fileID: 535893209}
+  triviaAudioSource: {fileID: 0}
+  triviaStartAudio: {fileID: 8300000, guid: 12e7b2c6f7f99a74283e9ce411db2fb2, type: 3}
+  questionAudio: {fileID: 8300000, guid: 2c8bb1a2afbb9a24687f767e2f3eb237, type: 3}
+  correctAnswerAudio: {fileID: 8300000, guid: 96dcfe141f9ea2c459be88a503830afb, type: 3}
+  wrongAnswerAudio: {fileID: 8300000, guid: eb463ea80aa3bb043b1b7de319156449, type: 3}
+  triviaCompleteAudio: {fileID: 8300000, guid: 2da25fd821693764a80671a736f4ef9b, type: 3}
+  buttonClickAudio: {fileID: 8300000, guid: acad01279dd158a41ab6469fff285ca1, type: 3}
+  clickAudio: {fileID: 8300000, guid: acad01279dd158a41ab6469fff285ca1, type: 3}
+  triviaVolume: 1
+  uiVolume: 0.8
+  enableTypingSounds: 1
   playerDistance: -4
   heightOffset: -2
   transportDuration: 1.5
@@ -3370,7 +3381,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1108446443}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.05}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3378,7 +3389,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.712, y: -0.384}
+  m_AnchoredPosition: {x: -0.71, y: -0.38}
   m_SizeDelta: {x: 0.3, y: 0.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1108446445
@@ -4233,6 +4244,7 @@ GameObject:
   - component: {fileID: 1338295442}
   - component: {fileID: 1338295441}
   - component: {fileID: 1338295440}
+  - component: {fileID: 1338295443}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -4310,7 +4322,7 @@ Canvas:
   m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 2
-  m_Camera: {fileID: 0}
+  m_Camera: {fileID: 1477717429}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -4323,6 +4335,25 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &1338295443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1338295438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7951c64acb0fa62458bf30a60089fe2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.UI.TrackedDeviceGraphicRaycaster
+  m_IgnoreReversedGraphics: 0
+  m_CheckFor2DOcclusion: 0
+  m_CheckFor3DOcclusion: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RaycastTriggerInteraction: 1
 --- !u!1 &1413502724
 GameObject:
   m_ObjectHideFlags: 0
@@ -4350,7 +4381,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1413502724}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.02}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4669,6 +4700,11 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!20 &1477717429 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 657184242118504724, guid: d6878e1999eb4b44a9f5a263af86c185, type: 3}
+  m_PrefabInstance: {fileID: 1567617695}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1519911903
 PrefabInstance:
   m_ObjectHideFlags: 0
