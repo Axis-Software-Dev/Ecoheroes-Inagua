@@ -4,6 +4,7 @@ using TMPro;
 using System;
 using UnityEngine.UI;
 using Trivia;
+using Fluvio;
 
 namespace Trivia
 {
@@ -83,6 +84,7 @@ public class TriviaController : MonoBehaviour
     private bool userChoice;
     private Transform playerTransform;
     private Unity.XR.CoreUtils.XROrigin xrOrigin;
+    private FluvioController fluvio;
 
     private void Start()
     {
@@ -112,8 +114,8 @@ public class TriviaController : MonoBehaviour
         foreach (Button button in buttons)
         {
             button.onClick.AddListener(() => PlayUISound(buttonClickAudio));
-            button.onClick.AddListener(() => PlayUISound(buttonClickAudio));
         }
+        fluvio = GameObject.Find("Fluvi-o").GetComponent<FluvioController>();
     }
 
     public void InitiateTrivia()
@@ -152,11 +154,11 @@ public class TriviaController : MonoBehaviour
             if (userChoice == correctAnswer)
             {
                 PlayTriviaAudio(correctAnswerAudio);
-                ChangePlaneColor(Color.seaGreen);
+                ChangePlaneColor(new Color(.52f, .717f, .615f, .6f));
                 yield return new WaitForSeconds(.1f);
                 ChangePlaneColor(new Color(1f, 1f, 1f, 0f));
                 yield return new WaitForSeconds(.1f);
-                ChangePlaneColor(Color.seaGreen);
+                ChangePlaneColor(new Color(.52f, .717f, .615f, .6f));
                 yield return new WaitForSeconds(.1f);
                 ChangePlaneColor(new Color(1f, 1f, 1f, 0f));
                 Debug.Log("Correct answer");
@@ -164,21 +166,32 @@ public class TriviaController : MonoBehaviour
             else
             {
                 PlayTriviaAudio(wrongAnswerAudio);
-                ChangePlaneColor(Color.darkRed);
+                ChangePlaneColor(new Color(.639f, .2f, .239f, .6f));
                 yield return new WaitForSeconds(.1f);
                 ChangePlaneColor(new Color(1f, 1f, 1f, 0f));
                 yield return new WaitForSeconds(.1f);
-                ChangePlaneColor(Color.darkRed);
+                ChangePlaneColor(new Color(.639f, .2f, .239f, .6f));
                 yield return new WaitForSeconds(.1f);
                 ChangePlaneColor(new Color(1f, 1f, 1f, 0f));
 
                 Debug.Log("Wrong answer");
 
-                buttonsPanel.SetActive(true);
+                HideText();
+                yield return new WaitUntil(() => !isTextVisible);
+
+                ShowText("Necesitas seguirte preparando para convertirte en un Ecohéroe. Empieza el juego nuevamente y presta más atención para el siguiente turno.");
+                yield return new WaitUntil(() => isTextVisible);
+
+                HideText();
+                yield return new WaitUntil(() => !isTextVisible);
+
+                buttonsPanel.SetActive(false);
                 yield return new WaitForSeconds(1f);
                 keyboardAnimator.SetTrigger("Disappear");
                 yield return new WaitForSeconds(4.5f);
                 screenAnimator.SetTrigger("Disappear");
+
+                UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
             }
 
             HideText();
@@ -188,6 +201,7 @@ public class TriviaController : MonoBehaviour
         }
         Debug.Log("Trivia completed");
         PlayTriviaAudio(triviaCompleteAudio);
+        fluvio.PlayVictorySequence();
     }
 
     private void PlayTriviaAudio(AudioClip clip)
