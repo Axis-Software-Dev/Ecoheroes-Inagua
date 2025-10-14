@@ -65,7 +65,6 @@ public class FloatingInteractableObject : MonoBehaviour
         if (rb != null)
         {
             isFloating = true;
-            rb.isKinematic = true;
             rb.useGravity = false;
             Debug.Log($"{gameObject.name} started floating");
         }
@@ -76,7 +75,6 @@ public class FloatingInteractableObject : MonoBehaviour
         if (rb != null)
         {
             isFloating = false;
-            rb.isKinematic = false;
             rb.useGravity = true;
             Debug.Log($"{gameObject.name} stopped floating");
         }
