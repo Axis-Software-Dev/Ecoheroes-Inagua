@@ -24,6 +24,8 @@ public class PipeBehavior : MonoBehaviour
     private bool rightGrippedPressed = false;
     private Quaternion initialLeftControllerAngle;
     private Quaternion currentLeftControllerAngle;
+    private Quaternion currentRightControllerAngle;
+    private Quaternion initialRightControllerAngle;
     private Collider colliderObject;
     private Transform currentWheelPosition;
     private bool isLeftInPipe = false;
@@ -54,6 +56,18 @@ public class PipeBehavior : MonoBehaviour
                 Debug.Log("Angle: " + angle);
 
                 setWheelRotation(angle, initialLeftControllerAngle.eulerAngles.y);
+            }
+        }
+        if (isRightInPipe)
+        {
+            if (rightGrippedPressed)
+            {
+                currentRightControllerAngle = getControllerAngle(rightController);
+                float angle = getAngle(initialRightControllerAngle, currentRightControllerAngle);
+                angle = Mathf.Clamp(angle, -90f, 90f);
+                Debug.Log("Angle: " + angle);
+
+                setWheelRotation(angle, initialRightControllerAngle.eulerAngles.y);
             }
         }
             
@@ -103,7 +117,7 @@ public class PipeBehavior : MonoBehaviour
     }
     private void OnRightGrip()
     {
-        Debug.Log("Right Grip just Pressed");
+        initialRightControllerAngle = getControllerAngle(rightController);
     }
    
 
