@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
 using UnityEngine.InputSystem;
+using System;
 public class PipeBehavior : MonoBehaviour
 {
     enum sectionBehavior
@@ -25,6 +26,8 @@ public class PipeBehavior : MonoBehaviour
     private Quaternion currentLeftControllerAngle;
     private Collider colliderObject;
     private Transform currentWheelPosition;
+    private bool isLeftInPipe = false;
+    private bool isRightInPipe = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -41,38 +44,56 @@ public class PipeBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-        if (leftGrippedPressed) { 
-            currentLeftControllerAngle = getControllerAngle(leftController);
-            float angle = getAngle(initialLeftControllerAngle, currentLeftControllerAngle);
-            Debug.Log("Angle: " + angle);
-            setWheelRotation(angle, initialLeftControllerAngle.eulerAngles.y);
-        }
-        else
+        if (isLeftInPipe)
         {
+            if (leftGrippedPressed)
+            {
+                currentLeftControllerAngle = getControllerAngle(leftController);
+                float angle = getAngle(initialLeftControllerAngle, currentLeftControllerAngle);
+                angle = Mathf.Clamp(angle, -90f, 90f);
+                Debug.Log("Angle: " + angle);
 
+                setWheelRotation(angle, initialLeftControllerAngle.eulerAngles.y);
+            }
         }
+            
+      
     }
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag("Controller"))
+        if (other.CompareTag("LeftController"))
         {
-            switch (section)
-            {
-                case sectionBehavior.wheel:
-                    wheelBehaviour(other.gameObject);
-                    
-                    break;
-                case sectionBehavior.screw:
-                    //screwBehaviour(other.gameObject);
-                    break;
-                case sectionBehavior.cables:
-                    //cablesBehaviour(other.gameObject);
-                    break;
-                default:
-                    break;
-            }
+            /* switch (section)
+             {
+                 case sectionBehavior.wheel:
+                     wheelBehaviour(other.gameObject);
+
+                     break;
+                 case sectionBehavior.screw:
+                     //screwBehaviour(other.gameObject);
+                     break;
+                 case sectionBehavior.cables:
+                     //cablesBehaviour(other.gameObject);
+                     break;
+                 default:
+                     break;
+             }*/
+            isLeftInPipe = true;
+        }
+        else if (other.CompareTag("RightController"))
+        {
+            isRightInPipe = true;
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("LeftController"))
+        {
+            isLeftInPipe = false;
+        } else if (other.CompareTag("RightController"))
+        {
+            isRightInPipe = false;
         }
     }
     #region ControllerCallbacks
