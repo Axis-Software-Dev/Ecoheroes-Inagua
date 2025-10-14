@@ -36,7 +36,32 @@ public class TriviaController : MonoBehaviour
 
     [Header("Plane Color Settings")]
     public SkinnedMeshRenderer planeRenderer;
-    private Color newColor = Color.red;
+
+    [Header("Audio")]
+    public AudioSource triviaAudioSource;
+
+    [Header("Audio Clips")]
+    [Tooltip("Audio played when trivia starts")]
+    public AudioClip triviaStartAudio;
+    [Tooltip("Audio played when asking questions")]
+    public AudioClip questionAudio;
+    public AudioClip correctAnswerAudio;
+    public AudioClip wrongAnswerAudio;
+    public AudioClip triviaCompleteAudio;
+
+    [Header("Audio Clips - UI Sounds")]
+    public AudioClip buttonClickAudio;
+    public AudioClip clickAudio;
+
+    [Header("Audio Settings")]
+    [Range(0f, 1f)]
+    [Tooltip("Volume for trivia audio")]
+    public float triviaVolume = 1f;
+    [Range(0f, 1f)]
+    [Tooltip("Volume for UI sound effects")]
+    public float uiVolume = 0.8f;
+    [Tooltip("Play typing sound for each character")]
+    public bool enableTypingSounds = true;
 
     [Header("Player Transportation")]
     [Tooltip("Distance from Televesona to position the player")]
@@ -65,7 +90,9 @@ public class TriviaController : MonoBehaviour
         if (planeRenderer != null && planeRenderer.material != null)
         {
             planeMaterial = planeRenderer.material;
+            Debug.Log("Plane material set to " + planeMaterial);
         }
+        else Debug.Log("Can't set plane material, material is empty");
 
         if (dialoguePanel != null)
         {
@@ -74,6 +101,19 @@ public class TriviaController : MonoBehaviour
         xrOrigin = FindAnyObjectByType<Unity.XR.CoreUtils.XROrigin>();
         if (xrOrigin != null) playerTransform = xrOrigin.transform;
         else Debug.LogWarning("TriviaController: Could not find XR Origin. Player transportation will not work.");
+
+        triviaAudioSource = gameObject.AddComponent<AudioSource>();
+        Debug.Log("TriviaController: Created AudioSource component");
+        triviaAudioSource.spatialBlend = 1f;
+        triviaAudioSource.rolloffMode = AudioRolloffMode.Linear;
+        triviaAudioSource.maxDistance = 20f;
+        triviaAudioSource.volume = triviaVolume;
+        Button[] buttons = buttonsPanel.GetComponentsInChildren<Button>(true);
+        foreach (Button button in buttons)
+        {
+            button.onClick.AddListener(() => PlayUISound(buttonClickAudio));
+            button.onClick.AddListener(() => PlayUISound(buttonClickAudio));
+        }
     }
 
     public void InitiateTrivia()
@@ -87,7 +127,7 @@ public class TriviaController : MonoBehaviour
         if (screenAnimator && keyboardAnimator && buttonsPanel)
         {
             screenAnimator.SetTrigger("Appear");
-            yield return new WaitForSeconds(3f);
+            yield return new WaitForSeconds(4.5f);
             keyboardAnimator.SetTrigger("Appear");
             yield return new WaitForSeconds(1f);
             buttonsPanel.SetActive(true);
@@ -99,6 +139,7 @@ public class TriviaController : MonoBehaviour
         {
             Debug.Log("Question " + q[i].position + " asked");
             correctAnswer = q[i].answer;
+            PlayTriviaAudio(questionAudio);
             ShowText(q[i].question);
 
             yield return new WaitUntil(() => !isTyping);
@@ -110,10 +151,26 @@ public class TriviaController : MonoBehaviour
 
             if (userChoice == correctAnswer)
             {
+                PlayTriviaAudio(correctAnswerAudio);
+                ChangePlaneColor(Color.seaGreen);
+                yield return new WaitForSeconds(.1f);
+                ChangePlaneColor(Color.white);
+                yield return new WaitForSeconds(.1f);
+                ChangePlaneColor(Color.seaGreen);
+                yield return new WaitForSeconds(.1f);
+                ChangePlaneColor(Color.white);
                 Debug.Log("Correct answer");
             }
             else
             {
+                PlayTriviaAudio(wrongAnswerAudio);
+                ChangePlaneColor(Color.darkRed);
+                yield return new WaitForSeconds(.1f);
+                ChangePlaneColor(Color.white);
+                yield return new WaitForSeconds(.1f);
+                ChangePlaneColor(Color.darkRed);
+                yield return new WaitForSeconds(.1f);
+                ChangePlaneColor(Color.white);
                 Debug.Log("Wrong answer");
             }
 
@@ -123,6 +180,28 @@ public class TriviaController : MonoBehaviour
             yield return new WaitForSeconds(1f);
         }
         Debug.Log("Trivia completed");
+        PlayTriviaAudio(triviaCompleteAudio);
+    }
+
+    private void PlayTriviaAudio(AudioClip clip)
+    {
+        if (clip != null && triviaAudioSource != null)
+        {
+            triviaAudioSource.volume = triviaVolume;
+            triviaAudioSource.PlayOneShot(clip);
+            Debug.Log($"Playing trivia audio: {clip.name}");
+        }
+    }
+
+    private void PlayUISound(AudioClip clip)
+    {
+        if (clip != null && triviaAudioSource != null)
+        {
+            float originalVolume = triviaAudioSource.volume;
+            triviaAudioSource.volume = uiVolume;
+            triviaAudioSource.PlayOneShot(clip);
+            triviaAudioSource.volume = originalVolume;
+        }
     }
 
     private IEnumerator TransportPlayer()
@@ -207,6 +286,7 @@ public class TriviaController : MonoBehaviour
             choiceMade = true;
             waitingForChoice = false;
             Debug.Log($"User chose: {c}");
+            PlayUISound(buttonClickAudio);
             return;
         }
         else throw new Exception("Still waiting for an answer.");
@@ -220,24 +300,24 @@ public class TriviaController : MonoBehaviour
         }
     }
 
-    public void ChangePlaneColor()
+    public void ChangePlaneColor(Color color)
     {
         if (planeMaterial != null)
         {
             if (planeMaterial.HasProperty("_BaseColor"))
             {
-                planeMaterial.SetColor("_BaseColor", newColor);
+                planeMaterial.SetColor("_BaseColor", color);
             }
             else if (planeMaterial.HasProperty("_Color"))
             {
-                planeMaterial.SetColor("_Color", newColor);
+                planeMaterial.SetColor("_Color", color);
             }
             else if (planeMaterial.HasProperty("_MainColor"))
             {
-                planeMaterial.SetColor("_MainColor", newColor);
+                planeMaterial.SetColor("_MainColor", color);
             }
 
-            Debug.Log($"Changed plane color to {newColor}");
+            Debug.Log($"Changed plane color to {color}");
         }
         else
         {
