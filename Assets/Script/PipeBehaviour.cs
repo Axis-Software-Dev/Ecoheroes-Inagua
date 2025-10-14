@@ -2,6 +2,7 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
+using UnityEngine.InputSystem;
 public class PipeBehavior : MonoBehaviour
 {
     enum sectionBehavior
@@ -10,30 +11,50 @@ public class PipeBehavior : MonoBehaviour
         screw,
         cables
     }
+    
+    public InputActionReference leftGrip;
+    public InputActionReference rightGrip;
+    public Transform leftController;
+    public Transform rightController;
+
     [SerializeField]
     private sectionBehavior section;
-    private InputFeatureUsage<bool> gripUse = CommonUsages.gripButton;
-    private List<InputDevice> devices;
-    private bool lastValue = false;
+    private bool leftGrippedPressed = false;
+    private bool rightGrippedPressed = false;
+    private Quaternion initialLeftControllerAngle;
+    private Quaternion currentLeftControllerAngle;
+    private Collider colliderObject;
+    private Transform currentWheelPosition;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        devices = new List<InputDevice>();
-        InputDevices.GetDevices(devices);
-        foreach (var device in devices)
-        {
-            Debug.Log(device.name + "\n" + device.characteristics);
-        }
+        leftGrip.action.performed += ctx => OnLeftGrip();
+        rightGrip.action.performed += ctx => OnRightGrip();
+        leftGrip.action.started += ctx => leftGrippedPressed=true;
+        rightGrip.action.started += ctx => rightGrippedPressed=false;
+        leftGrip.action.canceled += ctx => leftGrippedPressed=false;
+        rightGrip.action.canceled += ctx => rightGrippedPressed=false;
+        currentWheelPosition = this.transform;
     }
 
     // Update is called once per frame
     void Update()
     {
-       
         
+        if (leftGrippedPressed) { 
+            currentLeftControllerAngle = getControllerAngle(leftController);
+            float angle = getAngle(initialLeftControllerAngle, currentLeftControllerAngle);
+            Debug.Log("Angle: " + angle);
+            setWheelRotation(angle, initialLeftControllerAngle.eulerAngles.y);
+        }
+        else
+        {
+
+        }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("Controller"))
         {
@@ -41,6 +62,7 @@ public class PipeBehavior : MonoBehaviour
             {
                 case sectionBehavior.wheel:
                     wheelBehaviour(other.gameObject);
+                    
                     break;
                 case sectionBehavior.screw:
                     //screwBehaviour(other.gameObject);
@@ -53,55 +75,58 @@ public class PipeBehavior : MonoBehaviour
             }
         }
     }
+    #region ControllerCallbacks
+    private void OnLeftGrip()
+    {
+        initialLeftControllerAngle= getControllerAngle(leftController);
+    }
+    private void OnRightGrip()
+    {
+        Debug.Log("Right Grip just Pressed");
+    }
+   
 
+    #endregion
     #region Behaviors
     #region Wheel
-    private Quaternion getControllerAngle(GameObject controller) { 
-        return controller.transform.rotation;
-    }
-    private float getAngle(Quaternion angleA,Quaternion angleB)
+    private Quaternion getControllerAngle(Transform controller)
     {
-        if(angleA==null||angleB==null)return 0f;
-         float angle = Quaternion.Angle(angleA, angleB);
-        return angle;
+        return controller.rotation;
     }
-    private void setWheelRotation(float angle,float currentPosition)
+    private float getAngle(Quaternion previous, Quaternion current)
     {
-        this.transform.rotation=Quaternion.Euler(0,(currentPosition-angle),0);
+        if (previous == Quaternion.identity || current == Quaternion.identity) return 0f;
+        Vector3 previousForward = previous * Vector3.forward;
+        Vector3 currentForward = current * Vector3.forward;
+        previousForward.y = 0;
+        currentForward.y = 0;
+        float angleDelta = Vector3.SignedAngle(previousForward, currentForward, Vector3.up);
+        return angleDelta;
+    }
+    private void setWheelRotation(float angle, float currentPosition)
+    {
+        this.transform.rotation = Quaternion.Euler(0, (currentPosition + angle), 0);
     }
     private void wheelBehaviour(GameObject controller)
     {
-        Quaternion rotationA=Quaternion.identity,rotationB=Quaternion.identity;
-        foreach (var device in devices)
-        {
+        Quaternion rotationA = Quaternion.identity, rotationB = Quaternion.identity;
+        if (leftGrippedPressed) {
             
-            if (device.TryGetFeatureValue(gripUse, out bool gripValue))
-            {
-                if(gripValue && !lastValue)
-                {
-                    rotationA = getControllerAngle(controller);
-                    Debug.Log("Grip Just Pressed");
-                }
-                else if(gripValue && lastValue)
-                {
-                    rotationB = getControllerAngle(controller);
-                    Debug.Log("Grip Held");
-                }
-                   
-                    float angle = getAngle(rotationA, rotationB);
-                    float currentPosition = this.transform.rotation.eulerAngles.y;
-                    setWheelRotation(angle, currentPosition);
-
-
-            }
-            else
-            {
-                lastValue = false;
-            }
         }
+
+        
+
     }
 
 
+
+
     #endregion
+    #endregion
+    #region Helpers
+    public void pipeBehaviour()
+    {
+      
+    }
     #endregion
 }
