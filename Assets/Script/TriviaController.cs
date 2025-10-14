@@ -191,7 +191,7 @@ public class TriviaController : MonoBehaviour
                 yield return new WaitForSeconds(4.5f);
                 screenAnimator.SetTrigger("Disappear");
 
-                UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
+                UnityEngine.SceneManagement.SceneManager.LoadScene("Main Menu");
             }
 
             HideText();

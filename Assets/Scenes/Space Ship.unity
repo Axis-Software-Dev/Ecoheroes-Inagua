@@ -3647,7 +3647,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: cb8b6ba982f8874409d8acb2b2ef0d92, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.05
+  m_Volume: 0.03
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -4530,30 +4530,6 @@ MonoBehaviour:
       - m_Target: {fileID: 222471013}
         m_TargetAssemblyTypeName: Fluvio.FluvioController, Assembly-CSharp
         m_MethodName: StartAnimation
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 597810241}
-        m_TargetAssemblyTypeName: TriviaController, Assembly-CSharp
-        m_MethodName: TransportPlayerManually
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 597810241}
-        m_TargetAssemblyTypeName: TriviaController, Assembly-CSharp
-        m_MethodName: InitiateTrivia
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
