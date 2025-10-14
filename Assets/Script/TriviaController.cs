@@ -154,11 +154,11 @@ public class TriviaController : MonoBehaviour
                 PlayTriviaAudio(correctAnswerAudio);
                 ChangePlaneColor(Color.seaGreen);
                 yield return new WaitForSeconds(.1f);
-                ChangePlaneColor(Color.white);
+                ChangePlaneColor(new Color(1f, 1f, 1f, 0f));
                 yield return new WaitForSeconds(.1f);
                 ChangePlaneColor(Color.seaGreen);
                 yield return new WaitForSeconds(.1f);
-                ChangePlaneColor(Color.white);
+                ChangePlaneColor(new Color(1f, 1f, 1f, 0f));
                 Debug.Log("Correct answer");
             }
             else
@@ -166,12 +166,19 @@ public class TriviaController : MonoBehaviour
                 PlayTriviaAudio(wrongAnswerAudio);
                 ChangePlaneColor(Color.darkRed);
                 yield return new WaitForSeconds(.1f);
-                ChangePlaneColor(Color.white);
+                ChangePlaneColor(new Color(1f, 1f, 1f, 0f));
                 yield return new WaitForSeconds(.1f);
                 ChangePlaneColor(Color.darkRed);
                 yield return new WaitForSeconds(.1f);
-                ChangePlaneColor(Color.white);
+                ChangePlaneColor(new Color(1f, 1f, 1f, 0f));
+
                 Debug.Log("Wrong answer");
+
+                buttonsPanel.SetActive(true);
+                yield return new WaitForSeconds(1f);
+                keyboardAnimator.SetTrigger("Disappear");
+                yield return new WaitForSeconds(4.5f);
+                screenAnimator.SetTrigger("Disappear");
             }
 
             HideText();
@@ -289,7 +296,11 @@ public class TriviaController : MonoBehaviour
             PlayUISound(buttonClickAudio);
             return;
         }
-        else throw new Exception("Still waiting for an answer.");
+        else
+        {
+            PlayUISound(buttonClickAudio);
+            throw new Exception("Question still onscreen.");
+        }
     }
 
     public void HideText()
