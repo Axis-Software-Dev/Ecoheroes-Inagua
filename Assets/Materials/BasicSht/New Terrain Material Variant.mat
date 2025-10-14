@@ -23,7 +23,7 @@ Material:
   m_Name: New Terrain Material Variant
   m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
   m_Parent: {fileID: 2100000, guid: 0df328c55d9b9e24a97c21aeb4af8a90, type: 2}
-  m_ModifiedSerializedProperties: 16
+  m_ModifiedSerializedProperties: 18
   m_ValidKeywords:
   - _ALPHAPREMULTIPLY_ON
   - _SURFACE_TYPE_TRANSPARENT
@@ -53,5 +53,6 @@ Material:
     m_Colors:
     - _BaseColor: {r: 0.915, g: 0.901, b: 0.91, a: 0}
     - _Color: {r: 0.915, g: 0.901, b: 0.91, a: 0}
+    - _EmissionColor: {r: 0.61006284, g: 0.22355452, b: 0.17457761, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

@@ -125,6 +125,12 @@ public class TriviaController : MonoBehaviour
 
     private IEnumerator InitiateTriviaCoroutine()
     {
+        Color rightColor = new Color(.52f, .717f, .615f, .3f);
+        Color wrongColor = new Color(.639f, .2f, .239f, .3f);
+        Color emisionRight = new Color(.486f, .616f, .49f);
+        Color emisionWrong = new Color(.61f, .223f, .174f);
+        Color transparent = new Color(1f, 1f, 1f, 0f);
+
         Debug.Log("Trivia started");
         if (screenAnimator && keyboardAnimator && buttonsPanel)
         {
@@ -154,25 +160,37 @@ public class TriviaController : MonoBehaviour
             if (userChoice == correctAnswer)
             {
                 PlayTriviaAudio(correctAnswerAudio);
-                ChangePlaneColor(new Color(.52f, .717f, .615f, .6f));
+                ChangePlaneColor(rightColor);
+                planeMaterial.EnableKeyword("_EMISSION");
+                planeMaterial.SetColor("_EmissionColor", emisionRight);
                 yield return new WaitForSeconds(.1f);
-                ChangePlaneColor(new Color(1f, 1f, 1f, 0f));
+                ChangePlaneColor(transparent);
+                planeMaterial.DisableKeyword("_EMISSION");
                 yield return new WaitForSeconds(.1f);
-                ChangePlaneColor(new Color(.52f, .717f, .615f, .6f));
+                ChangePlaneColor(rightColor);
+                planeMaterial.EnableKeyword("_EMISSION");
+                planeMaterial.SetColor("_EmissionColor", emisionRight);
                 yield return new WaitForSeconds(.1f);
-                ChangePlaneColor(new Color(1f, 1f, 1f, 0f));
+                ChangePlaneColor(transparent);
+                planeMaterial.DisableKeyword("_EMISSION");
                 Debug.Log("Correct answer");
             }
             else
             {
                 PlayTriviaAudio(wrongAnswerAudio);
-                ChangePlaneColor(new Color(.639f, .2f, .239f, .6f));
+                ChangePlaneColor(wrongColor);
+                planeMaterial.EnableKeyword("_EMISSION");
+                planeMaterial.SetColor("_EmissionColor", emisionWrong);
                 yield return new WaitForSeconds(.1f);
-                ChangePlaneColor(new Color(1f, 1f, 1f, 0f));
+                ChangePlaneColor(transparent);
+                planeMaterial.DisableKeyword("_EMISSION");
                 yield return new WaitForSeconds(.1f);
-                ChangePlaneColor(new Color(.639f, .2f, .239f, .6f));
+                ChangePlaneColor(wrongColor);
+                planeMaterial.EnableKeyword("_EMISSION");
+                planeMaterial.SetColor("_EmissionColor", emisionWrong);
                 yield return new WaitForSeconds(.1f);
-                ChangePlaneColor(new Color(1f, 1f, 1f, 0f));
+                ChangePlaneColor(transparent);
+                planeMaterial.DisableKeyword("_EMISSION");
 
                 Debug.Log("Wrong answer");
 
@@ -341,7 +359,6 @@ public class TriviaController : MonoBehaviour
             {
                 planeMaterial.SetColor("_MainColor", color);
             }
-
             Debug.Log($"Changed plane color to {color}");
         }
         else
