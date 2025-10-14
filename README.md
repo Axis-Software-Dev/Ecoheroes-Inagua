@@ -62,6 +62,64 @@ Team up with an extraterrestrial named Hidrolito to stop the villainous "Calor I
 - A Meta Quest 3 headset.
 - A PC with [SideQuest](https://sidequestvr.com/) (or similar software) for sideloading applications.
 
+### How to build from source code
+
+#### Required Software
+
+- Unity 6000.2 or later
+- Android SDK (API Level 29 or higher)
+- Meta Quest Developer Hub (recommended)
+- ADB (Android Debug Bridge) for device deployment
+
+#### Meta Quest Setup
+
+1. Enable Developer Mode on your Quest device
+
+- Create a Meta Developer account at developer.oculus.com
+- Enable Developer Mode in the Meta Quest mobile app
+- Connect your Quest to the same Wi-Fi network as your computer
+
+2. Install Meta Quest Developer Hub
+
+- Download from developer.oculus.com/downloads
+- This provides device management and deployment tools
+- Unity Project Configuration
+
+#### Unity Project Configuration
+
+#### 1. Platform Settings
+
+`File → Build Profiles → Meta Quest → Switch Platform`
+
+#### 2. XR Plugin Management
+
+`Edit → Project Settings → XR Plug-in Management`
+
+Ensure these providers are enabled:
+
+✅ Oculus (for Quest 2/3/Pro)
+✅ OpenXR (for future compatibility)
+✅ Mock HMD (for testing without headset)
+
+#### 3. Quality Settings
+
+`Edit → Project Settings → Quality`
+
+##### For optimal Quest performance:
+
+- Rendering Pipeline: Universal Render Pipeline ✅
+- Anti Aliasing: 4x Multi Sampling
+- Anisotropic Textures: Per Texture
+- Texture Quality: Full Res
+
+#### Build and run
+
+`File → Build Profiles → Meta Quest`
+
+1. Click "Build" or "Build And Run"
+2. Choose output folder (e.g., /Builds/Android/)
+3. Wait for build completion (5-15 minutes depending on project size)
+
 ### Installation Instructions
 
 1. Download the `EcoHéroes.apk` file from our [Releases page](https://github.com/Axis-Software-Dev/Ecoheroes-Inagua/releases).
