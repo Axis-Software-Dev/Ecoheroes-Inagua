@@ -125,8 +125,8 @@ public class TriviaController : MonoBehaviour
 
     private IEnumerator InitiateTriviaCoroutine()
     {
-        Color rightColor = new Color(.52f, .717f, .615f, .3f);
-        Color wrongColor = new Color(.639f, .2f, .239f, .3f);
+        Color rightColor = new Color(.52f, .717f, .615f, .2f);
+        Color wrongColor = new Color(.639f, .2f, .239f, .2f);
         Color emisionRight = new Color(.486f, .616f, .49f);
         Color emisionWrong = new Color(.61f, .223f, .174f);
         Color transparent = new Color(1f, 1f, 1f, 0f);
@@ -162,14 +162,14 @@ public class TriviaController : MonoBehaviour
                 PlayTriviaAudio(correctAnswerAudio);
                 ChangePlaneColor(rightColor);
                 planeMaterial.EnableKeyword("_EMISSION");
-                planeMaterial.SetColor("_EmissionColor", emisionRight);
+                planeMaterial.SetColor("_EmissionColor", emisionRight * 0f);
                 yield return new WaitForSeconds(.1f);
                 ChangePlaneColor(transparent);
                 planeMaterial.DisableKeyword("_EMISSION");
                 yield return new WaitForSeconds(.1f);
                 ChangePlaneColor(rightColor);
                 planeMaterial.EnableKeyword("_EMISSION");
-                planeMaterial.SetColor("_EmissionColor", emisionRight);
+                planeMaterial.SetColor("_EmissionColor", emisionRight * 0f);
                 yield return new WaitForSeconds(.1f);
                 ChangePlaneColor(transparent);
                 planeMaterial.DisableKeyword("_EMISSION");
@@ -180,14 +180,14 @@ public class TriviaController : MonoBehaviour
                 PlayTriviaAudio(wrongAnswerAudio);
                 ChangePlaneColor(wrongColor);
                 planeMaterial.EnableKeyword("_EMISSION");
-                planeMaterial.SetColor("_EmissionColor", emisionWrong);
+                planeMaterial.SetColor("_EmissionColor", emisionWrong * 0f);
                 yield return new WaitForSeconds(.1f);
                 ChangePlaneColor(transparent);
                 planeMaterial.DisableKeyword("_EMISSION");
                 yield return new WaitForSeconds(.1f);
                 ChangePlaneColor(wrongColor);
                 planeMaterial.EnableKeyword("_EMISSION");
-                planeMaterial.SetColor("_EmissionColor", emisionWrong);
+                planeMaterial.SetColor("_EmissionColor", emisionWrong * 0f);
                 yield return new WaitForSeconds(.1f);
                 ChangePlaneColor(transparent);
                 planeMaterial.DisableKeyword("_EMISSION");
@@ -198,7 +198,7 @@ public class TriviaController : MonoBehaviour
                 yield return new WaitUntil(() => !isTextVisible);
 
                 ShowText("Necesitas seguirte preparando para convertirte en un Ecohéroe. Empieza el juego nuevamente y presta más atención para el siguiente turno.");
-                yield return new WaitUntil(() => isTextVisible);
+                yield return new WaitUntil(() => !isTyping);
 
                 HideText();
                 yield return new WaitUntil(() => !isTextVisible);
@@ -206,10 +206,11 @@ public class TriviaController : MonoBehaviour
                 buttonsPanel.SetActive(false);
                 yield return new WaitForSeconds(1f);
                 keyboardAnimator.SetTrigger("Disappear");
-                yield return new WaitForSeconds(4.5f);
+                yield return new WaitForSeconds(2f);
                 screenAnimator.SetTrigger("Disappear");
+                yield return new WaitForSeconds(6f);
 
-                UnityEngine.SceneManagement.SceneManager.LoadScene("Main Menu");
+                UnityEngine.SceneManagement.SceneManager.LoadScene(0);
             }
 
             HideText();
