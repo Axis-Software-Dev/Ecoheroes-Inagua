@@ -64,16 +64,6 @@ public class TriviaController : MonoBehaviour
     [Tooltip("Play typing sound for each character")]
     public bool enableTypingSounds = true;
 
-    [Header("Player Transportation")]
-    [Tooltip("Distance from Televesona to position the player")]
-    public float playerDistance = 2f;
-    [Tooltip("Height offset for player positioning")]
-    public float heightOffset = 0f;
-    [Tooltip("Smooth transition duration in seconds")]
-    public float transportDuration = 1.5f;
-    [Tooltip("If true, makes player face Televesona after transport")]
-    public bool faceTv = true;
-
     [Header("State Management")]
     private bool isTextVisible = false;
     private bool isTyping = false;
@@ -140,8 +130,6 @@ public class TriviaController : MonoBehaviour
             yield return new WaitForSeconds(1f);
             buttonsPanel.SetActive(true);
         }
-
-        yield return StartCoroutine(TransportPlayer());
 
         for (int i = 0; i < q.Length; i++)
         {
@@ -242,75 +230,6 @@ public class TriviaController : MonoBehaviour
             triviaAudioSource.PlayOneShot(clip);
             triviaAudioSource.volume = originalVolume;
         }
-    }
-
-    private IEnumerator TransportPlayer()
-    {
-        if (playerTransform == null)
-        {
-            Debug.LogWarning("Player transform not found. Attempting to find XR Origin again.");
-            playerTransform = FindAnyObjectByType<Unity.XR.CoreUtils.XROrigin>().transform;
-            if (playerTransform == null)
-            {
-                Debug.LogError("Could not transport player: XR Origin not found!");
-                yield break;
-            }
-        }
-        Vector3 tvPosition = transform.position;
-        Vector3 tvForward = transform.forward;
-
-        Vector3 targetPosition = tvPosition - (tvForward * playerDistance);
-        targetPosition.y = tvPosition.y + heightOffset;
-
-        Vector3 startPosition = playerTransform.position;
-        Quaternion startRotation = playerTransform.rotation;
-        Quaternion targetRotation = startRotation;
-
-        if (faceTv)
-        {
-            Vector3 directionToTv = (tvPosition - targetPosition).normalized;
-            directionToTv.y = 0;
-            if (directionToTv != Vector3.zero)
-            {
-                targetRotation = Quaternion.LookRotation(directionToTv);
-            }
-        }
-
-        Debug.Log($"Transporting player from {startPosition} to {targetPosition}");
-
-        float elapsedTime = 0;
-        while (elapsedTime < transportDuration)
-        {
-            elapsedTime += Time.deltaTime;
-            float progress = elapsedTime / transportDuration;
-
-            float smoothProgress = Mathf.SmoothStep(0, 1, progress);
-
-            Vector3 currentPosition = Vector3.Lerp(startPosition, targetPosition, smoothProgress);
-            Quaternion currentRotation = Quaternion.Lerp(startRotation, targetRotation, smoothProgress);
-
-            playerTransform.position = currentPosition;
-            if (faceTv)
-            {
-                playerTransform.rotation = currentRotation;
-            }
-
-            yield return null;
-        }
-
-        playerTransform.position = targetPosition;
-        if (faceTv)
-        {
-            playerTransform.rotation = targetRotation;
-        }
-
-        Debug.Log("Player transportation completed");
-    }
-
-    [ContextMenu("Transport Player to Televesona")]
-    public void TransportPlayerManually()
-    {
-        StartCoroutine(TransportPlayer());
     }
 
     private void ShowText(String text)
