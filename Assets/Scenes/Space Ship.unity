@@ -3476,18 +3476,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 597810241}
-        m_TargetAssemblyTypeName: TriviaController, Assembly-CSharp
-        m_MethodName: InitiateTrivia
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
 --- !u!4 &1424631682
 Transform:
   m_ObjectHideFlags: 0
@@ -3725,15 +3713,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 66d9dec65d8ee134ba3922e7b220895f, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.19636819
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 66d9dec65d8ee134ba3922e7b220895f, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.19636819
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 66d9dec65d8ee134ba3922e7b220895f, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.19636819
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 66d9dec65d8ee134ba3922e7b220895f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3745,7 +3733,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 66d9dec65d8ee134ba3922e7b220895f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 5.9938993
+      value: 7.86
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 66d9dec65d8ee134ba3922e7b220895f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -3936,7 +3924,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2218496723442559053, guid: d6878e1999eb4b44a9f5a263af86c185, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -9.39
+      value: 2.75
       objectReference: {fileID: 0}
     - target: {fileID: 2218496723442559053, guid: d6878e1999eb4b44a9f5a263af86c185, type: 3}
       propertyPath: m_LocalRotation.w
