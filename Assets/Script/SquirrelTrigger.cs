@@ -28,23 +28,21 @@ public class SquirrelTrigger : MonoBehaviour
     {
         if (!isTyping)
         {
+            Destroy(GetComponent<AudioSource>());
             isTyping = true;
             StartCoroutine(SquirrelSequence());
             Debug.Log("Squirrel triggered, starting coroutine");
         }
     }
 
-    // This is a coroutine that handles the timed events.
     private IEnumerator SquirrelSequence()
     {
-        // Step 1: Play the animation
         if (squirrelAnimator != null)
         {
             squirrelAnimator.SetTrigger(animationTriggerName);
             Debug.Log("Trigger " + animationTriggerName + " set");
         }
 
-        // Step 2: Show the dialogue text
         if (dialoguePanel != null && speechBubbleAnimator != null)
         {
             dialoguePanel.SetActive(true);
@@ -52,7 +50,6 @@ public class SquirrelTrigger : MonoBehaviour
             yield return StartCoroutine(TypeText(dialogueMessage));
         }
 
-        // Step 3: Wait for a few seconds
         yield return new WaitForSeconds(dialogueDisplayTime);
 
         if (speechBubbleAnimator != null)
@@ -63,7 +60,6 @@ public class SquirrelTrigger : MonoBehaviour
 
         yield return new WaitForSeconds(speechBubbleAnimator.shrinkDuration);
 
-        // Step 4: Hide the dialogue panel
         if (dialoguePanel != null)
         {
             dialoguePanel.SetActive(false);
