@@ -17,6 +17,7 @@ public class PipeBehavior : MonoBehaviour
     public InputActionReference rightGrip;
     public Transform leftController;
     public Transform rightController;
+    public float screwMinHeight,screwMaxHeight;
 
     [SerializeField]
     private sectionBehavior section;
@@ -30,7 +31,7 @@ public class PipeBehavior : MonoBehaviour
     private Transform currentWheelPosition;
     private bool isLeftInPipe = false;
     private bool isRightInPipe = false;
-
+    #region Unity Callbacks
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -53,7 +54,7 @@ public class PipeBehavior : MonoBehaviour
                 wheelBehaviour();
                 break;
             case sectionBehavior.screw:
-                pipeBehaviour();
+                screwBehaviour();
                 break;
             case sectionBehavior.cables:
                 pipeBehaviour();
@@ -85,6 +86,16 @@ public class PipeBehavior : MonoBehaviour
             isRightInPipe = false;
         }
     }
+    private void OnCollisionStay(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Controller")) // Tag your controllers
+        {
+            Rigidbody rb = GetComponent<Rigidbody>();
+            Vector3 pushDir = collision.contacts[0].normal * -1; // Push away from contact
+            rb.AddForce(pushDir * 0.1f, ForceMode.Force);
+        }
+    }
+    #endregion
     #region ControllerCallbacks
     private void OnLeftGrip()
     {
@@ -151,6 +162,12 @@ public class PipeBehavior : MonoBehaviour
 
 
 
+    #endregion
+    #region Screw
+    private void screwBehaviour()
+    {
+        this.transform.position = new Vector3(this.transform.position.x, Mathf.Clamp(this.transform.position.y,screwMinHeight,screwMaxHeight), this.transform.position.z);
+    }
     #endregion
     #endregion
     #region Helpers
