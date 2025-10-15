@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
@@ -14,6 +15,14 @@ public class FloatingInteractableObject : MonoBehaviour
     public bool enableFloatingRotation = true;
     public Vector3 rotationSpeed = new Vector3(0, 30, 0);
 
+    [Header("Appearance Animation")]
+    [Tooltip("Duration of the appearance transition")]
+    public float appearanceDuration = 1.5f;
+    [Tooltip("Default height offset for appearance animation")]
+    public float defaultAppearanceHeight = 5f;
+    [Tooltip("Animation curve for smooth appearance")]
+    public AnimationCurve appearanceCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+
     private Vector3 startPosition;
     private Rigidbody rb;
     private XRGrabInteractable grabInteractable;
@@ -22,6 +31,8 @@ public class FloatingInteractableObject : MonoBehaviour
 
     private void Start()
     {
+        gameObject.SetActive(false);
+
         rb = GetComponent<Rigidbody>();
         grabInteractable = GetComponent<XRGrabInteractable>();
         startPosition = transform.position;
@@ -80,6 +91,58 @@ public class FloatingInteractableObject : MonoBehaviour
         }
     }
 
+    public void AppearFrom()
+    {
+        AppearFrom(defaultAppearanceHeight);
+    }
+
+    public void AppearFrom(float heightOffset)
+    {
+        AppearFrom(heightOffset, appearanceDuration);
+    }
+
+    public void AppearFrom(float heightOffset, float duration)
+    {
+        StartCoroutine(AppearanceTransition(heightOffset, duration));
+    }
+
+    private IEnumerator AppearanceTransition(float heightOffset, float duration)
+    {
+        Vector3 targetPosition = startPosition;
+        Vector3 startPos = targetPosition + Vector3.up * heightOffset;
+
+        transform.position = startPos;
+        gameObject.SetActive(true);
+
+        if (rb != null)
+        {
+            rb.isKinematic = true;
+        }
+
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            float progress = elapsedTime / duration;
+            float curveValue = appearanceCurve.Evaluate(progress);
+
+            transform.position = Vector3.Lerp(startPos, targetPosition, curveValue);
+
+            yield return null;
+        }
+
+        transform.position = targetPosition;
+
+        if (startFloating && rb != null)
+        {
+            StartFloating();
+        }
+
+        Debug.Log($"{gameObject.name} appeared at position {targetPosition}");
+    }
+
+
     private void OnGrabbed(SelectEnterEventArgs args)
     {
         isGrabbed = true;
@@ -89,13 +152,10 @@ public class FloatingInteractableObject : MonoBehaviour
     private void OnReleased(SelectExitEventArgs args)
     {
         isGrabbed = false;
-        // Don't return to floating automatically after release
-        // The ball will now follow physics
     }
 
     public void ResetToFloating()
     {
-        // Call this method if you want to reset the ball to floating state
         isGrabbed = false;
         transform.position = startPosition;
         StartFloating();
@@ -103,7 +163,6 @@ public class FloatingInteractableObject : MonoBehaviour
 
     private void OnDestroy()
     {
-        // Unsubscribe from events to prevent memory leaks
         if (grabInteractable != null)
         {
             grabInteractable.selectEntered.RemoveListener(OnGrabbed);
