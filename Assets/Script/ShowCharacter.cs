@@ -5,6 +5,7 @@ public class ShowCharacter : MonoBehaviour
     public SkinnedMeshRenderer aguita;
     public SkinnedMeshRenderer lluvia;
     private Animator lluviaAnimator;
+    private Animator aguitaAnimator;
     private persistanceData persistanceData;
     private void Awake()
     {
@@ -13,6 +14,8 @@ public class ShowCharacter : MonoBehaviour
         lluviaAnimator = lluvia.GetComponentInParent<Animator>();
         lluviaAnimator.enabled = false;
         aguita.enabled = false;
+        aguitaAnimator = aguita.GetComponentInParent<Animator>();
+        aguitaAnimator.enabled = false;
     }
     public void showCharacters()
     {
@@ -21,7 +24,8 @@ public class ShowCharacter : MonoBehaviour
             case "aguita":
                 
                 aguita.enabled = true;
-                
+                aguitaAnimator.enabled = true;
+
                 break;
             case "lluvia":
                 lluvia.enabled = true;
