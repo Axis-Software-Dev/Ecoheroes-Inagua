@@ -107,6 +107,31 @@ public class FloatingInteractableObject : MonoBehaviour
         StartCoroutine(AppearanceTransition(heightOffset, duration));
     }
 
+    public void ScaleDownAndDestroy()
+    {
+        StartCoroutine(ScaleDownCoroutine());
+    }
+
+    private IEnumerator ScaleDownCoroutine()
+    {
+        const float scaleDuration = 0.5f;
+        Vector3 originalScale = transform.localScale;
+        float elapsed = 0f;
+
+        while (elapsed < scaleDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / scaleDuration;
+
+            transform.localScale = Vector3.Lerp(originalScale, Vector3.zero, t);
+
+            yield return null;
+        }
+
+        transform.localScale = Vector3.zero;
+        Destroy(gameObject);
+    }
+
     private IEnumerator AppearanceTransition(float heightOffset, float duration)
     {
         Vector3 targetPosition = startPosition;

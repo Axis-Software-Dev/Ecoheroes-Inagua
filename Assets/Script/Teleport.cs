@@ -23,9 +23,9 @@ public class Teleport : MonoBehaviour
 
     private IEnumerator CurtainAnimation()
     {
-        float appearDuration = .5f;
-        float stayDuration = 1f;
-        float disappearDuration = .5f;
+        float appearDuration = .2f;
+        float stayDuration = .7f;
+        float disappearDuration = .2f;
 
         transform.localScale = new Vector3(originalScale.x, 0f, originalScale.z);
         transform.position = originalPosition + Vector3.up * (cylinderHeight / 2f);
