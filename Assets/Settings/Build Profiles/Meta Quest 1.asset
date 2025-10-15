@@ -40,7 +40,7 @@ MonoBehaviour:
     - line: '|   AndroidProfiler: 0'
     - line: '|   AndroidFilterTouchesWhenObscured: 0'
     - line: '|   AndroidEnableSustainedPerformanceMode: 0'
-    - line: '|   defaultScreenOrientation: 4'
+    - line: '|   defaultScreenOrientation: 3'
     - line: '|   targetDevice: 2'
     - line: '|   useOnDemandResources: 0'
     - line: '|   accelerometerFrequency: 60'
@@ -178,13 +178,7 @@ MonoBehaviour:
     - line: '|   preloadedAssets:'
     - line: '|   - {fileID: -944628639613478452, guid: c348712bda248c246b8c49b3db54643f,
         type: 3}'
-    - line: '|   - {fileID: -7047343898421619800, guid: 8320c509c6fc5d440a1965cbd736ddea,
-        type: 2}'
-    - line: '|   - {fileID: -1424735527854502216, guid: 832ba353610aa9a428da2577112b1728,
-        type: 2}'
-    - line: '|   - {fileID: 11400000, guid: eb31f7c5c889f714b9dd6872f49745a5, type:
-        2}'
-    - line: '|   - {fileID: 11400000, guid: 5547df819cbac4d49b0fbc9ab2d8649e, type:
+    - line: '|   - {fileID: 11400000, guid: 809a7f500302edd4c96bb80cd88c46dd, type:
         2}'
     - line: '|   metroInputSource: 0'
     - line: '|   wsaTransparentSwapchain: 0'
@@ -216,9 +210,9 @@ MonoBehaviour:
     - line: '|     tvOS: 0'
     - line: '|   overrideDefaultApplicationIdentifier: 1'
     - line: '|   AndroidBundleVersionCode: 1'
-    - line: '|   AndroidMinSdkVersion: 29'
+    - line: '|   AndroidMinSdkVersion: 32'
     - line: '|   AndroidTargetSdkVersion: 32'
-    - line: '|   AndroidPreferredInstallLocation: 1'
+    - line: '|   AndroidPreferredInstallLocation: 0'
     - line: '|   aotOptions: '
     - line: '|   stripEngineCode: 0'
     - line: '|   iPhoneStrippingLevel: 0'
@@ -1088,7 +1082,7 @@ MonoBehaviour:
         m_InstallInBuildFolder: 0
         m_InsightsSettingsContainer:
           m_BuildProfileEngineDiagnosticsState: 2
-        m_BuildSubtarget: 0
+        m_BuildSubtarget: 6
         m_BuildSystem: 1
         m_ExportAsGoogleAndroidProject: 0
         m_DebugSymbolLevel: 1
