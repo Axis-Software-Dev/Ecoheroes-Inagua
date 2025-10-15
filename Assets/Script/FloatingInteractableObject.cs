@@ -103,6 +103,7 @@ public class FloatingInteractableObject : MonoBehaviour
 
     public void AppearFrom(float heightOffset, float duration)
     {
+        gameObject.SetActive(true);
         StartCoroutine(AppearanceTransition(heightOffset, duration));
     }
 
@@ -112,12 +113,7 @@ public class FloatingInteractableObject : MonoBehaviour
         Vector3 startPos = targetPosition + Vector3.up * heightOffset;
 
         transform.position = startPos;
-        gameObject.SetActive(true);
-
-        if (rb != null)
-        {
-            rb.isKinematic = true;
-        }
+        rb.isKinematic = true;
 
         float elapsedTime = 0f;
 
@@ -134,8 +130,9 @@ public class FloatingInteractableObject : MonoBehaviour
 
         transform.position = targetPosition;
 
-        if (startFloating && rb != null)
+        if (startFloating)
         {
+            rb.isKinematic = false;
             StartFloating();
         }
 
