@@ -46,53 +46,28 @@ public class PipeBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isLeftInPipe)
+       
+       switch (section)
         {
-            if (leftGrippedPressed)
-            {
-                currentLeftControllerAngle = getControllerAngle(leftController);
-                float angle = getAngle(initialLeftControllerAngle, currentLeftControllerAngle);
-                angle = Mathf.Clamp(angle, -90f, 90f);
-                Debug.Log("Angle: " + angle);
-
-                setWheelRotation(angle, initialLeftControllerAngle.eulerAngles.y);
-            }
+            case sectionBehavior.wheel:
+                wheelBehaviour();
+                break;
+            case sectionBehavior.screw:
+                pipeBehaviour();
+                break;
+            case sectionBehavior.cables:
+                pipeBehaviour();
+                break;
+            default:
+                break;
         }
-        if (isRightInPipe)
-        {
-            if (rightGrippedPressed)
-            {
-                currentRightControllerAngle = getControllerAngle(rightController);
-                float angle = getAngle(initialRightControllerAngle, currentRightControllerAngle);
-                angle = Mathf.Clamp(angle, -90f, 90f);
-                Debug.Log("Angle: " + angle);
 
-                setWheelRotation(angle, initialRightControllerAngle.eulerAngles.y);
-            }
-        }
-            
-      
     }
 
     private void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("LeftController"))
         {
-            /* switch (section)
-             {
-                 case sectionBehavior.wheel:
-                     wheelBehaviour(other.gameObject);
-
-                     break;
-                 case sectionBehavior.screw:
-                     //screwBehaviour(other.gameObject);
-                     break;
-                 case sectionBehavior.cables:
-                     //cablesBehaviour(other.gameObject);
-                     break;
-                 default:
-                     break;
-             }*/
             isLeftInPipe = true;
         }
         else if (other.CompareTag("RightController"))
@@ -142,14 +117,34 @@ public class PipeBehavior : MonoBehaviour
     {
         this.transform.rotation = Quaternion.Euler(0, (currentPosition + angle), 0);
     }
-    private void wheelBehaviour(GameObject controller)
+    private void wheelBehaviour()
     {
-        Quaternion rotationA = Quaternion.identity, rotationB = Quaternion.identity;
-        if (leftGrippedPressed) {
-            
+        if (isLeftInPipe)
+        {
+            if (leftGrippedPressed)
+            {
+                currentLeftControllerAngle = getControllerAngle(leftController);
+                float angle = getAngle(initialLeftControllerAngle, currentLeftControllerAngle);
+                angle = Mathf.Clamp(angle, -90f, 90f);
+                Debug.Log("Angle: " + angle);
+
+                setWheelRotation(angle, initialLeftControllerAngle.eulerAngles.y);
+            }
+        }
+        if (isRightInPipe)
+        {
+            if (rightGrippedPressed)
+            {
+                currentRightControllerAngle = getControllerAngle(rightController);
+                float angle = getAngle(initialRightControllerAngle, currentRightControllerAngle);
+                angle = Mathf.Clamp(angle, -90f, 90f);
+                Debug.Log("Angle: " + angle);
+
+                setWheelRotation(angle, initialRightControllerAngle.eulerAngles.y);
+            }
         }
 
-        
+
 
     }
 
