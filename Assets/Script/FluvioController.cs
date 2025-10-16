@@ -446,7 +446,7 @@ namespace Fluvio
 
             yield return new WaitForSeconds(6.5f);
 
-            GameObject.Find("SceneManager").GetComponent<LoadingScreen>().LoadScene(4);
+            GameObject.Find("SceneManager").GetComponent<LoadingScreen>().LoadScene(3);
         }
 
         public void StopTimer()
