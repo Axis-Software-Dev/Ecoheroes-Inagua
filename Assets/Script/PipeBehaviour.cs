@@ -31,6 +31,8 @@ public class PipeBehavior : MonoBehaviour
     private Transform currentWheelPosition;
     private bool isLeftInPipe = false;
     private bool isRightInPipe = false;
+    private LineRenderer cableRenderer;
+    private bool cableGrabed;
     #region Unity Callbacks
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -42,6 +44,9 @@ public class PipeBehavior : MonoBehaviour
         leftGrip.action.canceled += ctx => leftGrippedPressed=false;
         rightGrip.action.canceled += ctx => rightGrippedPressed=false;
         currentWheelPosition = this.transform;
+        cableRenderer = this.GetComponent<LineRenderer>();
+        
+        if(cableRenderer!=null)cableRenderer.enabled= false;
     }
 
     // Update is called once per frame
@@ -57,7 +62,7 @@ public class PipeBehavior : MonoBehaviour
                 screwBehaviour();
                 break;
             case sectionBehavior.cables:
-                pipeBehaviour();
+                cableBehaviour();
                 break;
             default:
                 break;
@@ -65,7 +70,7 @@ public class PipeBehavior : MonoBehaviour
 
     }
 
-    private void OnTriggerStay(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("LeftController"))
         {
@@ -84,15 +89,6 @@ public class PipeBehavior : MonoBehaviour
         } else if (other.CompareTag("RightController"))
         {
             isRightInPipe = false;
-        }
-    }
-    private void OnCollisionStay(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Controller")) // Tag your controllers
-        {
-            Rigidbody rb = GetComponent<Rigidbody>();
-            Vector3 pushDir = collision.contacts[0].normal * -1; // Push away from contact
-            rb.AddForce(pushDir * 0.1f, ForceMode.Force);
         }
     }
     #endregion
@@ -167,6 +163,38 @@ public class PipeBehavior : MonoBehaviour
     private void screwBehaviour()
     {
         this.transform.position = new Vector3(this.transform.position.x, Mathf.Clamp(this.transform.position.y,screwMinHeight,screwMaxHeight), this.transform.position.z);
+    }
+    #endregion
+    #region Cable
+    private void cableBehaviour()
+    {
+        
+        if(isLeftInPipe) 
+        {
+            
+            if (leftGrippedPressed&&!cableGrabed)
+            {
+                cableGrabed = true;
+            }
+        }
+
+        if(!leftGrippedPressed)
+        {
+            cableGrabed = false;
+        }
+        if (cableGrabed)
+        {
+            cableRenderer.enabled = true;
+            cableRenderer.SetPosition(0, transform.position);
+            cableRenderer.SetPosition(1, leftController.position);
+            
+        }
+        else
+        {
+            cableRenderer.enabled = false;
+        }
+       
+
     }
     #endregion
     #endregion
