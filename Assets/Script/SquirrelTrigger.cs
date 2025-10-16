@@ -5,12 +5,13 @@ using TMPro;
 public class SquirrelTrigger : MonoBehaviour
 {
     [Header("UI Elements")]
-    public GameObject dialoguePanel; // Drag UI Panel here
-    public TextMeshProUGUI dialogueText; // Drag TextMeshPro component here
+    public GameObject dialoguePanel;
+    public GameObject interactableIndicatorPanel;
+    public TextMeshProUGUI dialogueText;
 
     [Header("Animation and Audio")]
-    public Animator squirrelAnimator; // Drag the Animator component here
-    public string animationTriggerName = "Sad"; // Name of the animation trigger
+    public Animator squirrelAnimator;
+    public string animationTriggerName = "Sad";
 
     [Header("Dialogue Content")]
     [TextArea(3, 10)]
@@ -20,12 +21,54 @@ public class SquirrelTrigger : MonoBehaviour
 
     [Header("Bubble Animation")]
     public SpeechBubbleAnimator speechBubbleAnimator;
-    private bool isTyping = false;
-
     [Header("Alien slave")]
     public ShipController shipController;
+    private bool isTyping = false;
+    private Vector3 indicatorOriginalPosition;
+    private bool isIndicatorActive = false;
+
+    private void Start()
+    {
+        if (interactableIndicatorPanel != null)
+        {
+            indicatorOriginalPosition = interactableIndicatorPanel.transform.localPosition;
+            interactableIndicatorPanel.SetActive(false);
+            StartCoroutine(ShowIndicatorAfterDelay());
+        }
+    }
+
+    private void Update()
+    {
+        if (isIndicatorActive && interactableIndicatorPanel != null)
+        {
+            float newY = indicatorOriginalPosition.y + Mathf.Sin(Time.time * 2) * .1f;
+            interactableIndicatorPanel.transform.localPosition = new Vector3(
+                indicatorOriginalPosition.x,
+                newY,
+                indicatorOriginalPosition.z
+            );
+        }
+    }
+
+    private IEnumerator ShowIndicatorAfterDelay()
+    {
+        yield return new WaitForSeconds(3f);
+
+        if (interactableIndicatorPanel != null)
+        {
+            interactableIndicatorPanel.SetActive(true);
+            isIndicatorActive = true;
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
+        if (interactableIndicatorPanel != null && isIndicatorActive)
+        {
+            interactableIndicatorPanel.SetActive(false);
+            isIndicatorActive = false;
+        }
+
         if (!isTyping)
         {
             Destroy(GetComponent<AudioSource>());
@@ -37,18 +80,12 @@ public class SquirrelTrigger : MonoBehaviour
 
     private IEnumerator SquirrelSequence()
     {
-        if (squirrelAnimator != null)
-        {
-            squirrelAnimator.SetTrigger(animationTriggerName);
-            Debug.Log("Trigger " + animationTriggerName + " set");
-        }
+        squirrelAnimator.SetTrigger(animationTriggerName);
+        Debug.Log("Trigger " + animationTriggerName + " set");
 
-        if (dialoguePanel != null && speechBubbleAnimator != null)
-        {
-            dialoguePanel.SetActive(true);
-            speechBubbleAnimator.AnimateIn();
-            yield return StartCoroutine(TypeText(dialogueMessage));
-        }
+        dialoguePanel.SetActive(true);
+        speechBubbleAnimator.AnimateIn();
+        yield return StartCoroutine(TypeText(dialogueMessage));
 
         yield return new WaitForSeconds(dialogueDisplayTime);
 
