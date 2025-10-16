@@ -606,7 +606,7 @@ Transform:
   m_GameObject: {fileID: 576674531}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.72148, y: 0, z: 8.916}
+  m_LocalPosition: {x: -2.72148, y: 0.02, z: 8.916}
   m_LocalScale: {x: 0.1, y: 0.27, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -624,17 +624,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92e1a4963a06dc6488c9127aa0c95b44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PipeBehavior
+  section: 1
   leftGrip: {fileID: -9177550282857323390, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   rightGrip: {fileID: 6521325183407146879, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   leftController: {fileID: 154008953}
   rightController: {fileID: 1242771261}
+  isActive: 0
+  currentWheelPosition: 0
   screwMinHeight: 0
   screwMaxHeight: 0.2
+  screwSpeed: 30
   destination: {fileID: 0}
   cableMesh: {fileID: 0}
-  section: 1
   cableGrabed: 0
-  isActive: 0
 --- !u!65 &576674538
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -665,10 +667,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 667902517}
+  - component: {fileID: 667902518}
   - component: {fileID: 667902516}
   - component: {fileID: 667902515}
   - component: {fileID: 667902514}
-  - component: {fileID: 667902518}
   - component: {fileID: 667902519}
   m_Layer: 0
   m_Name: Wheel
@@ -781,17 +783,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92e1a4963a06dc6488c9127aa0c95b44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PipeBehavior
+  section: 0
   leftGrip: {fileID: -9177550282857323390, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   rightGrip: {fileID: 6521325183407146879, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   leftController: {fileID: 154008953}
   rightController: {fileID: 1242771261}
+  isActive: 0
+  currentWheelPosition: 0
   screwMinHeight: 0
   screwMaxHeight: 0
+  screwSpeed: 0
   destination: {fileID: 0}
   cableMesh: {fileID: 0}
-  section: 0
   cableGrabed: 0
-  isActive: 0
 --- !u!54 &667902519
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1202,17 +1206,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92e1a4963a06dc6488c9127aa0c95b44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PipeBehavior
+  section: 2
   leftGrip: {fileID: -9177550282857323390, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   rightGrip: {fileID: 6521325183407146879, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   leftController: {fileID: 154008953}
   rightController: {fileID: 1242771261}
+  isActive: 0
+  currentWheelPosition: 0
   screwMinHeight: 0
   screwMaxHeight: 0
+  screwSpeed: 0
   destination: {fileID: 1170120995}
   cableMesh: {fileID: 1327414806}
-  section: 2
   cableGrabed: 0
-  isActive: 0
 --- !u!120 &1060866517
 LineRenderer:
   serializedVersion: 2

@@ -28,7 +28,7 @@ public class PipeBehavior : MonoBehaviour
     [SerializeField] private bool isActive = false;
 
     [Header("Wheel Settings")]
-    [SerializeField]private Transform currentWheelPosition;
+    [SerializeField]private float currentWheelPosition=0;
     private Quaternion initialLeftControllerAngle;
     private Quaternion currentLeftControllerAngle;
     private Quaternion currentRightControllerAngle;
@@ -65,7 +65,7 @@ public class PipeBehavior : MonoBehaviour
         rightGrip.action.started += ctx => rightGrippedPressed=true;
         leftGrip.action.canceled += ctx => leftGrippedPressed=false;
         rightGrip.action.canceled += ctx => rightGrippedPressed=false;
-        currentWheelPosition = this.transform;
+        
         cableRenderer = this.GetComponent<LineRenderer>();
 
         if (cableRenderer != null)
@@ -131,6 +131,7 @@ public class PipeBehavior : MonoBehaviour
     private void OnRightGrip()
     {
         initialRightControllerAngle = getControllerAngle(rightController);
+        
     }
    
 
@@ -157,6 +158,7 @@ public class PipeBehavior : MonoBehaviour
     }
     private void wheelBehaviour()
     {
+        transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x,Mathf.Clamp(transform.rotation.eulerAngles.y,-180f,180f),transform.rotation.eulerAngles.z);
         if (isLeftInPipe)
         {
             if (leftGrippedPressed)
@@ -166,7 +168,11 @@ public class PipeBehavior : MonoBehaviour
                 angle = Mathf.Clamp(angle, -90f, 90f);
                 Debug.Log("Angle: " + angle);
 
-                setWheelRotation(angle, initialLeftControllerAngle.eulerAngles.y);
+                setWheelRotation(angle, currentWheelPosition);
+            }
+            else
+            {
+                currentWheelPosition = transform.rotation.eulerAngles.y;
             }
         }
         if (isRightInPipe)
@@ -175,10 +181,16 @@ public class PipeBehavior : MonoBehaviour
             {
                 currentRightControllerAngle = getControllerAngle(rightController);
                 float angle = getAngle(initialRightControllerAngle, currentRightControllerAngle);
-                angle = Mathf.Clamp(angle, -90f, 90f);
+                //transform.eulerAngles = new Vector3(transform.eulerAngles.x, Mathf.Clamp(transform.eulerAngles.y, -45, 45), transform.eulerAngles.z);
+                angle = Mathf.Clamp(angle,-90,90);
                 Debug.Log("Angle: " + angle);
 
-                setWheelRotation(angle, initialRightControllerAngle.eulerAngles.y);
+                setWheelRotation(angle, currentWheelPosition);
+            }
+            else
+            {
+                currentWheelPosition = transform.rotation.eulerAngles.y;
+                currentWheelPosition = Mathf.Clamp(currentWheelPosition, -180, 180);
             }
         }
 
