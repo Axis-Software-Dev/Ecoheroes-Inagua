@@ -18,6 +18,8 @@ public class PipeBehavior : MonoBehaviour
     public Transform leftController;
     public Transform rightController;
     public float screwMinHeight,screwMaxHeight;
+    public GameObject destination;
+    public MeshRenderer cableMesh;
 
     [SerializeField]
     private sectionBehavior section;
@@ -32,7 +34,11 @@ public class PipeBehavior : MonoBehaviour
     private bool isLeftInPipe = false;
     private bool isRightInPipe = false;
     private LineRenderer cableRenderer;
+    [SerializeField]
     private bool cableGrabed;
+    private destinationDetection endDestination;
+    private bool previousCableState=false;
+    [SerializeField] private bool isActive=false;
     #region Unity Callbacks
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -40,13 +46,22 @@ public class PipeBehavior : MonoBehaviour
         leftGrip.action.performed += ctx => OnLeftGrip();
         rightGrip.action.performed += ctx => OnRightGrip();
         leftGrip.action.started += ctx => leftGrippedPressed=true;
-        rightGrip.action.started += ctx => rightGrippedPressed=false;
+        rightGrip.action.started += ctx => rightGrippedPressed=true;
         leftGrip.action.canceled += ctx => leftGrippedPressed=false;
         rightGrip.action.canceled += ctx => rightGrippedPressed=false;
         currentWheelPosition = this.transform;
         cableRenderer = this.GetComponent<LineRenderer>();
-        
-        if(cableRenderer!=null)cableRenderer.enabled= false;
+
+        if (cableRenderer != null)
+        {
+
+            cableRenderer.enabled = false;
+            endDestination=destination?.GetComponent<destinationDetection>();
+
+        }
+
+
+        activate();
     }
 
     // Update is called once per frame
@@ -166,42 +181,106 @@ public class PipeBehavior : MonoBehaviour
     }
     #endregion
     #region Cable
+
     private void cableBehaviour()
     {
+        rightControllerLogic();
         
-        if(isLeftInPipe) 
+
+    
+        
+    }
+
+    private void leftControllerLogic()
+    {
+      
+
+        if (isLeftInPipe)
         {
-            
-            if (leftGrippedPressed&&!cableGrabed)
+            if (leftGrippedPressed)
             {
                 cableGrabed = true;
             }
         }
 
-        if(!leftGrippedPressed)
+        if (!leftGrippedPressed)
         {
             cableGrabed = false;
         }
+
         if (cableGrabed)
         {
             cableRenderer.enabled = true;
             cableRenderer.SetPosition(0, transform.position);
             cableRenderer.SetPosition(1, leftController.position);
-            
+            if (endDestination?.isLeftInDestination == true)
+            {
+
+                // Detecta transición de cable conectado
+                if (previousCableState && !leftGrippedPressed)
+                {
+                    Debug.Log("Cable connected");
+                }
+            }
         }
         else
         {
             cableRenderer.enabled = false;
         }
-       
 
+        previousCableState = leftGrippedPressed;
+    }
+    private void rightControllerLogic()
+    {
+        if (endDestination?.isRightInDestination == true)
+        {
+
+            // Detecta transición de cable conectado
+            if (previousCableState && !rightGrippedPressed)
+            {
+                Debug.Log("Cable connected");
+                if (isActive)deactivate();
+            }
+        }
+
+        if (isRightInPipe)
+        {
+            if (rightGrippedPressed)
+            {
+                cableGrabed = true;
+            }
+        }
+
+        if (!rightGrippedPressed)
+        {
+            cableGrabed = false;
+        }
+
+        if (cableGrabed)
+        {
+            cableRenderer.enabled = true;
+            cableRenderer.SetPosition(0, transform.position);
+            cableRenderer.SetPosition(1, rightController.position);
+        }
+        else
+        {
+            cableRenderer.enabled = false;
+        }
+        previousCableState = rightGrippedPressed;
     }
     #endregion
     #endregion
     #region Helpers
-    public void pipeBehaviour()
+    public void activate()
     {
-      
+        isActive = true;
+        
+        if(cableMesh!=null)cableMesh.enabled = false;
+    }
+    public void deactivate()
+    {
+        isActive = false;
+        if (cableMesh != null) cableMesh.enabled = true;
     }
     #endregion
 }
