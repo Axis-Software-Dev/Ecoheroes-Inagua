@@ -12,33 +12,49 @@ public class PipeBehavior : MonoBehaviour
         screw,
         cables
     }
+
+    [Header("Type of pipe Minigame")]
+    [SerializeField]private sectionBehavior section;
     
+    [Header("General Settings")]
     public InputActionReference leftGrip;
     public InputActionReference rightGrip;
     public Transform leftController;
     public Transform rightController;
-    public float screwMinHeight,screwMaxHeight;
-    public GameObject destination;
-    public MeshRenderer cableMesh;
-
-    [SerializeField]
-    private sectionBehavior section;
     private bool leftGrippedPressed = false;
     private bool rightGrippedPressed = false;
+    private bool isLeftInPipe = false;
+    private bool isRightInPipe = false;
+    [SerializeField] private bool isActive = false;
+
+    [Header("Wheel Settings")]
+    [SerializeField]private Transform currentWheelPosition;
     private Quaternion initialLeftControllerAngle;
     private Quaternion currentLeftControllerAngle;
     private Quaternion currentRightControllerAngle;
     private Quaternion initialRightControllerAngle;
-    private Collider colliderObject;
-    private Transform currentWheelPosition;
-    private bool isLeftInPipe = false;
-    private bool isRightInPipe = false;
+
+    [Header("Screw Settings")]
+    public float screwMinHeight;
+    public float screwMaxHeight;
+    [SerializeField] private float screwSpeed = 0f;
+    private static float speedValue = 0f;
+
+    [Header("Cable Settings")]
+    public GameObject destination;
+    public MeshRenderer cableMesh;
     private LineRenderer cableRenderer;
-    [SerializeField]
-    private bool cableGrabed;
+    [SerializeField] private bool cableGrabed;
     private destinationDetection endDestination;
-    private bool previousCableState=false;
-    [SerializeField] private bool isActive=false;
+    private bool previousCableState = false;
+
+
+
+
+
+
+
+
     #region Unity Callbacks
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -178,6 +194,8 @@ public class PipeBehavior : MonoBehaviour
     private void screwBehaviour()
     {
         this.transform.position = new Vector3(this.transform.position.x, Mathf.Clamp(this.transform.position.y,screwMinHeight,screwMaxHeight), this.transform.position.z);
+        if (isActive) transform.position = new Vector3(transform.position.x, Mathf.SmoothDamp(transform.position.y, screwMaxHeight, ref speedValue, screwSpeed * Time.deltaTime), transform.position.z);
+        if (transform.position.y <= 0.01f&& isActive) deactivate();
     }
     #endregion
     #region Cable
@@ -274,13 +292,40 @@ public class PipeBehavior : MonoBehaviour
     public void activate()
     {
         isActive = true;
+
+        switch (section)
+        {
+            case sectionBehavior.cables:
+                if (cableMesh != null) cableMesh.enabled = false;
+                break;
+            case sectionBehavior.screw:
+                transform.position=new Vector3(transform.position.x, 0.02f, transform.position.z);
+
+               
+                break;
+            case sectionBehavior.wheel:
+                //wheelLogic
+                break;
+        }
+
         
-        if(cableMesh!=null)cableMesh.enabled = false;
     }
     public void deactivate()
     {
         isActive = false;
-        if (cableMesh != null) cableMesh.enabled = true;
+        switch (section)
+        { 
+            case sectionBehavior.cables:
+                if (cableMesh != null) cableMesh.enabled = true;
+                break;
+            case sectionBehavior.screw:
+                    transform.position = new Vector3(transform.position.x,screwMinHeight,transform.position.z);
+                break;
+            case sectionBehavior.wheel:
+                    //wheelLogic
+                break;
+
+        }
     }
     #endregion
 }
