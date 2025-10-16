@@ -33,6 +33,10 @@ public class PipeBehavior : MonoBehaviour
     private Quaternion currentLeftControllerAngle;
     private Quaternion currentRightControllerAngle;
     private Quaternion initialRightControllerAngle;
+    private float[] rotationRanges = { 0f, 60f, 120f, 180f, 240f, 300f, 360f };
+    [SerializeField]private const int MAX_CHECKPOINTS = 5;
+    private int checkPoints = 0;
+    private int lastCheckpoint = 0;
 
     [Header("Screw Settings")]
     public float screwMinHeight;
@@ -87,13 +91,13 @@ public class PipeBehavior : MonoBehaviour
        switch (section)
         {
             case sectionBehavior.wheel:
-                wheelBehaviour();
+                if(isActive)wheelBehaviour();
                 break;
             case sectionBehavior.screw:
-                screwBehaviour();
+                if(isActive)screwBehaviour();
                 break;
             case sectionBehavior.cables:
-                cableBehaviour();
+                if(isActive)cableBehaviour();
                 break;
             default:
                 break;
@@ -158,15 +162,15 @@ public class PipeBehavior : MonoBehaviour
     }
     private void wheelBehaviour()
     {
-        transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x,Mathf.Clamp(transform.rotation.eulerAngles.y,-180f,180f),transform.rotation.eulerAngles.z);
+      
+
+        
         if (isLeftInPipe)
         {
             if (leftGrippedPressed)
             {
                 currentLeftControllerAngle = getControllerAngle(leftController);
                 float angle = getAngle(initialLeftControllerAngle, currentLeftControllerAngle);
-                angle = Mathf.Clamp(angle, -90f, 90f);
-                Debug.Log("Angle: " + angle);
 
                 setWheelRotation(angle, currentWheelPosition);
             }
@@ -181,23 +185,53 @@ public class PipeBehavior : MonoBehaviour
             {
                 currentRightControllerAngle = getControllerAngle(rightController);
                 float angle = getAngle(initialRightControllerAngle, currentRightControllerAngle);
-                //transform.eulerAngles = new Vector3(transform.eulerAngles.x, Mathf.Clamp(transform.eulerAngles.y, -45, 45), transform.eulerAngles.z);
-                angle = Mathf.Clamp(angle,-90,90);
-                Debug.Log("Angle: " + angle);
-
                 setWheelRotation(angle, currentWheelPosition);
             }
             else
             {
                 currentWheelPosition = transform.rotation.eulerAngles.y;
-                currentWheelPosition = Mathf.Clamp(currentWheelPosition, -180, 180);
             }
         }
+        int currentRangeIndex = GetCurrentRangeIndex();  // Obtiene el índice del rango actual
+        UpdateCheckPoints(currentRangeIndex);  // Función para manejar checkpoints
+        if (checkPoints == MAX_CHECKPOINTS&& lastCheckpoint == MAX_CHECKPOINTS - 1)
+        {
+               
 
+                deactivate();
+            
+        }
+        lastCheckpoint = checkPoints;
 
 
     }
 
+    private int GetCurrentRangeIndex()
+    {
+        float angleY = transform.rotation.eulerAngles.y;  // Obtiene el ángulo Z
+        for (int i = 0; i < rotationRanges.Length - 1; i++)
+        {
+            if (angleY >= rotationRanges[i] && angleY < rotationRanges[i + 1])
+            {
+                
+                return i;  // Retorna el índice del rango (0-5)
+            }
+        }
+        return 5;  // Si está entre 300-360, retorna 5
+    }
+    private void UpdateCheckPoints(int currentRangeIndex)
+    {
+        int expectedCheckPoint = currentRangeIndex;  // El rango actual debería coincidir con el checkpoint
+        if (checkPoints == expectedCheckPoint + 1) 
+        {
+            checkPoints--;  
+        }
+        else if (checkPoints == expectedCheckPoint - 1)  
+        {
+            checkPoints++;  
+        }
+        Debug.Log("Current checkpoint: " + checkPoints);
+    }
 
 
 
@@ -316,7 +350,8 @@ public class PipeBehavior : MonoBehaviour
                
                 break;
             case sectionBehavior.wheel:
-                //wheelLogic
+                checkPoints = 0;
+                lastCheckpoint = 0;
                 break;
         }
 
@@ -334,7 +369,9 @@ public class PipeBehavior : MonoBehaviour
                     transform.position = new Vector3(transform.position.x,screwMinHeight,transform.position.z);
                 break;
             case sectionBehavior.wheel:
-                    //wheelLogic
+                checkPoints = 0;
+                lastCheckpoint = 0;
+                Debug.Log("Wheel spinned 1 time");
                 break;
 
         }
