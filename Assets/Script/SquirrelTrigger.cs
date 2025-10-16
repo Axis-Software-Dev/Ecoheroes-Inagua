@@ -52,7 +52,7 @@ public class SquirrelTrigger : MonoBehaviour
 
     private IEnumerator ShowIndicatorAfterDelay()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(30f);
 
         if (interactableIndicatorPanel != null)
         {
