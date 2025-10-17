@@ -516,6 +516,7 @@ GameObject:
   - component: {fileID: 92397285}
   - component: {fileID: 92397284}
   - component: {fileID: 92397283}
+  - component: {fileID: 92397286}
   m_Layer: 5
   m_Name: Button no
   m_TagString: Untagged
@@ -636,6 +637,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 92397281}
   m_CullTransparentMesh: 1
+--- !u!114 &92397286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 92397281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e289a12aea0a364a97cac9568008745, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonHoverHandler
+  hudHandler: {fileID: 1303683179}
+  hoverMessage: Press trigger to select
 --- !u!1001 &112277341
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -890,6 +905,7 @@ GameObject:
   - component: {fileID: 225517858}
   - component: {fileID: 225517857}
   - component: {fileID: 225517856}
+  - component: {fileID: 225517859}
   m_Layer: 5
   m_Name: Button yes 2
   m_TagString: Untagged
@@ -1010,6 +1026,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 225517854}
   m_CullTransparentMesh: 1
+--- !u!114 &225517859
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 225517854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e289a12aea0a364a97cac9568008745, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonHoverHandler
+  hudHandler: {fileID: 1303683179}
+  hoverMessage: Press trigger to select
 --- !u!1001 &271229137
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2329,6 +2359,7 @@ GameObject:
   - component: {fileID: 1108446447}
   - component: {fileID: 1108446446}
   - component: {fileID: 1108446445}
+  - component: {fileID: 1108446448}
   m_Layer: 5
   m_Name: Button no 2
   m_TagString: Untagged
@@ -2449,6 +2480,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1108446443}
   m_CullTransparentMesh: 1
+--- !u!114 &1108446448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1108446443}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e289a12aea0a364a97cac9568008745, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonHoverHandler
+  hudHandler: {fileID: 1303683179}
+  hoverMessage: Press trigger to select
 --- !u!1 &1140506404
 GameObject:
   m_ObjectHideFlags: 0
@@ -3344,6 +3389,7 @@ GameObject:
   - component: {fileID: 1413502728}
   - component: {fileID: 1413502727}
   - component: {fileID: 1413502726}
+  - component: {fileID: 1413502729}
   m_Layer: 5
   m_Name: Button yes
   m_TagString: Untagged
@@ -3464,6 +3510,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1413502724}
   m_CullTransparentMesh: 1
+--- !u!114 &1413502729
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1413502724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e289a12aea0a364a97cac9568008745, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonHoverHandler
+  hudHandler: {fileID: 1303683179}
+  hoverMessage: Press trigger to select
 --- !u!1 &1424631680
 GameObject:
   m_ObjectHideFlags: 0
@@ -4230,7 +4290,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70cf6d94e1e755049b38deed5bbd8225, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  hudTypewriter: {fileID: 1303683179}
+  hudHandler: {fileID: 1303683179}
   grabMessage: Grab to pick up
   interactMessage: Press trigger to interact
 --- !u!114 &1567617701
@@ -4245,7 +4305,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70cf6d94e1e755049b38deed5bbd8225, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  hudTypewriter: {fileID: 1303683179}
+  hudHandler: {fileID: 1303683179}
   grabMessage: Grab to pick up
   interactMessage: Press trigger to interact
 --- !u!114 &1567617702
@@ -4260,7 +4320,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70cf6d94e1e755049b38deed5bbd8225, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  hudTypewriter: {fileID: 1303683179}
+  hudHandler: {fileID: 1303683179}
   grabMessage: Grab to pick up
   interactMessage: Press trigger to interact
 --- !u!114 &1567617703
@@ -4275,7 +4335,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70cf6d94e1e755049b38deed5bbd8225, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  hudTypewriter: {fileID: 1303683179}
+  hudHandler: {fileID: 1303683179}
   grabMessage: Grab to pick up
   interactMessage: Press trigger to interact
 --- !u!1 &1722759711
