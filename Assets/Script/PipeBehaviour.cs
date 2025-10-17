@@ -213,10 +213,10 @@ public class PipeBehavior : MonoBehaviour
 
     private int GetCurrentRangeIndex()
     {
-        float angleY = transform.rotation.eulerAngles.y;  // Obtiene el ángulo Z
+        float angleX = transform.rotation.eulerAngles.x;  // Obtiene el ángulo Z
         for (int i = 0; i < rotationRanges.Length - 1; i++)
         {
-            if (angleY >= rotationRanges[i] && angleY < rotationRanges[i + 1])
+            if (angleX >= rotationRanges[i] && angleX < rotationRanges[i + 1])
             {
                 
                 return i;  // Retorna el índice del rango (0-5)
