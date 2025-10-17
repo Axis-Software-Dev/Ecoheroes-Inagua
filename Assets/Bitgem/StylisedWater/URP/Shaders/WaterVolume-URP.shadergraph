@@ -574,9 +574,6 @@
             "m_Id": "85cafa24a1b54441a4686d31c04e2a4d"
         },
         {
-            "m_Id": "c3ed43ab13314867a1cfe229b8b6fa09"
-        },
-        {
             "m_Id": "eab643223b054543adfe16b3f17a1f8c"
         },
         {
@@ -3259,9 +3256,6 @@
             },
             {
                 "m_Id": "85cafa24a1b54441a4686d31c04e2a4d"
-            },
-            {
-                "m_Id": "c3ed43ab13314867a1cfe229b8b6fa09"
             },
             {
                 "m_Id": "eab643223b054543adfe16b3f17a1f8c"
@@ -10028,8 +10022,8 @@
     "m_ObjectId": "557f08b8d98945ef973b0eb1f73bc167",
     "m_Title": "UVs (Scaling / Overlap / Scrolling)",
     "m_Position": {
-        "x": -6598.6669921875,
-        "y": 195.333251953125
+        "x": -6598.66650390625,
+        "y": 195.33349609375
     }
 }
 
@@ -10079,8 +10073,8 @@
     "m_ObjectId": "559690a9443d41aeae939ef8119c3a80",
     "m_Title": "Foam",
     "m_Position": {
-        "x": -2435.33349609375,
-        "y": 104.66650390625
+        "x": -2435.333251953125,
+        "y": 104.6666259765625
     }
 }
 
@@ -10809,7 +10803,7 @@
     "m_Title": "Screen Colour (with refraction)",
     "m_Position": {
         "x": -3556.666748046875,
-        "y": -1116.666748046875
+        "y": -1116.6666259765625
     }
 }
 
@@ -11865,8 +11859,8 @@
     "m_ObjectId": "6f8c631c586a40fc89dcd8ac1194b669",
     "m_Title": "Final Color (Water vs Foam)",
     "m_Position": {
-        "x": -1186.6669921875,
-        "y": 109.333251953125
+        "x": -1186.666748046875,
+        "y": 109.3333740234375
     }
 }
 
@@ -12191,7 +12185,7 @@
     "m_Title": "Opacity",
     "m_Position": {
         "x": -3104.666748046875,
-        "y": -466.666748046875
+        "y": -466.6666259765625
     }
 }
 
@@ -16794,7 +16788,7 @@
     "m_SurfaceType": 0,
     "m_ZTestMode": 4,
     "m_ZWriteControl": 0,
-    "m_AlphaMode": 0,
+    "m_AlphaMode": 1,
     "m_RenderFace": 2,
     "m_AlphaClip": false,
     "m_CastShadows": true,
@@ -18670,40 +18664,6 @@
 
 {
     "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.BlockNode",
-    "m_ObjectId": "c3ed43ab13314867a1cfe229b8b6fa09",
-    "m_Group": {
-        "m_Id": ""
-    },
-    "m_Name": "SurfaceDescription.Alpha",
-    "m_DrawState": {
-        "m_Expanded": true,
-        "m_Position": {
-            "serializedVersion": "2",
-            "x": 0.0,
-            "y": 0.0,
-            "width": 0.0,
-            "height": 0.0
-        }
-    },
-    "m_Slots": [
-        {
-            "m_Id": "e9cf37b0eb784c92b72e39a15969522e"
-        }
-    ],
-    "synonyms": [],
-    "m_Precision": 0,
-    "m_PreviewExpanded": true,
-    "m_DismissedVersion": 0,
-    "m_PreviewMode": 0,
-    "m_CustomColors": {
-        "m_SerializableColors": []
-    },
-    "m_SerializedDescriptor": "SurfaceDescription.Alpha"
-}
-
-{
-    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.DynamicValueMaterialSlot",
     "m_ObjectId": "c461c69b22251b8badbc235d89db8099",
     "m_Id": 2,
@@ -19231,7 +19191,7 @@
     "m_ObjectId": "c8f8180e30744bd3bed208f488cb94ba",
     "m_Title": "Vertex Waves",
     "m_Position": {
-        "x": -1794.6669921875,
+        "x": -1794.666748046875,
         "y": -1689.33349609375
     }
 }
@@ -21602,7 +21562,7 @@
     "m_ObjectId": "e441adb88f544df0a45d8b2b19977dbf",
     "m_Title": "Flatten Normals (Foam)",
     "m_Position": {
-        "x": -298.666748046875,
+        "x": -298.66650390625,
         "y": 659.333251953125
     }
 }
@@ -22130,21 +22090,6 @@
     "m_Property": {
         "m_Id": "7c360368dfa1e680b9a5f45799caffe5"
     }
-}
-
-{
-    "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
-    "m_ObjectId": "e9cf37b0eb784c92b72e39a15969522e",
-    "m_Id": 0,
-    "m_DisplayName": "Alpha",
-    "m_SlotType": 0,
-    "m_Hidden": false,
-    "m_ShaderOutputName": "Alpha",
-    "m_StageCapability": 2,
-    "m_Value": 1.0,
-    "m_DefaultValue": 1.0,
-    "m_Labels": []
 }
 
 {
