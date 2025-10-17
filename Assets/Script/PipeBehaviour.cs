@@ -376,5 +376,9 @@ public class PipeBehavior : MonoBehaviour
 
         }
     }
+    public string getSectionType()
+    {
+        return section.ToString();
+    }
     #endregion
 }
