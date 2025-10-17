@@ -21,7 +21,7 @@ public class CalorInfernalScript : MonoBehaviour
     }
     void Start()
     {
-        
+        SelectObjective();
     }
 
     // Update is called once per frame
@@ -31,8 +31,8 @@ public class CalorInfernalScript : MonoBehaviour
         if(isMoving)MoveToPipe(randObj);
         if (transform.position == pipeSection[randObj].transform.position&&lastPosition!= pipeSection[randObj].transform.position) { 
             Debug.Log("Llegue al objetivo");
-            
-            calorInfAnimator.SetTrigger("Punch");
+
+            StartAnimation(pipeSection[randObj].GetComponent<PipeBehavior>().getSectionType());
         }
         lastPosition= transform.position;
     }
@@ -49,7 +49,7 @@ public class CalorInfernalScript : MonoBehaviour
     }
     private void MoveToPipe(int pipeNumber)
     {
-        transform.position = Vector3.MoveTowards(transform.position, pipeSection[pipeNumber].transform.position,moveSpeed*Time.deltaTime);
+        transform.position = Vector3.Slerp(transform.position, pipeSection[pipeNumber].transform.position,moveSpeed*Time.deltaTime);
     }
 
 
@@ -57,6 +57,25 @@ public class CalorInfernalScript : MonoBehaviour
     {
         randObj= Random.Range(0, pipeSection.Length);
         
-       ;
+       
+    }
+   
+    private void StartAnimation(string objectType)
+    {
+        switch (objectType)
+        {
+            case "cables":
+                calorInfAnimator.SetTrigger("Punch");
+                break;
+            case "screw":
+                calorInfAnimator.SetTrigger("Crank");
+                break;
+            case "wheel":
+                calorInfAnimator.SetTrigger("Valve");
+                break;
+            default:
+                Debug.Log("No se encontro el tipo de objeto");
+                break;
+        }
     }
 }
