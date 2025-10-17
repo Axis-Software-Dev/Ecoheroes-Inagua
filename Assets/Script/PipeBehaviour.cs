@@ -26,6 +26,8 @@ public class PipeBehavior : MonoBehaviour
     private bool isLeftInPipe = false;
     private bool isRightInPipe = false;
     [SerializeField] private bool isActive = false;
+    public Vector3 InfernalPosition;
+    private Vector3 worldPosition;
 
     [Header("Wheel Settings")]
     [SerializeField]private float currentWheelPosition=0;
@@ -56,7 +58,10 @@ public class PipeBehavior : MonoBehaviour
 
 
 
-
+    private void Awake()
+    {
+       
+    }
 
 
     #region Unity Callbacks
@@ -151,14 +156,14 @@ public class PipeBehavior : MonoBehaviour
         if (previous == Quaternion.identity || current == Quaternion.identity) return 0f;
         Vector3 previousForward = previous * Vector3.forward;
         Vector3 currentForward = current * Vector3.forward;
-        previousForward.y = 0;
-        currentForward.y = 0;
+        previousForward.x = 0;
+        currentForward.x = 0;
         float angleDelta = Vector3.SignedAngle(previousForward, currentForward, Vector3.up);
         return angleDelta;
     }
     private void setWheelRotation(float angle, float currentPosition)
     {
-        this.transform.rotation = Quaternion.Euler(0, (currentPosition + angle), 0);
+        this.transform.rotation = Quaternion.Euler((currentPosition + angle),0,-90);
     }
     private void wheelBehaviour()
     {
@@ -176,7 +181,7 @@ public class PipeBehavior : MonoBehaviour
             }
             else
             {
-                currentWheelPosition = transform.rotation.eulerAngles.y;
+                currentWheelPosition = transform.rotation.eulerAngles.x;
             }
         }
         if (isRightInPipe)
@@ -189,7 +194,7 @@ public class PipeBehavior : MonoBehaviour
             }
             else
             {
-                currentWheelPosition = transform.rotation.eulerAngles.y;
+                currentWheelPosition = transform.rotation.eulerAngles.x;
             }
         }
         int currentRangeIndex = GetCurrentRangeIndex();  // Obtiene el índice del rango actual
@@ -379,6 +384,13 @@ public class PipeBehavior : MonoBehaviour
     public string getSectionType()
     {
         return section.ToString();
+    }
+    private void OnDrawGizmos()
+    {
+         worldPosition = transform.TransformPoint(InfernalPosition);
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(worldPosition, 0.3f);
+        
     }
     #endregion
 }
