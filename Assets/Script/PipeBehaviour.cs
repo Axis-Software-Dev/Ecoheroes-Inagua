@@ -28,6 +28,7 @@ public class PipeBehavior : MonoBehaviour
     [SerializeField] private bool isActive = false;
     public Vector3 InfernalPosition;
     private Vector3 worldPosition;
+    public SphereCollider infernalCollider;
 
     [Header("Wheel Settings")]
     [SerializeField]private float currentWheelPosition=0;
@@ -39,6 +40,8 @@ public class PipeBehavior : MonoBehaviour
     [SerializeField]private const int MAX_CHECKPOINTS = 5;
     private int checkPoints = 0;
     private int lastCheckpoint = 0;
+    public float colliderRadiius = 0.3f;
+    
 
     [Header("Screw Settings")]
     public float screwMinHeight;
@@ -60,7 +63,8 @@ public class PipeBehavior : MonoBehaviour
 
     private void Awake()
     {
-       
+        infernalCollider.radius = colliderRadiius;
+        infernalCollider.transform.position = transform.TransformPoint(InfernalPosition);
     }
 
 
@@ -92,8 +96,8 @@ public class PipeBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       
-       switch (section)
+        infernalCollider.transform.position = transform.TransformPoint(InfernalPosition);//Line just for testing
+        switch (section)
         {
             case sectionBehavior.wheel:
                 if(isActive)wheelBehaviour();
@@ -399,6 +403,7 @@ public class PipeBehavior : MonoBehaviour
         worldPosition = transform.TransformPoint(InfernalPosition);
         return worldPosition;
     }
+  
     private void OnDrawGizmos()
     {
          worldPosition = transform.TransformPoint(InfernalPosition);
