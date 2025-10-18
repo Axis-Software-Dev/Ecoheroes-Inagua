@@ -361,7 +361,7 @@ public class PipeBehavior : MonoBehaviour
             case sectionBehavior.screw:
                 transform.position=new Vector3(transform.position.x, 0.02f, transform.position.z);
 
-               
+          
                 break;
             case sectionBehavior.wheel:
                 checkPoints = 0;
@@ -393,6 +393,11 @@ public class PipeBehavior : MonoBehaviour
     public string getSectionType()
     {
         return section.ToString();
+    }
+    public Vector3 getInfernalPosition()
+    {
+        worldPosition = transform.TransformPoint(InfernalPosition);
+        return worldPosition;
     }
     private void OnDrawGizmos()
     {
