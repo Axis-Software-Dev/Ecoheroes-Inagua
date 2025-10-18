@@ -156,14 +156,22 @@ public class PipeBehavior : MonoBehaviour
         if (previous == Quaternion.identity || current == Quaternion.identity) return 0f;
         Vector3 previousForward = previous * Vector3.forward;
         Vector3 currentForward = current * Vector3.forward;
-        previousForward.x = 0;
+
+#if UNITY_EDITOR
+        previousForward.y = 0;
+        currentForward.y = 0;
+#else
+       previousForward.x = 0;
         currentForward.x = 0;
+#endif
         float angleDelta = Vector3.SignedAngle(previousForward, currentForward, Vector3.up);
         return angleDelta;
     }
     private void setWheelRotation(float angle, float currentPosition)
     {
-        this.transform.rotation = Quaternion.Euler((currentPosition + angle),0,-90);
+        this.transform.rotation = Quaternion.Euler((currentPosition + angle), 0f, 90f);
+       
+
     }
     private void wheelBehaviour()
     {
@@ -176,13 +184,10 @@ public class PipeBehavior : MonoBehaviour
             {
                 currentLeftControllerAngle = getControllerAngle(leftController);
                 float angle = getAngle(initialLeftControllerAngle, currentLeftControllerAngle);
-
+                
                 setWheelRotation(angle, currentWheelPosition);
             }
-            else
-            {
-                currentWheelPosition = transform.rotation.eulerAngles.x;
-            }
+           
         }
         if (isRightInPipe)
         {
@@ -190,12 +195,15 @@ public class PipeBehavior : MonoBehaviour
             {
                 currentRightControllerAngle = getControllerAngle(rightController);
                 float angle = getAngle(initialRightControllerAngle, currentRightControllerAngle);
+                
                 setWheelRotation(angle, currentWheelPosition);
             }
             else
             {
-                currentWheelPosition = transform.rotation.eulerAngles.x;
+                currentWheelPosition = transform.localRotation.eulerAngles.x;
+                ;
             }
+
         }
         int currentRangeIndex = GetCurrentRangeIndex();  // Obtiene el índice del rango actual
         UpdateCheckPoints(currentRangeIndex);  // Función para manejar checkpoints
@@ -214,6 +222,7 @@ public class PipeBehavior : MonoBehaviour
     private int GetCurrentRangeIndex()
     {
         float angleX = transform.rotation.eulerAngles.x;  // Obtiene el ángulo Z
+        
         for (int i = 0; i < rotationRanges.Length - 1; i++)
         {
             if (angleX >= rotationRanges[i] && angleX < rotationRanges[i + 1])
@@ -235,12 +244,12 @@ public class PipeBehavior : MonoBehaviour
         {
             checkPoints++;  
         }
-        Debug.Log("Current checkpoint: " + checkPoints);
+        
     }
 
 
 
-    #endregion
+#endregion
     #region Screw
     private void screwBehaviour()
     {
@@ -338,7 +347,7 @@ public class PipeBehavior : MonoBehaviour
         previousCableState = rightGrippedPressed;
     }
     #endregion
-    #endregion
+#endregion
     #region Helpers
     public void activate()
     {
