@@ -25,7 +25,7 @@ public class PipeBehavior : MonoBehaviour
     private bool rightGrippedPressed = false;
     private bool isLeftInPipe = false;
     private bool isRightInPipe = false;
-    [SerializeField] private bool isActive = false;
+    public bool isActive = false;
     public Vector3 InfernalPosition;
     private Vector3 worldPosition;
     public SphereCollider infernalCollider;
@@ -90,7 +90,7 @@ public class PipeBehavior : MonoBehaviour
         }
 
 
-        activate();
+        deactivate();
     }
 
     // Update is called once per frame

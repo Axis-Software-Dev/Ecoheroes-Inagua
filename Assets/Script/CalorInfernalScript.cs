@@ -57,12 +57,20 @@ public class CalorInfernalScript : MonoBehaviour
         {
             Debug.Log("Entered to: "+other.name);
             isLookingAtPlayer = false;
-            objectInteract(randObj);
+            if(isGameStarted)objectInteract(randObj);
 
+        } 
+        else if (other.CompareTag("LeftController") || other.CompareTag("RightController"))
+        {
+            if (isInteracting)
+            {
+                StopGame();
+            }   
         }
     }
     IEnumerator selectObjectiveRoutine()
     {
+        
         yield return new WaitForSeconds(10f);
 
         while (isGameStarted) {
@@ -77,12 +85,7 @@ public class CalorInfernalScript : MonoBehaviour
         if (lookDir.sqrMagnitude > 0.001f)
         {
             Quaternion targetRot = Quaternion.LookRotation(lookDir);
-            if (pipeSection[randObj].gameObject.name=="Wheel")
-            {
-
-                Debug.Log("Rotating for wheel");
-                targetRot = Quaternion.Euler(targetRot.eulerAngles.x, (targetRot.eulerAngles.y + 90f), (targetRot.eulerAngles.z));
-            }
+          
 
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, 1 * Time.deltaTime);
         }
@@ -105,11 +108,11 @@ public class CalorInfernalScript : MonoBehaviour
     private void objectInteract(int objectSelected)
     {
         Debug.Log("Interacting with " + pipeSection[objectSelected].getSectionType());
-        StartAnimationInteraction(pipeSection[objectSelected].getSectionType());
+        StartCoroutine(StartAnimationInteraction(pipeSection[objectSelected].getSectionType()));
         isInteracting = true;
         isLookingAtPlayer = false;
         
-        Invoke("stopMoving", 5f);
+        if(isGameStarted)Invoke("stopMoving", 10f);
 
     }
     private void stopMoving()
@@ -119,23 +122,63 @@ public class CalorInfernalScript : MonoBehaviour
         isLookingAtPlayer = true;
         isInteracting = false;
     }
-    private void StartAnimationInteraction(string objectType)
+    private IEnumerator StartAnimationInteraction(string objectType)
     {
+        yield return new WaitForSeconds(3f);
+        
         switch (objectType)
         {
             case "cables":
                 calorInfAnimator.SetTrigger("Punch");
+                yield return new WaitForSeconds(3f);
+                pipeSection[randObj].activate();
                 break;
             case "screw":
                 calorInfAnimator.SetTrigger("Crank");
+                pipeSection[randObj].activate();
+
                 break;
             case "wheel":
+                
                 calorInfAnimator.SetTrigger("Valve");
+                yield return new WaitForSeconds(1f);
+                pipeSection[randObj].activate();
+
                 break;
             default:
                 Debug.Log("No se encontro el tipo de objeto");
                 break;
         }
+    }
+    private void stopAnimator()
+    {
+        calorInfAnimator.Rebind();
+        calorInfAnimator.Update(0f);
+        calorInfAnimator.enabled = false;
+        GetComponentInChildren<SkinnedMeshRenderer>().enabled=false;
+    }
+    private void StopGame()
+    {
+        calorInfAnimator.SetTrigger("FuckOff");
+        isGameStarted = false;
+        isInteracting = false;
+        isLookingAtPlayer = false;
+        isMoving = false;
+        Invoke("stopAnimator",  3f);
+        StopCoroutine(selectObjectiveRoutine());
+        StopCoroutine(StartAnimationInteraction(pipeSection[randObj].getSectionType()));
+        Debug.Log("Calor Infernal game stopped");
+        Invoke("StartGame", 10f);
+    }
+    private void StartGame()
+    {
+        Debug.Log("Calor Infernal game started");
+        transform.position = startPosition;
+        calorInfAnimator.enabled = true;
+        GetComponentInChildren<SkinnedMeshRenderer>().enabled = true;
+        isGameStarted = true;
+        isLookingAtPlayer = true;
+        StartCoroutine(selectObjectiveRoutine());
     }
     private void OnDrawGizmos()
     {
