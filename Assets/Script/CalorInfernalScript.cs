@@ -164,8 +164,7 @@ public class CalorInfernalScript : MonoBehaviour
             case "Wheel":
                 lookDir = new Vector3(lookDir.x - 2f, lookDir.y, lookDir.z - 10f); // Ajuste específico para la rueda
                 break;
-            case "Screw":
-                lookDir = new Vector3(lookDir.x, lookDir.y-1f, lookDir.z); // Ajuste específico para la rueda
+            default:
                 break;
         }
         if (lookDir.sqrMagnitude > 0.001f)
@@ -182,10 +181,33 @@ public class CalorInfernalScript : MonoBehaviour
 
     private void SelectObjective()
     {
+        Debug.Log("Selecting new objective...");
         if (pipeSection == null || pipeSection.Length == 0) return;
-
-        Debug.Log("Selecting new objective");
-        randObj = Random.Range(0, pipeSection.Length);
+        // Verifica si hay al menos un pipe inactivo
+        bool hasInactive = false;
+        for (int i = 0; i < pipeSection.Length; i++)
+        {
+            if (!pipeSection[i].isActive)
+            {
+                hasInactive = true;
+                break;
+            }
+        }
+        if (!hasInactive)
+        {
+            Debug.Log("Reirse");  // No hay pipes inactivos
+            isMoving = false;
+            return;
+        }
+        // Si hay inactivos, selecciona aleatoriamente hasta encontrar uno
+        int attempts = 0;
+        int maxAttempts = pipeSection.Length;  // Un poco más para asegurar
+        do
+        {
+            randObj = Random.Range(0, pipeSection.Length);
+            attempts++;
+        } while (pipeSection[randObj].isActive && attempts < maxAttempts);
+        Debug.Log("Selected objective: " + randObj + " (" + pipeSection[randObj].getSectionType() + ")");
         positionToGo = pipeSection[randObj].getInfernalPosition();
         isMoving = true;
     }
@@ -250,7 +272,7 @@ public class CalorInfernalScript : MonoBehaviour
     {
         Debug.Log("Calor Infernal game started");
         transform.position = startPosition;
-        Invoke("SetSkinActive", 0.1f);
+        Invoke("SetSkinActive", 0.5f);
         calorInfAnimator.SetTrigger("Appear");
         if (_meshRenderer != null) _meshRenderer.enabled = true;
         isGameStarted = true;
