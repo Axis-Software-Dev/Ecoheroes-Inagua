@@ -159,19 +159,24 @@ public class CalorInfernalScript : MonoBehaviour
     private void LookAtTarget(Transform target)
     {
         Vector3 lookDir = target.position - transform.position;
-        switch (target.gameObject.name)
+        if (target.GetComponent<PipeBehavior>() != null)
         {
-            case "Wheel":
-                lookDir = new Vector3(lookDir.x - 2f, lookDir.y, lookDir.z - 10f); // Ajuste específico para la rueda
-                break;
-            default:
-                break;
+            switch (target.gameObject.GetComponent<PipeBehavior>().getSectionType())
+            {
+                case "wheel":
+                    lookDir = new Vector3(lookDir.x + 2f, lookDir.y, lookDir.z + 10f); // Ajuste específico para la rueda
+                    break;
+                default:
+                    break;
+            }
         }
-        if (lookDir.sqrMagnitude > 0.001f)
-        {
-            Quaternion targetRot = Quaternion.LookRotation(lookDir);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, Time.deltaTime);
-        }
+            if (lookDir.sqrMagnitude > 0.001f)
+            {
+                Quaternion targetRot = Quaternion.LookRotation(lookDir);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, Time.deltaTime);
+            }
+        
+        
     }
 
     private void MoveToPipe(Vector3 position)
