@@ -14,8 +14,8 @@ public class PipeBehavior : MonoBehaviour
     }
 
     [Header("Type of pipe Minigame")]
-    [SerializeField]private sectionBehavior section;
-    
+    [SerializeField] private sectionBehavior section;
+
     [Header("General Settings")]
     public InputActionReference leftGrip;
     public InputActionReference rightGrip;
@@ -31,17 +31,17 @@ public class PipeBehavior : MonoBehaviour
     public SphereCollider infernalCollider;
 
     [Header("Wheel Settings")]
-    [SerializeField]private float currentWheelPosition=0;
+    [SerializeField] private float currentWheelPosition = 0;
     private Quaternion initialLeftControllerAngle;
     private Quaternion currentLeftControllerAngle;
     private Quaternion currentRightControllerAngle;
     private Quaternion initialRightControllerAngle;
     private float[] rotationRanges = { 0f, 60f, 120f, 180f, 240f, 300f, 360f };
-    [SerializeField]private const int MAX_CHECKPOINTS = 5;
+    [SerializeField] private const int MAX_CHECKPOINTS = 5;
     private int checkPoints = 0;
     private int lastCheckpoint = 0;
     public float colliderRadiius = 0.3f;
-    
+
 
     [Header("Screw Settings")]
     public float screwMinHeight;
@@ -74,18 +74,18 @@ public class PipeBehavior : MonoBehaviour
     {
         leftGrip.action.performed += ctx => OnLeftGrip();
         rightGrip.action.performed += ctx => OnRightGrip();
-        leftGrip.action.started += ctx => leftGrippedPressed=true;
-        rightGrip.action.started += ctx => rightGrippedPressed=true;
-        leftGrip.action.canceled += ctx => leftGrippedPressed=false;
-        rightGrip.action.canceled += ctx => rightGrippedPressed=false;
-        
+        leftGrip.action.started += ctx => leftGrippedPressed = true;
+        rightGrip.action.started += ctx => rightGrippedPressed = true;
+        leftGrip.action.canceled += ctx => leftGrippedPressed = false;
+        rightGrip.action.canceled += ctx => rightGrippedPressed = false;
+
         cableRenderer = this.GetComponent<LineRenderer>();
 
         if (cableRenderer != null)
         {
 
             cableRenderer.enabled = false;
-            endDestination=destination?.GetComponent<destinationDetection>();
+            endDestination = destination?.GetComponent<destinationDetection>();
 
         }
 
@@ -100,13 +100,13 @@ public class PipeBehavior : MonoBehaviour
         switch (section)
         {
             case sectionBehavior.wheel:
-                if(isActive)wheelBehaviour();
+                if (isActive) wheelBehaviour();
                 break;
             case sectionBehavior.screw:
-                if(isActive)screwBehaviour();
+                if (isActive) screwBehaviour();
                 break;
             case sectionBehavior.cables:
-                if(isActive)cableBehaviour();
+                if (isActive) cableBehaviour();
                 break;
             default:
                 break;
@@ -139,14 +139,14 @@ public class PipeBehavior : MonoBehaviour
     #region ControllerCallbacks
     private void OnLeftGrip()
     {
-        initialLeftControllerAngle= getControllerAngle(leftController);
+        initialLeftControllerAngle = getControllerAngle(leftController);
     }
     private void OnRightGrip()
     {
         initialRightControllerAngle = getControllerAngle(rightController);
-        
+
     }
-   
+
 
     #endregion
     #region Behaviors
@@ -174,24 +174,24 @@ public class PipeBehavior : MonoBehaviour
     private void setWheelRotation(float angle, float currentPosition)
     {
         this.transform.rotation = Quaternion.Euler((currentPosition + angle), 0f, 90f);
-       
+
 
     }
     private void wheelBehaviour()
     {
-      
 
-        
+
+
         if (isLeftInPipe)
         {
             if (leftGrippedPressed)
             {
                 currentLeftControllerAngle = getControllerAngle(leftController);
                 float angle = getAngle(initialLeftControllerAngle, currentLeftControllerAngle);
-                
+
                 setWheelRotation(angle, currentWheelPosition);
             }
-           
+
         }
         if (isRightInPipe)
         {
@@ -199,7 +199,7 @@ public class PipeBehavior : MonoBehaviour
             {
                 currentRightControllerAngle = getControllerAngle(rightController);
                 float angle = getAngle(initialRightControllerAngle, currentRightControllerAngle);
-                
+
                 setWheelRotation(angle, currentWheelPosition);
             }
             else
@@ -211,12 +211,12 @@ public class PipeBehavior : MonoBehaviour
         }
         int currentRangeIndex = GetCurrentRangeIndex();  // Obtiene el índice del rango actual
         UpdateCheckPoints(currentRangeIndex);  // Función para manejar checkpoints
-        if (checkPoints == MAX_CHECKPOINTS&& lastCheckpoint == MAX_CHECKPOINTS - 1)
+        if (checkPoints == MAX_CHECKPOINTS && lastCheckpoint == MAX_CHECKPOINTS - 1)
         {
-               
 
-                deactivate();
-            
+
+            deactivate();
+
         }
         lastCheckpoint = checkPoints;
 
@@ -226,12 +226,12 @@ public class PipeBehavior : MonoBehaviour
     private int GetCurrentRangeIndex()
     {
         float angleX = transform.rotation.eulerAngles.x;  // Obtiene el ángulo Z
-        
+
         for (int i = 0; i < rotationRanges.Length - 1; i++)
         {
             if (angleX >= rotationRanges[i] && angleX < rotationRanges[i + 1])
             {
-                
+
                 return i;  // Retorna el índice del rango (0-5)
             }
         }
@@ -240,27 +240,47 @@ public class PipeBehavior : MonoBehaviour
     private void UpdateCheckPoints(int currentRangeIndex)
     {
         int expectedCheckPoint = currentRangeIndex;  // El rango actual debería coincidir con el checkpoint
-        if (checkPoints == expectedCheckPoint + 1) 
+        if (checkPoints == expectedCheckPoint + 1)
         {
-            checkPoints--;  
+            checkPoints--;
         }
-        else if (checkPoints == expectedCheckPoint - 1)  
+        else if (checkPoints == expectedCheckPoint - 1)
         {
-            checkPoints++;  
+            checkPoints++;
         }
-        
+
     }
 
 
 
-#endregion
+    #endregion
     #region Screw
-    private void screwBehaviour()
+private void screwBehaviour()
     {
-        this.transform.position = new Vector3(this.transform.position.x, Mathf.Clamp(this.transform.position.y,screwMinHeight,screwMaxHeight), this.transform.position.z);
-        if (isActive) transform.position = new Vector3(transform.position.x, Mathf.SmoothDamp(transform.position.y, screwMaxHeight, ref speedValue, screwSpeed * Time.deltaTime), transform.position.z);
-        if (transform.position.y <= 0.01f&& isActive) deactivate();
-    }
+        if (isActive)
+        {
+            // Calcula la nueva posición Y con SmoothDamp
+            float newY = Mathf.SmoothDamp(transform.position.y, screwMaxHeight, ref speedValue, screwSpeed * Time.deltaTime);
+
+            // Aplica el clamp inmediatamente para evitar sobrepasos
+            newY = Mathf.Clamp(newY, screwMinHeight, screwMaxHeight);
+
+            // Actualiza la posición con el valor clamped
+            transform.position = new Vector3(transform.position.x, newY, transform.position.z);
+
+            // Verifica si ha llegado cerca del mínimo para desactivar (ajusta el umbral si es necesario)
+            if (newY <= screwMinHeight + 0.01f)
+            {
+                deactivate();
+            }
+        }
+        else
+        {
+            // Si no está activo, asegúrate de que la posición esté clamped (por si acaso)
+            float clampedY = Mathf.Clamp(transform.position.y, screwMinHeight, screwMaxHeight);
+            transform.position = new Vector3(transform.position.x, clampedY, transform.position.z);
+        }
+    } 
     #endregion
     #region Cable
 
