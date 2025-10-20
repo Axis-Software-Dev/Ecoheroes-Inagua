@@ -63,8 +63,9 @@ public class PipeBehavior : MonoBehaviour
 
     private void Awake()
     {
-        infernalCollider.radius = colliderRadiius;
-        infernalCollider.transform.position = transform.TransformPoint(InfernalPosition);
+        //infernalCollider.radius = colliderRadiius;
+        worldPosition = transform.TransformPoint(InfernalPosition);
+        infernalCollider.transform.position = worldPosition;
     }
 
 
@@ -96,7 +97,7 @@ public class PipeBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        infernalCollider.transform.position = transform.TransformPoint(InfernalPosition);//Line just for testing
+       
         switch (section)
         {
             case sectionBehavior.wheel:
@@ -422,7 +423,7 @@ public class PipeBehavior : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        worldPosition = transform.TransformPoint(InfernalPosition);
+        
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(worldPosition, 0.3f);
 
