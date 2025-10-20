@@ -3,118 +3,222 @@ using UnityEngine;
 
 public class CalorInfernalScript : MonoBehaviour
 {
+    #region Variables
+    [Header("References")]
+    private Animator calorInfAnimator;
+    public PipeBehavior[] pipeSection;  // Asigna en Inspector para evitar Find en runtime
+    private Transform _playerTransform;
+    private SkinnedMeshRenderer _meshRenderer;  // Cacheado para eficiencia
 
-    Animator calorInfAnimator;
-    public PipeBehavior[] pipeSection;
-    Transform _playerTransform;
+    [Header("Settings")]
     public bool isLookingAtPlayer = false;
     public bool isMoving = false;
     public float moveSpeed = 1f;
-    int randObj = 0;
-    private bool isInteracting = false;
+    public Vector3 startPosition = Vector3.zero;
     public bool isGameStarted = false;
-    Vector3 lastPosition=Vector3.zero;
-    public Vector3 startPosition=Vector3.zero;
+
+    [Header("Internal State")]
+    private int randObj = 0;
+    private bool isInteracting = false;
     private Vector3 positionToGo;
-    
+    private Coroutine selectObjectiveCoroutine;  // Referencia para detener
+    private Coroutine animationCoroutine;  // Referencia para detener
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    // Constantes para valores mágicos
+    private const float INITIAL_WAIT = 10f;
+    private const float OBJECTIVE_INTERVAL = 20f;
+    private const float INTERACTION_DURATION = 10f;
+    private const float STOP_ANIMATOR_DELAY = 2.5f;
+    private const float RESTART_GAME_DELAY = 10f;
+    private const float ANIMATION_DELAY = 3f;
+    private const float VALVE_DELAY = 1f;
 
+    // Enum para tipos de objetos (mejor que strings)
+    private enum ObjectType { Cables, Screw, Wheel }
+    #endregion
+
+    #region Initialization
     private void Awake()
     {
-        positionToGo = startPosition;
-        /*
-        pipeSection= new PipeBehavior[GameObject.FindGameObjectsWithTag("Minijuego").Length];
-        for (int i=0; i < GameObject.FindGameObjectsWithTag("Minijuego").Length; i++) 
-        {
-         pipeSection[i] = GameObject.FindGameObjectsWithTag("Minijuego")[i].GetComponent<PipeBehavior>();
-        }*/
-
-
-
+        // Cachear referencias
         calorInfAnimator = GetComponent<Animator>();
-        calorInfAnimator?.Play("CalorInfernalAnim");
+        _meshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
         _playerTransform = Camera.main != null ? Camera.main.transform : GameObject.FindWithTag("MainCamera")?.transform;
+
+        // Inicializar posición
+        positionToGo = startPosition;
+
+        // Si no asignas pipeSection en Inspector, descomenta esto (pero es mejor asignarlo manualmente)
+        /*
+        if (pipeSection == null || pipeSection.Length == 0)
+        {
+            GameObject[] pipes = GameObject.FindGameObjectsWithTag("Minijuego");
+            pipeSection = new PipeBehavior[pipes.Length];
+            for (int i = 0; i < pipes.Length; i++)
+            {
+                pipeSection[i] = pipes[i].GetComponent<PipeBehavior>();
+            }
+        }
+        */
+
+        // Iniciar animación inicial
+        calorInfAnimator?.Play("CalorInfernalAnim");
     }
+
     void Start()
     {
-        StartCoroutine(selectObjectiveRoutine());
+        StartGame();  // Inicia el juego automáticamente o llama desde otro lugar
     }
+    #endregion
 
-    // Update is called once per frame
+    #region Update Loop
     void Update()
     {
-        
-        if (isLookingAtPlayer) LookAtTarget(_playerTransform);
-        if (!isLookingAtPlayer) LookAtTarget(pipeSection[randObj].transform);
-        if (isMoving)MoveToPipe(positionToGo);
-       
-        
+        if (!isGameStarted) return;  // Early exit si el juego no está activo
+
+        HandleLooking();
+        HandleMovement();
     }
+
+    private void HandleLooking()
+    {
+        Transform target = isLookingAtPlayer ? _playerTransform : pipeSection[randObj]?.transform;
+        if (target != null)
+        {
+            LookAtTarget(target);
+        }
+    }
+
+    private void HandleMovement()
+    {
+        if (isMoving)
+        {
+            MoveToPipe(positionToGo);
+        }
+    }
+    #endregion
+
+    #region Interactions
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Minijuego"))
+        if (other.CompareTag("Minijuego") && isGameStarted)
         {
-            Debug.Log("Entered to: "+other.name);
+            Debug.Log("Entered to: " + other.name);
             isLookingAtPlayer = false;
-            if(isGameStarted)objectInteract(randObj);
-
-        } 
-        else if (other.CompareTag("LeftController") || other.CompareTag("RightController"))
+            objectInteract(randObj);
+        }
+        else if ((other.CompareTag("LeftController") || other.CompareTag("RightController")) && isInteracting)
         {
-            if (isInteracting)
-            {
-                StopGame();
-            }   
+            StopGame();
         }
     }
-    IEnumerator selectObjectiveRoutine()
+    #endregion
+
+    #region Coroutines
+    private IEnumerator SelectObjectiveRoutine()
     {
-        
-        yield return new WaitForSeconds(10f);
-
-        while (isGameStarted) {
+        yield return new WaitForSeconds(INITIAL_WAIT);
+        while (isGameStarted)
+        {
             SelectObjective();
-            yield return new WaitForSeconds(20f);
+            yield return new WaitForSeconds(OBJECTIVE_INTERVAL);
         }
+    }
 
+    private IEnumerator StartAnimationInteraction(ObjectType objectType)
+    {
+        yield return new WaitForSeconds(ANIMATION_DELAY);
+
+        switch (objectType)
+        {
+            case ObjectType.Cables:
+                calorInfAnimator.SetTrigger("Punch");
+                yield return new WaitForSeconds(ANIMATION_DELAY);
+                pipeSection[randObj]?.activate();
+                break;
+            case ObjectType.Screw:
+                calorInfAnimator.SetTrigger("Crank");
+                pipeSection[randObj]?.activate();
+                break;
+            case ObjectType.Wheel:
+                calorInfAnimator.SetTrigger("Valve");
+                yield return new WaitForSeconds(VALVE_DELAY);
+                pipeSection[randObj]?.activate();
+                break;
+            default:
+                Debug.LogWarning("Tipo de objeto no reconocido: " + objectType);
+                break;
+        }
+    }
+    #endregion
+
+    #region Movement and Animation
+    private void SetSkinActive() { 
+        calorInfAnimator.enabled = true;
     }
     private void LookAtTarget(Transform target)
     {
         Vector3 lookDir = target.position - transform.position;
+        switch (target.gameObject.name)
+        {
+            case "Wheel":
+                lookDir = new Vector3(lookDir.x - 2f, lookDir.y, lookDir.z - 10f); // Ajuste específico para la rueda
+                break;
+            case "Screw":
+                lookDir = new Vector3(lookDir.x, lookDir.y-1f, lookDir.z); // Ajuste específico para la rueda
+                break;
+        }
         if (lookDir.sqrMagnitude > 0.001f)
         {
             Quaternion targetRot = Quaternion.LookRotation(lookDir);
-          
-
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, 1 * Time.deltaTime);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, Time.deltaTime);
         }
-
     }
+
     private void MoveToPipe(Vector3 position)
     {
         transform.position = Vector3.Slerp(transform.position, position, moveSpeed * Time.deltaTime);
     }
 
-
     private void SelectObjective()
     {
+        if (pipeSection == null || pipeSection.Length == 0) return;
+
         Debug.Log("Selecting new objective");
         randObj = Random.Range(0, pipeSection.Length);
         positionToGo = pipeSection[randObj].getInfernalPosition();
         isMoving = true;
-
     }
+
     private void objectInteract(int objectSelected)
     {
-        Debug.Log("Interacting with " + pipeSection[objectSelected].getSectionType());
-        StartCoroutine(StartAnimationInteraction(pipeSection[objectSelected].getSectionType()));
+        if (pipeSection == null || objectSelected >= pipeSection.Length) return;
+
+        string typeString = pipeSection[objectSelected].getSectionType();
+        ObjectType type = GetObjectTypeFromString(typeString);
+
+        Debug.Log("Interacting with " + typeString);
+        animationCoroutine = StartCoroutine(StartAnimationInteraction(type));
         isInteracting = true;
         isLookingAtPlayer = false;
-        
-        if(isGameStarted)Invoke("stopMoving", 10f);
 
+        if (isGameStarted)
+        {
+            Invoke("stopMoving", INTERACTION_DURATION);
+        }
     }
+
+    private ObjectType GetObjectTypeFromString(string type)
+    {
+        switch (type)
+        {
+            case "cables": return ObjectType.Cables;
+            case "screw": return ObjectType.Screw;
+            case "wheel": return ObjectType.Wheel;
+            default: return ObjectType.Cables;  // Default
+        }
+    }
+
     private void stopMoving()
     {
         calorInfAnimator.SetTrigger("Idle");
@@ -122,41 +226,9 @@ public class CalorInfernalScript : MonoBehaviour
         isLookingAtPlayer = true;
         isInteracting = false;
     }
-    private IEnumerator StartAnimationInteraction(string objectType)
-    {
-        yield return new WaitForSeconds(3f);
-        
-        switch (objectType)
-        {
-            case "cables":
-                calorInfAnimator.SetTrigger("Punch");
-                yield return new WaitForSeconds(3f);
-                pipeSection[randObj].activate();
-                break;
-            case "screw":
-                calorInfAnimator.SetTrigger("Crank");
-                pipeSection[randObj].activate();
+    #endregion
 
-                break;
-            case "wheel":
-                
-                calorInfAnimator.SetTrigger("Valve");
-                yield return new WaitForSeconds(1f);
-                pipeSection[randObj].activate();
-
-                break;
-            default:
-                Debug.Log("No se encontro el tipo de objeto");
-                break;
-        }
-    }
-    private void stopAnimator()
-    {
-        calorInfAnimator.Rebind();
-        calorInfAnimator.Update(0f);
-        calorInfAnimator.enabled = false;
-        GetComponentInChildren<SkinnedMeshRenderer>().enabled=false;
-    }
+    #region Game Control
     private void StopGame()
     {
         calorInfAnimator.SetTrigger("FuckOff");
@@ -164,25 +236,42 @@ public class CalorInfernalScript : MonoBehaviour
         isInteracting = false;
         isLookingAtPlayer = false;
         isMoving = false;
-        Invoke("stopAnimator",  3f);
-        StopCoroutine(selectObjectiveRoutine());
-        StopCoroutine(StartAnimationInteraction(pipeSection[randObj].getSectionType()));
+
+        // Detener Coroutines de manera segura
+        if (selectObjectiveCoroutine != null) StopCoroutine(selectObjectiveCoroutine);
+        if (animationCoroutine != null) StopCoroutine(animationCoroutine);
+
+        Invoke("stopAnimator", STOP_ANIMATOR_DELAY);
         Debug.Log("Calor Infernal game stopped");
-        Invoke("StartGame", 10f);
+        Invoke("StartGame", RESTART_GAME_DELAY);
     }
+
     private void StartGame()
     {
         Debug.Log("Calor Infernal game started");
         transform.position = startPosition;
-        calorInfAnimator.enabled = true;
-        GetComponentInChildren<SkinnedMeshRenderer>().enabled = true;
+        Invoke("SetSkinActive", 0.1f);
+        calorInfAnimator.SetTrigger("Appear");
+        if (_meshRenderer != null) _meshRenderer.enabled = true;
         isGameStarted = true;
         isLookingAtPlayer = true;
-        StartCoroutine(selectObjectiveRoutine());
+        selectObjectiveCoroutine = StartCoroutine(SelectObjectiveRoutine());
     }
+
+    private void stopAnimator()
+    {
+        calorInfAnimator.Rebind();
+        calorInfAnimator.Update(0f);
+        calorInfAnimator.enabled = false;
+        if (_meshRenderer != null) _meshRenderer.enabled = false;
+    }
+    #endregion
+
+    #region Gizmos
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawSphere(startPosition, 0.2f);
     }
+    #endregion
 }
