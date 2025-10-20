@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 public class UIButtonHoverHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private HUDHandler hudHandler;
-    [SerializeField] private string hoverMessage = "Press trigger to select";
+    [SerializeField] private string hoverMessage = "Presiona el gatillo";
 
     private void Awake()
     {

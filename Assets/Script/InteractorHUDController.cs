@@ -9,8 +9,8 @@ public class InteractorHUDController : MonoBehaviour
     [SerializeField] private HUDHandler hudHandler;
 
     [Header("HUD Messages")]
-    [SerializeField] private string grabMessage = "Grab to pick up";
-    [SerializeField] private string interactMessage = "Press trigger to interact";
+    [SerializeField] private string grabMessage = "Presiona el botón lateral para tomar";
+    [SerializeField] private string interactMessage = "Presiona el gatillo";
 
     private NearFarInteractor nearFarInteractor;
     private IXRHoverInteractable currentHoverTarget;
