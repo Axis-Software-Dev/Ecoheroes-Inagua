@@ -130,7 +130,8 @@ public class PipeBehavior : MonoBehaviour
         if (other.CompareTag("LeftController"))
         {
             isLeftInPipe = false;
-        } else if (other.CompareTag("RightController"))
+        }
+        else if (other.CompareTag("RightController"))
         {
             isRightInPipe = false;
         }
@@ -161,19 +162,16 @@ public class PipeBehavior : MonoBehaviour
         Vector3 previousForward = previous * Vector3.forward;
         Vector3 currentForward = current * Vector3.forward;
 
-#if UNITY_EDITOR
+
         previousForward.y = 0;
         currentForward.y = 0;
-#else
-       previousForward.x = 0;
-        currentForward.x = 0;
-#endif
+
         float angleDelta = Vector3.SignedAngle(previousForward, currentForward, Vector3.up);
         return angleDelta;
     }
     private void setWheelRotation(float angle, float currentPosition)
     {
-        this.transform.rotation = Quaternion.Euler((currentPosition + angle), 0f, 90f);
+        this.transform.rotation = Quaternion.Euler(0, (currentPosition + angle), 0);
 
 
     }
@@ -204,13 +202,12 @@ public class PipeBehavior : MonoBehaviour
             }
             else
             {
-                currentWheelPosition = transform.localRotation.eulerAngles.x;
-                ;
+                currentWheelPosition = transform.rotation.eulerAngles.y;
             }
 
         }
-        int currentRangeIndex = GetCurrentRangeIndex();  // Obtiene el índice del rango actual
-        UpdateCheckPoints(currentRangeIndex);  // Función para manejar checkpoints
+        int currentRangeIndex = GetCurrentRangeIndex();  // Obtiene el indice del rango actual
+        UpdateCheckPoints(currentRangeIndex);  // Funcion para manejar checkpoints
         if (checkPoints == MAX_CHECKPOINTS && lastCheckpoint == MAX_CHECKPOINTS - 1)
         {
 
@@ -225,21 +222,20 @@ public class PipeBehavior : MonoBehaviour
 
     private int GetCurrentRangeIndex()
     {
-        float angleX = transform.rotation.eulerAngles.x;  // Obtiene el ángulo Z
-
+        float angleY = transform.rotation.eulerAngles.y;  // Obtiene el angulo Y
         for (int i = 0; i < rotationRanges.Length - 1; i++)
         {
-            if (angleX >= rotationRanges[i] && angleX < rotationRanges[i + 1])
+            if (angleY >= rotationRanges[i] && angleY < rotationRanges[i + 1])
             {
 
-                return i;  // Retorna el índice del rango (0-5)
+                return i;  // Retorna el indice del rango (0-5)
             }
         }
-        return 5;  // Si está entre 300-360, retorna 5
+        return 5;  // Si esta entre 300-360, retorna 5
     }
     private void UpdateCheckPoints(int currentRangeIndex)
     {
-        int expectedCheckPoint = currentRangeIndex;  // El rango actual debería coincidir con el checkpoint
+        int expectedCheckPoint = currentRangeIndex;  // El rango actual deberia coincidir con el checkpoint
         if (checkPoints == expectedCheckPoint + 1)
         {
             checkPoints--;
@@ -248,27 +244,27 @@ public class PipeBehavior : MonoBehaviour
         {
             checkPoints++;
         }
-
+        Debug.Log("Current checkpoint: " + checkPoints);
     }
 
 
 
     #endregion
     #region Screw
-private void screwBehaviour()
+    private void screwBehaviour()
     {
         if (isActive)
         {
-            // Calcula la nueva posición Y con SmoothDamp
+            // Calcula la nueva posicion Y con SmoothDamp
             float newY = Mathf.SmoothDamp(transform.position.y, screwMaxHeight, ref speedValue, screwSpeed * Time.deltaTime);
 
             // Aplica el clamp inmediatamente para evitar sobrepasos
             newY = Mathf.Clamp(newY, screwMinHeight, screwMaxHeight);
 
-            // Actualiza la posición con el valor clamped
+            // Actualiza la posicion con el valor clamped
             transform.position = new Vector3(transform.position.x, newY, transform.position.z);
 
-            // Verifica si ha llegado cerca del mínimo para desactivar (ajusta el umbral si es necesario)
+            // Verifica si ha llegado cerca del minimo para desactivar (ajusta el umbral si es necesario)
             if (newY <= screwMinHeight + 0.01f)
             {
                 deactivate();
@@ -276,26 +272,26 @@ private void screwBehaviour()
         }
         else
         {
-            // Si no está activo, asegúrate de que la posición esté clamped (por si acaso)
+            // Si no esta activo, asegurate de que la posicion este clamped (por si acaso)
             float clampedY = Mathf.Clamp(transform.position.y, screwMinHeight, screwMaxHeight);
             transform.position = new Vector3(transform.position.x, clampedY, transform.position.z);
         }
-    } 
+    }
     #endregion
     #region Cable
 
     private void cableBehaviour()
     {
         rightControllerLogic();
-        
 
-    
-        
+
+
+
     }
 
     private void leftControllerLogic()
     {
-      
+
 
         if (isLeftInPipe)
         {
@@ -318,7 +314,7 @@ private void screwBehaviour()
             if (endDestination?.isLeftInDestination == true)
             {
 
-                // Detecta transición de cable conectado
+                // Detecta transicion de cable conectado
                 if (previousCableState && !leftGrippedPressed)
                 {
                     Debug.Log("Cable connected");
@@ -337,11 +333,11 @@ private void screwBehaviour()
         if (endDestination?.isRightInDestination == true)
         {
 
-            // Detecta transición de cable conectado
+            // Detecta transicion de cable conectado
             if (previousCableState && !rightGrippedPressed)
             {
                 Debug.Log("Cable connected");
-                if (isActive)deactivate();
+                if (isActive) deactivate();
             }
         }
 
@@ -371,7 +367,7 @@ private void screwBehaviour()
         previousCableState = rightGrippedPressed;
     }
     #endregion
-#endregion
+    #endregion
     #region Helpers
     public void activate()
     {
@@ -383,9 +379,9 @@ private void screwBehaviour()
                 if (cableMesh != null) cableMesh.enabled = false;
                 break;
             case sectionBehavior.screw:
-                transform.position=new Vector3(transform.position.x, 0.02f, transform.position.z);
+                transform.position = new Vector3(transform.position.x, 0.02f, transform.position.z);
 
-          
+
                 break;
             case sectionBehavior.wheel:
                 checkPoints = 0;
@@ -393,18 +389,18 @@ private void screwBehaviour()
                 break;
         }
 
-        
+
     }
     public void deactivate()
     {
         isActive = false;
         switch (section)
-        { 
+        {
             case sectionBehavior.cables:
                 if (cableMesh != null) cableMesh.enabled = true;
                 break;
             case sectionBehavior.screw:
-                    transform.position = new Vector3(transform.position.x,screwMinHeight,transform.position.z);
+                transform.position = new Vector3(transform.position.x, screwMinHeight, transform.position.z);
                 break;
             case sectionBehavior.wheel:
                 checkPoints = 0;
@@ -423,13 +419,13 @@ private void screwBehaviour()
         worldPosition = transform.TransformPoint(InfernalPosition);
         return worldPosition;
     }
-  
+
     private void OnDrawGizmos()
     {
-         worldPosition = transform.TransformPoint(InfernalPosition);
+        worldPosition = transform.TransformPoint(InfernalPosition);
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(worldPosition, 0.3f);
-        
+
     }
     #endregion
 }
