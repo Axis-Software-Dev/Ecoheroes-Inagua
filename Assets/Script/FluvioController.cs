@@ -38,6 +38,7 @@ namespace Fluvio
             SetAnimatorTrigger,
             InvokeLocalMethod,
             AllowLookAtPlayer,
+            playVarAudio,
             InvokeUnityEvent
         }
 
@@ -93,6 +94,7 @@ namespace Fluvio
         private bool _useCurve = false;
         private float _walkProgress = 0f;
         private Vector3 _activeWalkTarget;
+        private persistanceData _persistanceData;
 
         // curve internals
         private Vector3 _curveStart, _curveControl, _curveEnd;
@@ -134,6 +136,7 @@ namespace Fluvio
             _playerTransform = Camera.main != null ? Camera.main.transform : GameObject.FindWithTag("MainCamera")?.transform;
 
             SetSkinsActive(false);
+            _persistanceData = Resources.Load<persistanceData>("persistanceData");
         }
 
         private void Update()
@@ -281,6 +284,11 @@ namespace Fluvio
                 case ActionEntry.ActionType.InvokeUnityEvent:
                     entry.unityEvent?.Invoke();
                     break;
+                case ActionEntry.ActionType.playVarAudio:
+                    if(_persistanceData?.getSelectedCharacter()!=null||
+                        _persistanceData?.getSelectedCharacter()!="none")
+                        playVarAudio(_persistanceData.getSelectedCharacter());
+                    break;
             }
         }
         #endregion
@@ -297,6 +305,10 @@ namespace Fluvio
             {
                 Debug.LogWarning($"PlayAudio: sound '{audioName}' not found on {name}");
             }
+        }
+        private void playVarAudio(string characterSelected)
+        {
+            PlayAudio(characterSelected);
         }
         #endregion
 

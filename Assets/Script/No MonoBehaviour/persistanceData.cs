@@ -21,5 +21,8 @@ public class persistanceData : ScriptableObject
     {
         sceneToLoad = scene;
     }
-
+    public string getSelectedCharacter()
+    {
+        return character.ToString();
+    }
 }
