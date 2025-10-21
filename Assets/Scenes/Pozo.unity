@@ -7145,10 +7145,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1492032108}
     m_Modifications:
-    - target: {fileID: 8227192243087186103, guid: d6878e1999eb4b44a9f5a263af86c185, type: 3}
-      propertyPath: m_InteractionLayers.m_Bits
-      value: 4294967295
-      objectReference: {fileID: 0}
     - target: {fileID: -8978938133679521970, guid: 0a0eeab666f45774492aadc7b3187d98, type: 3}
       propertyPath: m_Layer
       value: 7
@@ -7400,6 +7396,10 @@ PrefabInstance:
     - target: {fileID: 8843587466439290848, guid: 0a0eeab666f45774492aadc7b3187d98, type: 3}
       propertyPath: m_Layer
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8227192243087186103, guid: d6878e1999eb4b44a9f5a263af86c185, type: 3}
+      propertyPath: m_InteractionLayers.m_Bits
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7760,6 +7760,14 @@ PrefabInstance:
     - target: {fileID: 1911665401689535940, guid: b588eab963c642742a09b9c6e0433831, type: 3}
       propertyPath: m_IncludeLayers.m_Bits
       value: 64
+      objectReference: {fileID: 0}
+    - target: {fileID: 2501550376415446227, guid: b588eab963c642742a09b9c6e0433831, type: 3}
+      propertyPath: m_TagString
+      value: LeftController
+      objectReference: {fileID: 0}
+    - target: {fileID: 7239136406960754705, guid: b588eab963c642742a09b9c6e0433831, type: 3}
+      propertyPath: m_TagString
+      value: RightController
       objectReference: {fileID: 0}
     - target: {fileID: 7547335998316742650, guid: b588eab963c642742a09b9c6e0433831, type: 3}
       propertyPath: m_Name
