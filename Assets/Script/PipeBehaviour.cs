@@ -395,6 +395,7 @@ public class PipeBehavior : MonoBehaviour
     public void deactivate()
     {
         isActive = false;
+        GameManager.Instance.AddMinigamePoint();
         switch (section)
         {
             case sectionBehavior.cables:

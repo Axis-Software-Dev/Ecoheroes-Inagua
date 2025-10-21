@@ -24,14 +24,15 @@ public class CalorInfernalScript : MonoBehaviour
     private Coroutine selectObjectiveCoroutine;  // Referencia para detener
     private Coroutine animationCoroutine;  // Referencia para detener
 
+    [Header("Behaviour Settings")]
     // Constantes para valores mágicos
-    private const float INITIAL_WAIT = 10f;
-    private const float OBJECTIVE_INTERVAL = 20f;
-    private const float INTERACTION_DURATION = 10f;
-    private const float STOP_ANIMATOR_DELAY = 2.5f;
-    private const float RESTART_GAME_DELAY = 10f;
-    private const float ANIMATION_DELAY = 3f;
-    private const float VALVE_DELAY = 1f;
+    public float INITIAL_WAIT = 10f;
+    public float OBJECTIVE_INTERVAL = 20f;
+    public float INTERACTION_DURATION = 10f;
+    public float STOP_ANIMATOR_DELAY = 2.5f;
+    public float RESTART_GAME_DELAY = 10f;
+    public float ANIMATION_DELAY = 3f;
+    public float VALVE_DELAY = 1f;
 
     // Enum para tipos de objetos (mejor que strings)
     private enum ObjectType { Cables, Screw, Wheel }
@@ -284,7 +285,16 @@ public class CalorInfernalScript : MonoBehaviour
         isLookingAtPlayer = true;
         selectObjectiveCoroutine = StartCoroutine(SelectObjectiveRoutine());
     }
-
+    public void EndGame()
+    {
+        isGameStarted = false;
+        isInteracting = false;
+        isLookingAtPlayer = false;
+        isMoving = false;
+        calorInfAnimator.SetTrigger("Goodbye");
+        Invoke("stopAnimator", STOP_ANIMATOR_DELAY);
+        Debug.Log("Calor Infernal game ended");
+    }
     private void stopAnimator()
     {
         calorInfAnimator.Rebind();
