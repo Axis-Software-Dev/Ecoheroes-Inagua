@@ -27,7 +27,7 @@ public class HUDHandler : MonoBehaviour
 
         if (activeCoroutine != null)
         {
-            StopCoroutine(activeCoroutine);
+            return;
         }
 
         currentFullText = text;
@@ -40,7 +40,7 @@ public class HUDHandler : MonoBehaviour
 
         if (activeCoroutine != null)
         {
-            StopCoroutine(activeCoroutine);
+            return;
         }
 
         activeCoroutine = StartCoroutine(TypewriterReverse());
