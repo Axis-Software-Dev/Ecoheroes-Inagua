@@ -178,6 +178,55 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &504569987756839747
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3968885834633541465}
+  - component: {fileID: 8012664872581678128}
+  m_Layer: 0
+  m_Name: Post Processing
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3968885834633541465
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 504569987756839747}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4505831165309822532}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8012664872581678128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 504569987756839747}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Core.Runtime::UnityEngine.Rendering.Volume
+  m_IsGlobal: 1
+  priority: 0
+  blendDistance: 0
+  weight: 1
+  sharedProfile: {fileID: 11400000, guid: 4fda00ed05924394bb515989fcfac4ff, type: 2}
 --- !u!1 &843663249716218102
 GameObject:
   m_ObjectHideFlags: 0
@@ -4568,6 +4617,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5462006690208740115}
+  - {fileID: 3968885834633541465}
   m_Father: {fileID: 8683107252908852494}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &2759543005406544888
@@ -4753,11 +4803,11 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
-  m_Antialiasing: 0
-  m_AntialiasingQuality: 2
+  m_RenderPostProcessing: 1
+  m_Antialiasing: 2
+  m_AntialiasingQuality: 1
   m_StopNaN: 0
-  m_Dithering: 0
+  m_Dithering: 1
   m_ClearDepth: 1
   m_AllowXRRendering: 1
   m_AllowHDROutput: 1
@@ -8984,7 +9034,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Mediator: {fileID: 3635544610902688942}
   m_TransformationPriority: 0
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_UseLocalSpaceGravity: 1
   m_TerminalVelocity: 90
   m_GravityAccelerationModifier: 1
@@ -9086,7 +9136,7 @@ MonoBehaviour:
   m_Camera: {fileID: 2759543005406544888}
   m_OriginBaseGameObject: {fileID: 7547335998316742650}
   m_CameraFloorOffsetObject: {fileID: 1402462711212831259}
-  m_RequestedTrackingOriginMode: 0
+  m_RequestedTrackingOriginMode: 1
   m_CameraYOffset: 1.36144
 --- !u!143 &1911665401689535940
 CharacterController:
@@ -10662,7 +10712,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8385921419172904783, guid: 67043383f375799438573effd78224d1, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2.81361
+      value: 1.9099998
       objectReference: {fileID: 0}
     - target: {fileID: 8385921419172904783, guid: 67043383f375799438573effd78224d1, type: 3}
       propertyPath: m_LocalRotation.w
@@ -10682,11 +10732,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8385921419172904783, guid: 67043383f375799438573effd78224d1, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -0.31563997
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8385921419172904783, guid: 67043383f375799438573effd78224d1, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -1.36144
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8385921419172904783, guid: 67043383f375799438573effd78224d1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
