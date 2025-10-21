@@ -1,6 +1,8 @@
 using Fluvio;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,6 +14,7 @@ public class GameManager : MonoBehaviour
     public int POINTS_TO_WIN = 3;
     public GameObject[] Heroes;
     public GameObject unSelectedHeroe;
+    public Button[] buttons;
 
     persistanceData data;
     private int lastPointScore=0;
@@ -39,6 +42,7 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        SetButtons(false);
     }
 
     void Start()
@@ -63,9 +67,17 @@ public class GameManager : MonoBehaviour
     {
         calorInfernal.EndGame();
         Invoke("StartFluvioAnimation",5f);
+        SetButtons(true);
     }
     public void AddMinigamePoint()
     {
         minijuegosCompletados++;
+    }
+    private void SetButtons(bool State)
+    {
+        foreach(Button button in buttons)
+        {
+                       button.interactable = State;
+        }
     }
 }
