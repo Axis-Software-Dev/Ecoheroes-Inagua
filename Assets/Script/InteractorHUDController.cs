@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
+using System.Collections.Generic;
 
 public class InteractorHUDController : MonoBehaviour
 {
@@ -12,8 +13,12 @@ public class InteractorHUDController : MonoBehaviour
     [SerializeField] private string grabMessage = "Presiona el botón lateral para tomar";
     [SerializeField] private string interactMessage = "Presiona el gatillo";
 
+    [Header("One-Time Display")]
+    [SerializeField] private bool onlyShowOnce = true;
+
     private NearFarInteractor nearFarInteractor;
     private IXRHoverInteractable currentHoverTarget;
+    private HashSet<GameObject> shownObjects = new HashSet<GameObject>();
 
     private void Awake()
     {
@@ -53,12 +58,27 @@ public class InteractorHUDController : MonoBehaviour
         if (hudHandler == null) return;
 
         currentHoverTarget = args.interactableObject;
+        GameObject targetObject = (currentHoverTarget as MonoBehaviour)?.gameObject;
+
+        if (targetObject == null) return;
+
+        if (onlyShowOnce && shownObjects.Contains(targetObject))
+        {
+            Debug.Log("HUD already shown for " + targetObject.name + ", skipping");
+            return;
+        }
 
         string message = DetermineHUDMessage(currentHoverTarget);
 
         if (!string.IsNullOrEmpty(message))
         {
             hudHandler.ShowText(message);
+
+            if (onlyShowOnce)
+            {
+                shownObjects.Add(targetObject);
+                Debug.Log("HUD shown for " + targetObject.name + ", marked as shown");
+            }
         }
     }
 
@@ -93,5 +113,19 @@ public class InteractorHUDController : MonoBehaviour
         }
 
         return string.Empty;
+    }
+
+    public void ResetShownObjects()
+    {
+        shownObjects.Clear();
+        Debug.Log("Cleared all shown objects");
+    }
+
+    public void ResetObject(GameObject obj)
+    {
+        if (shownObjects.Remove(obj))
+        {
+            Debug.Log("Reset shown status for " + obj.name);
+        }
     }
 }
