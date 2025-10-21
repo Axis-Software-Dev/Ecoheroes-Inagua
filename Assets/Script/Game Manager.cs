@@ -10,11 +10,26 @@ public class GameManager : MonoBehaviour
     public int minijuegosCompletados = 0;
     [SerializeField]
     public int POINTS_TO_WIN = 3;
+    public GameObject[] Heroes;
+    public GameObject unSelectedHeroe;
 
-
+    persistanceData data;
     private int lastPointScore=0;
     private void Awake()
     {
+        data = Resources.Load<persistanceData>("persistanceData");
+        switch (data.getSelectedCharacter())
+        {
+            case "aguita":
+                unSelectedHeroe=Heroes[0];
+                break;
+            case "lluvia":
+                unSelectedHeroe=Heroes[1];
+                break;
+            default:
+                unSelectedHeroe=Heroes[0];
+                break;
+        }
         minijuegosCompletados = (0 - calorInfernal.pipeSection.Length);
         if (Instance == null)
         {

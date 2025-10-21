@@ -2,11 +2,13 @@ using UnityEngine;
 
 public class BuildingScript : MonoBehaviour
 {
+    public GameObject[] EcoHeroes;
     public Vector3 playerPosition;
     public Vector3 characterPosition;
     private Vector3 _worldPosition;
     private Transform _player;
     private bool _isMovingPlayer = false;
+    private bool isLookingAtPlayer = true;
     private Canvas _buildingCanvas;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
@@ -30,10 +32,30 @@ public class BuildingScript : MonoBehaviour
         {
             MovePlayerToPosition(_worldPosition);
         }
+        LookAtTargetCharacter(_player, GameManager.Instance.unSelectedHeroe);
     }
     public Vector3 GetToGoPosition()
     {
         return _worldPosition;
+    }
+    private void SetUnselectedCharacter()
+    {
+
+        GameObject speakingCharacter=GameManager.Instance.unSelectedHeroe;
+
+
+        speakingCharacter.GetComponent<Animator>().Rebind();
+        speakingCharacter.GetComponent<Animator>().Update(0f); ;
+        speakingCharacter.GetComponent<Animator>().enabled = true;
+        speakingCharacter.GetComponentInChildren<SkinnedMeshRenderer>().enabled = true;
+        speakingCharacter.transform.position=GetCharacterPosition();
+        speakingCharacter.SetActive(true);
+        Invoke("StartPresenting", 1f);
+        
+    }
+    public Vector3 GetCharacterPosition()
+    {
+        return transform.TransformPoint(characterPosition);
     }
     private void MovePlayerToPosition(Vector3 Position)
     {
@@ -41,9 +63,15 @@ public class BuildingScript : MonoBehaviour
         if(_player.position==Position)_isMovingPlayer=false;
     }
     
+    private void StartPresenting()
+    {
+        GameObject speakingCharacter = GameManager.Instance.unSelectedHeroe;
+        speakingCharacter.GetComponent<Animator>().SetBool("isPresenting",true);
+    }
     public void StartMovingPlayer()
     {
         _isMovingPlayer = true;
+        SetUnselectedCharacter();
     }
 
     private void OnDrawGizmos()
@@ -51,8 +79,24 @@ public class BuildingScript : MonoBehaviour
         
         Gizmos.color = Color.pink;
         Vector3 newWorldPosition=transform.TransformPoint(playerPosition);
-        Gizmos.DrawSphere(newWorldPosition, 1f);
         
         
+    }
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Vector3 newCharacterPosition=transform.TransformPoint(characterPosition);
+        Gizmos.DrawSphere(newCharacterPosition,1f);
+    }
+    private void LookAtTargetCharacter(Transform target,GameObject ObjectRotate)
+    {
+        Vector3 lookDir = target.position - ObjectRotate.transform.position;
+        if (lookDir.sqrMagnitude > 0.001f)
+        {
+            Quaternion targetRot = Quaternion.LookRotation(lookDir);
+            ObjectRotate.transform.rotation = Quaternion.Slerp(ObjectRotate.transform.rotation, targetRot, Time.deltaTime);
+        }
+
+
     }
 }
