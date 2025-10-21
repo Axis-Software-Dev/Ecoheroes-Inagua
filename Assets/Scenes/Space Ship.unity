@@ -746,6 +746,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UIButtonHoverHandler
   hudHandler: {fileID: 0}
   hoverMessage: Presiona el gatillo
+  onlyShowOnce: 1
 --- !u!1001 &106968533
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1449,6 +1450,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UIButtonHoverHandler
   hudHandler: {fileID: 0}
   hoverMessage: Presiona el gatillo
+  onlyShowOnce: 1
 --- !u!1001 &271229137
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3718,6 +3720,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UIButtonHoverHandler
   hudHandler: {fileID: 0}
   hoverMessage: Presiona el gatillo
+  onlyShowOnce: 1
 --- !u!1 &1140506404
 GameObject:
   m_ObjectHideFlags: 0
@@ -4759,6 +4762,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UIButtonHoverHandler
   hudHandler: {fileID: 0}
   hoverMessage: Presiona el gatillo
+  onlyShowOnce: 1
 --- !u!1 &1424631680
 GameObject:
   m_ObjectHideFlags: 0
@@ -5525,6 +5529,11 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!137 &1627877453 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 6101391309603244482, guid: 0d3f662a0fd942c4ba158dc557707d2d, type: 3}
+  m_PrefabInstance: {fileID: 1955785933}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1761762543 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 8ce16a59807712c4d98fadddd947472b, type: 3}
@@ -5786,6 +5795,11 @@ Transform:
   - {fileID: 374373660}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!137 &1854463102 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 8689980395275143799, guid: 0d3f662a0fd942c4ba158dc557707d2d, type: 3}
+  m_PrefabInstance: {fileID: 1955785933}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1955785933
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6776,6 +6790,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7526055021244852452, guid: 0d3f662a0fd942c4ba158dc557707d2d, type: 3}
       propertyPath: sounds.Array.data[9].volume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7526055021244852452, guid: 0d3f662a0fd942c4ba158dc557707d2d, type: 3}
+      propertyPath: actions.Array.data[0].intArg
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7526055021244852452, guid: 0d3f662a0fd942c4ba158dc557707d2d, type: 3}
@@ -8205,15 +8223,15 @@ PrefabInstance:
     - target: {fileID: 7526055021244852452, guid: 0d3f662a0fd942c4ba158dc557707d2d, type: 3}
       propertyPath: 'skinMeshRenderedArray.Array.data[0]'
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2047357993}
     - target: {fileID: 7526055021244852452, guid: 0d3f662a0fd942c4ba158dc557707d2d, type: 3}
       propertyPath: 'skinMeshRenderedArray.Array.data[1]'
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1854463102}
     - target: {fileID: 7526055021244852452, guid: 0d3f662a0fd942c4ba158dc557707d2d, type: 3}
       propertyPath: 'skinMeshRenderedArray.Array.data[2]'
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1627877453}
     - target: {fileID: 7526055021244852452, guid: 0d3f662a0fd942c4ba158dc557707d2d, type: 3}
       propertyPath: actions.Array.data[0].unityEvent.m_PersistentCalls.m_Calls.Array.size
       value: 0
@@ -10864,6 +10882,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 15db7352019a92343ab2766389b90449, type: 3}
+--- !u!137 &2047357993 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 2944710441182186856, guid: 0d3f662a0fd942c4ba158dc557707d2d, type: 3}
+  m_PrefabInstance: {fileID: 1955785933}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2048815968
 GameObject:
   m_ObjectHideFlags: 0
