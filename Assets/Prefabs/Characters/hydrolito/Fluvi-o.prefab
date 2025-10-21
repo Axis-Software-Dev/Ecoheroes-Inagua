@@ -51,7 +51,7 @@ PrefabInstance:
     - target: {fileID: -7040147909009660318, guid: 12ace5790e377c24d9129a77fa41ecf1, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: e06e79311c22a604f945b9de936f25e2, type: 2}
+      objectReference: {fileID: 2100000, guid: f4a946f5d3ec38148bc8cb861b59ad32, type: 2}
     - target: {fileID: -2144391425011752248, guid: 12ace5790e377c24d9129a77fa41ecf1, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -63,7 +63,7 @@ PrefabInstance:
     - target: {fileID: 3636976622167418327, guid: 12ace5790e377c24d9129a77fa41ecf1, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: e06e79311c22a604f945b9de936f25e2, type: 2}
+      objectReference: {fileID: 2100000, guid: 81afe56c72b93e1469e29fd429b8ef23, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -90,15 +90,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FluvioController
   sounds: []
-  toFollowPositions: []
-  PositionsAreLocal: 0
-  PositionsReference: {fileID: 0}
-  hydroAnimator: {fileID: 0}
+  Animator: {fileID: 0}
   skinMeshRenderedArray: []
   speed: 1
   interval: []
-  scriptToFollow: {fileID: 11400000, guid: b87bf8e7807c89a478470dc722372a50, type: 2}
-  startGreetingAnimation: 0
+  StartAnimationOnFlag: 0
   rotationSpeed: 2
   drawPositionGizmos: 1
-  timer: 0
+  positionGizmosColor: {r: 0, g: 1, b: 1, a: 1}
+  actions: []

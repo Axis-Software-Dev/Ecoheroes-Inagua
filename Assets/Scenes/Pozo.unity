@@ -3951,6 +3951,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 8227192243087186103, guid: d6878e1999eb4b44a9f5a263af86c185, type: 3}
+      propertyPath: m_InteractionLayers.m_Bits
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4640,7 +4644,9 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 876560416}
-  - {fileID: 1242771252}
+  - {fileID: 567570386}
+  - {fileID: 988815073}
+  - {fileID: 1121283315}
   - {fileID: 1819674525}
   - {fileID: 1289147102}
   - {fileID: 1277137385}

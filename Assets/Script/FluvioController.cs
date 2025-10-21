@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 using UnityEditor;
 using TMPro;
 using UnityEngine.UIElements;
 using UnityEngine.Splines;
+using System.Collections;
 
 namespace Fluvio
 {
@@ -440,7 +442,25 @@ namespace Fluvio
             _useCurve = false;
         }
 
-        /// <summary>Public: stop the timed animation sequence.</summary>
+        public void PlayVictorySequence()
+        {
+            StartCoroutine(VictorySequenceCoroutine());
+        }
+
+        private IEnumerator VictorySequenceCoroutine()
+        {
+            Debug.Log("Starting victory sequence");
+            yield return new WaitForSeconds(3f);
+
+            PlayAudio("14");
+
+            Animator.SetTrigger("mb");
+
+            yield return new WaitForSeconds(6.5f);
+
+            GameObject.Find("SceneManager").GetComponent<LoadingScreen>().LoadScene(3);
+        }
+
         public void StopTimer()
         {
             _animationIsPlaying = false;

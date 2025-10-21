@@ -202,9 +202,7 @@ public class ShipController : MonoBehaviour
                 break;
 
             case 3:
-                sceneManager sceneManagerEdit = GameObject.Find("sceneManager").GetComponent<sceneManager>();
-                sceneManagerEdit.loadingScene(newScene);
-
+                GameObject.Find("SceneManager").GetComponent<LoadingScreen>().LoadScene(2);
                 break;
 
             case 4:

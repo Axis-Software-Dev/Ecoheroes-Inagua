@@ -10,7 +10,7 @@ public class CharacterSelector : MonoBehaviour
     GameObject[] showCharacterModels = new GameObject[2];
     Transform[] modelBasePosition = new Transform[2];
     float timeForRotation = 0f;
-    sceneManager sceneManagerEdit;
+
     public Scene sceneHolder;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Awake()
@@ -18,7 +18,6 @@ public class CharacterSelector : MonoBehaviour
         characterData = Resources.Load<persistanceData>("persistanceData");
         showCharacterModels[0] = GameObject.Find("LluviaSelection 1");
         showCharacterModels[1] = GameObject.Find("AguitaSelection 1");
-        sceneManagerEdit = GameObject.Find("sceneManager").GetComponent<sceneManager>();
         modelBasePosition[0] = showCharacterModels[0].transform;
         modelBasePosition[1] = showCharacterModels[1].transform;
 
@@ -88,8 +87,7 @@ public class CharacterSelector : MonoBehaviour
         characterData.changeCharacter(selectedCharacter);
         if (selectedCharacter != persistanceData.Character.none)
         {
-
-            sceneManagerEdit.loadingScene(newScene);
+            GameObject.Find("SceneManager").GetComponent<LoadingScreen>().LoadScene(1);
         }
     }
     void rotateModel(GameObject objectToRotate)
