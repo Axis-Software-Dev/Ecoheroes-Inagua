@@ -285,8 +285,8 @@ namespace Fluvio
                     entry.unityEvent?.Invoke();
                     break;
                 case ActionEntry.ActionType.playVarAudio:
-                    if(_persistanceData?.getSelectedCharacter()!=null||
-                        _persistanceData?.getSelectedCharacter()!="none")
+                    if (_persistanceData?.getSelectedCharacter() != null ||
+                        _persistanceData?.getSelectedCharacter() != "none")
                         playVarAudio(_persistanceData.getSelectedCharacter());
                     break;
             }
@@ -457,6 +457,11 @@ namespace Fluvio
             Animator.SetTrigger("mb");
 
             yield return new WaitForSeconds(6.5f);
+
+            PlayAudio("alarm");
+            Animator.SetTrigger("Panico1");
+
+            yield return new WaitForSeconds(2);
 
             GameObject.Find("SceneManager").GetComponent<LoadingScreen>().LoadScene(3);
         }
