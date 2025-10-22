@@ -245,7 +245,7 @@ public class PipeBehavior : MonoBehaviour
         {
             checkPoints++;
         }
-        Debug.Log("Current checkpoint: " + checkPoints);
+        
     }
 
 

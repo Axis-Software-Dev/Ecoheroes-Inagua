@@ -1,4 +1,5 @@
 using Fluvio;
+using System.Collections;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -73,9 +74,10 @@ public class GameManager : MonoBehaviour
     {
         minijuegosCompletados++;
     }
-    private void SetButtons(bool State)
+    private IEnumerator SetButtons(bool State)
     {
-        foreach(Button button in buttons)
+        yield return new WaitForSeconds(61f);
+        foreach (Button button in buttons)
         {
                        button.interactable = State;
         }

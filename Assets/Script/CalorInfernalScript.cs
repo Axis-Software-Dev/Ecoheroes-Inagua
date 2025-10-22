@@ -212,7 +212,7 @@ public class CalorInfernalScript : MonoBehaviour
         {
             randObj = Random.Range(0, pipeSection.Length);
             attempts++;
-        } while (pipeSection[randObj].isActive && attempts < maxAttempts);
+        } while (pipeSection[randObj].isActive);
         Debug.Log("Selected objective: " + randObj + " (" + pipeSection[randObj].getSectionType() + ")");
         positionToGo = pipeSection[randObj].getInfernalPosition();
         isMoving = true;
@@ -260,6 +260,7 @@ public class CalorInfernalScript : MonoBehaviour
     private void StopGame()
     {
         calorInfAnimator.SetTrigger("FuckOff");
+        calorInfAnimator.SetBool("isGameStarted", false);
         isGameStarted = false;
         isInteracting = false;
         isLookingAtPlayer = false;
@@ -278,8 +279,9 @@ public class CalorInfernalScript : MonoBehaviour
     {
         Debug.Log("Calor Infernal game started");
         transform.position = startPosition;
-        Invoke("SetSkinActive", 0.5f);
+        Invoke("SetSkinActive", 1f);
         calorInfAnimator.SetTrigger("Appear");
+        calorInfAnimator.SetBool("isGameStarted", true);
         if (_meshRenderer != null) _meshRenderer.enabled = true;
         isGameStarted = true;
         isLookingAtPlayer = true;
@@ -291,6 +293,7 @@ public class CalorInfernalScript : MonoBehaviour
         isInteracting = false;
         isLookingAtPlayer = false;
         isMoving = false;
+        positionToGo = startPosition;
         calorInfAnimator.SetTrigger("Goodbye");
         Invoke("stopAnimator", STOP_ANIMATOR_DELAY);
         Debug.Log("Calor Infernal game ended");
