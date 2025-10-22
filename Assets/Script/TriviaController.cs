@@ -75,6 +75,7 @@ public class TriviaController : MonoBehaviour
     private Transform playerTransform;
     private Unity.XR.CoreUtils.XROrigin xrOrigin;
     private FluvioController fluvio;
+    private int mistakeCount = 0;
 
     private void Start()
     {
@@ -180,25 +181,39 @@ public class TriviaController : MonoBehaviour
                 ChangePlaneColor(transparent);
                 planeMaterial.DisableKeyword("_EMISSION");
 
-                Debug.Log("Wrong answer");
+                mistakeCount++;
+                Debug.Log($"Wrong answer. Mistakes: {mistakeCount}/2");
 
                 HideText();
                 yield return new WaitUntil(() => !isTextVisible);
 
-                ShowText("Necesitas seguirte preparando para convertirte en un Ecohéroe. Empieza el juego nuevamente y presta más atención para el siguiente turno.");
-                yield return new WaitUntil(() => !isTyping);
+                if (mistakeCount >= 2)
+                {
+                    ShowText("Necesitas seguirte preparando para convertirte en un Ecohéroe. Empieza el juego nuevamente y presta más atención para el siguiente turno.");
+                    yield return new WaitUntil(() => !isTyping);
 
-                HideText();
-                yield return new WaitUntil(() => !isTextVisible);
+                    HideText();
+                    yield return new WaitUntil(() => !isTextVisible);
 
-                buttonsPanel.SetActive(false);
-                yield return new WaitForSeconds(1f);
-                keyboardAnimator.SetTrigger("Disappear");
-                yield return new WaitForSeconds(2f);
-                screenAnimator.SetTrigger("Disappear");
-                yield return new WaitForSeconds(6f);
+                    buttonsPanel.SetActive(false);
+                    yield return new WaitForSeconds(1f);
+                    keyboardAnimator.SetTrigger("Disappear");
+                    yield return new WaitForSeconds(2f);
+                    screenAnimator.SetTrigger("Disappear");
+                    yield return new WaitForSeconds(6f);
 
-                UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+                    GameObject.Find("SceneManager").GetComponent<LoadingScreen>().LoadScene(0);
+                }
+                else
+                {
+                    ShowText("Esa respuesta no es correcta. ¡Cuidado! Tienes una oportunidad más.");
+                    yield return new WaitUntil(() => !isTyping);
+
+                    HideText();
+                    yield return new WaitUntil(() => !isTextVisible);
+
+                    yield return new WaitForSeconds(1f);
+                }
             }
 
             HideText();
