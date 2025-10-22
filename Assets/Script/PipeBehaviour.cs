@@ -418,8 +418,8 @@ public class PipeBehavior : MonoBehaviour
     }
     public Vector3 getInfernalPosition()
     {
-        worldPosition = transform.TransformPoint(InfernalPosition);
-        return worldPosition;
+        
+        return transform.TransformPoint(InfernalPosition);
     }
 
     private void OnDrawGizmos()

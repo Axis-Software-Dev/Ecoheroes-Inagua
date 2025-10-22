@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        SetButtons(false);
+        StartCoroutine(SetButtons(false,0f));
     }
 
     void Start()
@@ -68,18 +68,20 @@ public class GameManager : MonoBehaviour
     {
         calorInfernal.EndGame();
         Invoke("StartFluvioAnimation",5f);
-        SetButtons(true);
+        StartCoroutine(SetButtons(true,61f));
     }
     public void AddMinigamePoint()
     {
         minijuegosCompletados++;
     }
-    private IEnumerator SetButtons(bool State)
+    private IEnumerator SetButtons(bool State,float Time)
     {
-        yield return new WaitForSeconds(61f);
+
+        yield return new WaitForSeconds(Time);
         foreach (Button button in buttons)
         {
-                       button.interactable = State;
+          button.interactable = State;
         }
+        
     }
 }

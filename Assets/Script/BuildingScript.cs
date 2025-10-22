@@ -43,7 +43,9 @@ public class BuildingScript : MonoBehaviour
 
         GameObject speakingCharacter=GameManager.Instance.unSelectedHeroe;
 
-
+        speakingCharacter.layer = LayerMask.NameToLayer("Default");
+        speakingCharacter.GetComponentInChildren<SkinnedMeshRenderer>().gameObject.layer 
+            = LayerMask.NameToLayer("Default");
         speakingCharacter.GetComponent<Animator>().Rebind();
         speakingCharacter.GetComponent<Animator>().Update(0f); ;
         speakingCharacter.GetComponent<Animator>().enabled = true;
@@ -79,8 +81,8 @@ public class BuildingScript : MonoBehaviour
         
         Gizmos.color = Color.pink;
         Vector3 newWorldPosition=transform.TransformPoint(playerPosition);
-        
-        
+        Gizmos.DrawSphere(newWorldPosition,1f);
+
     }
     private void OnDrawGizmosSelected()
     {
