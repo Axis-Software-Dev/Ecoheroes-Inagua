@@ -2473,31 +2473,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TelevisionaInteractionController
   q:
   - position: 0
-    question: La sobreexplotacion de los mantos acuiferos nos afecta tanto porque
-      aun contamos con los mares y oceanos para abastecer al consumo humano, agricola
-      e industrial.
+    question: "El agua dulce y salada est\xE1 dividida en mitad, 50% salada y 50%
+      dulce."
     answer: 0
   - position: 1
-    question: 'El agua dulce y salada esta dividida en mitad: 50% salada y 50% dulce.'
-    answer: 0
+    question: "El estado y la ciudad de Aguascalientes debe su nombre a la gran cantidad
+      de aguas termales subterr\xE1neas que contiene."
+    answer: 1
   - position: 2
-    question: El estado y la ciudad de Aguascalientes deben su nombre a la gran cantidad
-      de aguas termales subterraneas que contienen.
+    question: "La filtraci\xF3n es el proceso en que la lluvia cae y se filtra por
+      el suelo hasta acumularse en acu\xEDferos."
     answer: 1
   - position: 3
-    question: La filtracion es el proceso en el que la lluvia cae y se filtra por
-      el suelo hasta acumularse en los acuiferos.
-    answer: 1
-  - position: 4
-    question: Los acuiferos se forman muy rapidamente gracias a la acumulacion de
-      agua desde tiempo atras.
+    question: "Los acu\xEDferos se forman muy r\xE1pidamente gracias a la acumulaci\xF3n
+      de agua desde tiempo atr\xE1s."
     answer: 0
-  - position: 5
-    question: 'El tipo de terreno o metodo de filtracion se divide en los siguientes:
-      poroso, fracturado y karstico.'
-    answer: 1
-  - position: 6
-    question: Si actualmente se excava a pocos metros, podemos encontrar agua limpia
+  - position: 4
+    question: Si actualmente se excava a pocos metros podemos encontrar agua limpia
       lista para usarse.
     answer: 0
   screenAnimator: {fileID: 597810239}
@@ -6323,10 +6315,10 @@ PrefabInstance:
     - target: {fileID: 7526055021244852452, guid: 0d3f662a0fd942c4ba158dc557707d2d, type: 3}
       propertyPath: sounds.Array.data[13].clip
       value: 
-      objectReference: {fileID: 8300000, guid: 39065f472cd4b2444998cfc75b5fbef5, type: 3}
+      objectReference: {fileID: 8300000, guid: 53aaa5723aae0684a9f2f80b99e414e3, type: 3}
     - target: {fileID: 7526055021244852452, guid: 0d3f662a0fd942c4ba158dc557707d2d, type: 3}
       propertyPath: sounds.Array.data[13].name
-      value: Misc
+      value: alarm
       objectReference: {fileID: 0}
     - target: {fileID: 7526055021244852452, guid: 0d3f662a0fd942c4ba158dc557707d2d, type: 3}
       propertyPath: sounds.Array.data[14].clip
@@ -6846,7 +6838,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7526055021244852452, guid: 0d3f662a0fd942c4ba158dc557707d2d, type: 3}
       propertyPath: sounds.Array.data[13].volume
-      value: 1
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 7526055021244852452, guid: 0d3f662a0fd942c4ba158dc557707d2d, type: 3}
       propertyPath: sounds.Array.data[14].volume
@@ -8214,7 +8206,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7526055021244852452, guid: 0d3f662a0fd942c4ba158dc557707d2d, type: 3}
       propertyPath: sounds.Array.data[13].spatialSound
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7526055021244852452, guid: 0d3f662a0fd942c4ba158dc557707d2d, type: 3}
       propertyPath: sounds.Array.data[14].spatialSound
