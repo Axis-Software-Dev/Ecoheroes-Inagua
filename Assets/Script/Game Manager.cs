@@ -16,19 +16,22 @@ public class GameManager : MonoBehaviour
     public GameObject[] Heroes;
     public GameObject unSelectedHeroe;
     public Button[] buttons;
-
+    public MeshRenderer externalTool;
     persistanceData data;
     private int lastPointScore=0;
     private void Awake()
     {
+        externalTool.enabled = false;
         data = Resources.Load<persistanceData>("persistanceData");
         switch (data.getSelectedCharacter())
         {
             case "aguita":
                 unSelectedHeroe=Heroes[0];
+                externalTool = null;
                 break;
             case "lluvia":
                 unSelectedHeroe=Heroes[1];
+                
                 break;
             default:
                 unSelectedHeroe=Heroes[0];

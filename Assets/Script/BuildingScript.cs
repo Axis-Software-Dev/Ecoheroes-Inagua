@@ -4,18 +4,21 @@ public class BuildingScript : MonoBehaviour
 {
     public GameObject[] EcoHeroes;
     public Vector3 playerPosition;
+    
     public Vector3 characterPosition;
     private Vector3 _worldPosition;
     private Transform _player;
     private bool _isMovingPlayer = false;
     private bool isLookingAtPlayer = true;
     private Canvas _buildingCanvas;
+    public string textToShow;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     private void Awake()
     {
         _buildingCanvas=GetComponentInChildren<Canvas>();
         _worldPosition =transform.TransformPoint(playerPosition);
+       
     }
 
     void Start()
@@ -43,15 +46,18 @@ public class BuildingScript : MonoBehaviour
 
         GameObject speakingCharacter=GameManager.Instance.unSelectedHeroe;
 
+
         speakingCharacter.layer = LayerMask.NameToLayer("Default");
         speakingCharacter.GetComponentInChildren<SkinnedMeshRenderer>().gameObject.layer 
             = LayerMask.NameToLayer("Default");
+        speakingCharacter.GetComponent<CharacterSpeaking>().ShowDialogText(textToShow);
         speakingCharacter.GetComponent<Animator>().Rebind();
         speakingCharacter.GetComponent<Animator>().Update(0f); ;
         speakingCharacter.GetComponent<Animator>().enabled = true;
         speakingCharacter.GetComponentInChildren<SkinnedMeshRenderer>().enabled = true;
         speakingCharacter.transform.position=GetCharacterPosition();
         speakingCharacter.SetActive(true);
+        if(GameManager.Instance.externalTool!=null)GameManager.Instance.externalTool.enabled=true;
         Invoke("StartPresenting", 1f);
         
     }
