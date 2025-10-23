@@ -463,6 +463,10 @@ namespace Fluvio
 
             yield return new WaitForSeconds(2);
 
+            PlayAudio("15");
+            yield return new WaitForSeconds(15);
+
+
             GameObject.Find("SceneManager").GetComponent<LoadingScreen>().LoadScene(3);
         }
 
