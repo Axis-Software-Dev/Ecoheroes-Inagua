@@ -8,6 +8,9 @@ TagManager:
   - CarSpawnerRight
   - car
   - destroy
+  - LeftController
+  - RightController
+  - Minijuego
   layers:
   - Default
   - TransparentFX
@@ -15,6 +18,10 @@ TagManager:
   - Terrain
   - Water
   - UI
+  - NoRender
+  - AquaCharacters
+  - IgnorePlayer
+  - CalorInfernal
   - Player
   - 
   - 
