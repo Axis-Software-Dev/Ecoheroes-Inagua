@@ -40,22 +40,6 @@ MonoBehaviour:
   maxNits:
     m_OverrideState: 0
     m_Value: 1000
---- !u!114 &-3053878788588641581
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 81180773991d8724ab7f2d216912b564, type: 3}
-  m_Name: ChromaticAberration
-  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.ChromaticAberration
-  active: 0
-  intensity:
-    m_OverrideState: 1
-    m_Value: 0.2
 --- !u!114 &-1100918350358660033
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -101,7 +85,6 @@ MonoBehaviour:
   - {fileID: -1100918350358660033}
   - {fileID: 2927835950346776261}
   - {fileID: 421491427811504435}
-  - {fileID: -3053878788588641581}
 --- !u!114 &421491427811504435
 MonoBehaviour:
   m_ObjectHideFlags: 3
