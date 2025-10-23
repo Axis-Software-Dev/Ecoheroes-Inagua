@@ -68,7 +68,9 @@ public class CalorInfernalScript : MonoBehaviour
 
     void Start()
     {
-        StartGame();  // Inicia el juego automáticamente o llama desde otro lugar
+        _meshRenderer.enabled = false;
+        calorInfAnimator.enabled = false;
+        Invoke("StartGame",9.5f);  // Inicia el juego automáticamente o llama desde otro lugar
     }
     #endregion
 
@@ -277,6 +279,7 @@ public class CalorInfernalScript : MonoBehaviour
 
     private void StartGame()
     {
+        calorInfAnimator.enabled = true;
         Debug.Log("Calor Infernal game started");
         transform.position = startPosition;
         Invoke("SetSkinActive", 1f);
