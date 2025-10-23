@@ -6,17 +6,18 @@ public class BuildingScript : MonoBehaviour
     public Vector3 playerPosition;
     
     public Vector3 characterPosition;
+    public float timeTostay = 15f;
     private Vector3 _worldPosition;
     private Transform _player;
     private bool _isMovingPlayer = false;
-    private bool isLookingAtPlayer = true;
-    private Canvas _buildingCanvas;
+    private bool isReturningToHome = true;
+    private bool _isLookingAtTarget = false;
     public string textToShow;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     private void Awake()
     {
-        _buildingCanvas=GetComponentInChildren<Canvas>();
+        
         _worldPosition =transform.TransformPoint(playerPosition);
        
     }
@@ -24,18 +25,18 @@ public class BuildingScript : MonoBehaviour
     void Start()
     {
         _player=GameObject.FindGameObjectWithTag("Player").transform;
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        _buildingCanvas
-            .transform.LookAt(Camera.main.transform);
+       
         if (_isMovingPlayer)
         {
             MovePlayerToPosition(_worldPosition);
         }
-        LookAtTargetCharacter(_player, GameManager.Instance.unSelectedHeroe);
+       LookAtTargetCharacter(_player,GameManager.Instance.unSelectedHeroe);
     }
     public Vector3 GetToGoPosition()
     {
@@ -70,7 +71,8 @@ public class BuildingScript : MonoBehaviour
         _player.position = Vector3.Slerp(_player.position, Position, 5f * Time.deltaTime);
         if(_player.position==Position)_isMovingPlayer=false;
     }
-    
+   
+  
     private void StartPresenting()
     {
         GameObject speakingCharacter = GameManager.Instance.unSelectedHeroe;
@@ -80,8 +82,21 @@ public class BuildingScript : MonoBehaviour
     {
         _isMovingPlayer = true;
         SetUnselectedCharacter();
+        SetButtons();
+        
     }
-
+    
+    private void SetButtons()
+    {
+        GameManager.Instance.StartCoroutine(GameManager.Instance.SetButtons(false, 0f));
+        GameManager.Instance.StartCoroutine(GameManager.Instance.SetButtons(true,timeTostay));
+        
+    }
+    private void ReturnHome()
+    {
+        isReturningToHome = true;
+        
+    }
     private void OnDrawGizmos()
     {
         

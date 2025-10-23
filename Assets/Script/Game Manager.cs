@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     public FluvioController fluvio;
     public CalorInfernalScript calorInfernal;
     public int minijuegosCompletados = 0;
+    public Canvas teleportCanvas;
     [SerializeField]
     public int POINTS_TO_WIN = 3;
     public GameObject[] Heroes;
@@ -47,6 +48,7 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
         StartCoroutine(SetButtons(false,0f));
+        teleportCanvas.enabled = false;
     }
 
     void Start()
@@ -71,13 +73,19 @@ public class GameManager : MonoBehaviour
     {
         calorInfernal.EndGame();
         Invoke("StartFluvioAnimation",5f);
-        StartCoroutine(SetButtons(true,61f));
+        StartCoroutine(SetButtons(true,37f));
+        Invoke("SetCanvasOn", 61f);
     }
+    private void SetCanvasOn() {
+        teleportCanvas.enabled = true;
+    }
+
+
     public void AddMinigamePoint()
     {
         minijuegosCompletados++;
     }
-    private IEnumerator SetButtons(bool State,float Time)
+    public IEnumerator SetButtons(bool State,float Time)
     {
 
         yield return new WaitForSeconds(Time);
