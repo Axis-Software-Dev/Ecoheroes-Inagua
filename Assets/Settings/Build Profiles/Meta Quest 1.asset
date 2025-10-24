@@ -84,7 +84,7 @@ MonoBehaviour:
     - line: '|   m_SpriteBatchMaxVertexCount: 65535'
     - line: '|   m_SpriteBatchVertexThreshold: 300'
     - line: '|   m_MTRendering: 1'
-    - line: '|   mipStripping: 0'
+    - line: '|   mipStripping: 1'
     - line: '|   numberOfMipsStripped: 0'
     - line: '|   numberOfMipsStrippedPerMipmapLimitGroup: {}'
     - line: '|   m_StackTraceTypes: 020000000200000002000000020000000200000001000000'
@@ -123,7 +123,7 @@ MonoBehaviour:
     - line: '|   submitAnalytics: 1'
     - line: '|   usePlayerLog: 1'
     - line: '|   dedicatedServerOptimizations: 0'
-    - line: '|   bakeCollisionMeshes: 0'
+    - line: '|   bakeCollisionMeshes: 1'
     - line: '|   forceSingleInstance: 0'
     - line: '|   useFlipModelSwapchain: 1'
     - line: '|   resizableWindow: 0'
@@ -221,7 +221,7 @@ MonoBehaviour:
     - line: '|   CreateWallpaper: 0'
     - line: '|   androidSplitApplicationBinary: 0'
     - line: '|   keepLoadedShadersAlive: 0'
-    - line: '|   StripUnusedMeshComponents: 0'
+    - line: '|   StripUnusedMeshComponents: 1'
     - line: '|   strictShaderVariantMatching: 0'
     - line: '|   VertexChannelCompressionMask: 4054'
     - line: '|   iPhoneSdkVersion: 988'
@@ -686,7 +686,7 @@ MonoBehaviour:
     - line: '|   m_BuildTargetDefaultTextureCompressionFormat:'
     - line: '|   - serializedVersion: 3'
     - line: '|     m_BuildTarget: Android'
-    - line: '|     m_Formats: 0100000003000000'
+    - line: '|     m_Formats: 03000000'
     - line: '|   playModeTestRunnerEnabled: 0'
     - line: '|   runPlayModeTestAsEditModeTest: 0'
     - line: '|   actionOnDotNetUnhandledException: 1'
@@ -1115,24 +1115,6 @@ MonoBehaviour:
         m_BuildAppBundle: 0
         m_IPAddressToConnect: 
         m_SymlinkSources: 0
---- !u!114 &863975611130883388
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 15010, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: Quality Settings
-  m_EditorClassIdentifier: UnityEditor.dll::UnityEditor.Build.Profile.BuildProfileQualitySettings
-  m_DefaultQualityLevel: Meta Quest (Build Profile)
-  m_QualityLevels:
-  - High Fidelity
-  - Balanced
-  - Performant
-  - Meta Quest (Build Profile)
 --- !u!114 &4992398699147542490
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -1146,7 +1128,7 @@ MonoBehaviour:
   m_Name: Graphics Settings
   m_EditorClassIdentifier: UnityEditor.dll::UnityEditor.Build.Profile.BuildProfileGraphicsSettings
   m_LightmapStripping: 1
-  m_LightmapKeepPlain: 0
+  m_LightmapKeepPlain: 1
   m_LightmapKeepDirCombined: 0
   m_LightmapKeepDynamicPlain: 0
   m_LightmapKeepDynamicDirCombined: 0
@@ -1155,9 +1137,9 @@ MonoBehaviour:
   m_FogStripping: 1
   m_FogKeepLinear: 0
   m_FogKeepExp: 0
-  m_FogKeepExp2: 0
-  m_InstancingStripping: 0
-  m_BrgStripping: 0
+  m_FogKeepExp2: 1
+  m_InstancingStripping: 2
+  m_BrgStripping: 2
   m_LogWhenShaderIsCompiled: 0
   m_CameraRelativeLightCulling: 0
   m_CameraRelativeShadowCulling: 0
@@ -1175,3 +1157,20 @@ MonoBehaviour:
   m_LightProbeOutsideHullStrategy: 0
   m_PreloadedShaders: []
   m_PreloadShadersBatchTimeLimit: -1
+--- !u!114 &5133450282333267393
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 15010, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: Quality Settings
+  m_EditorClassIdentifier: UnityEditor.dll::UnityEditor.Build.Profile.BuildProfileQualitySettings
+  m_DefaultQualityLevel: Meta Quest (Build Profile)
+  m_QualityLevels:
+  - Balanced
+  - Performant
+  - Meta Quest (Build Profile)

@@ -23,8 +23,6 @@ MonoBehaviour:
   - m_enabled: 1
     m_path: Assets/Scenes/Main Menu.unity
   - m_enabled: 1
-    m_path: Assets/Scenes/LoadingScene.unity
-  - m_enabled: 1
     m_path: Assets/Scenes/Excedra.unity
   - m_enabled: 1
     m_path: Assets/Scenes/Space Ship.unity
@@ -40,7 +38,7 @@ MonoBehaviour:
     - line: '|   AndroidProfiler: 0'
     - line: '|   AndroidFilterTouchesWhenObscured: 0'
     - line: '|   AndroidEnableSustainedPerformanceMode: 0'
-    - line: '|   defaultScreenOrientation: 4'
+    - line: '|   defaultScreenOrientation: 3'
     - line: '|   targetDevice: 2'
     - line: '|   useOnDemandResources: 0'
     - line: '|   accelerometerFrequency: 60'
@@ -210,7 +208,7 @@ MonoBehaviour:
     - line: '|   AndroidBundleVersionCode: 1'
     - line: '|   AndroidMinSdkVersion: 29'
     - line: '|   AndroidTargetSdkVersion: 32'
-    - line: '|   AndroidPreferredInstallLocation: 1'
+    - line: '|   AndroidPreferredInstallLocation: 0'
     - line: '|   aotOptions: '
     - line: '|   stripEngineCode: 1'
     - line: '|   iPhoneStrippingLevel: 0'
@@ -1093,7 +1091,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEditor.dll::UnityEditor.Build.Profile.BuildProfileQualitySettings
   m_DefaultQualityLevel: Meta Quest (Build Profile)
   m_QualityLevels:
-  - High Fidelity
   - Balanced
   - Performant
   - Meta Quest (Build Profile)
