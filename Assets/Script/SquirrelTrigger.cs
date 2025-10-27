@@ -26,6 +26,7 @@ public class SquirrelTrigger : MonoBehaviour
     private bool isTyping = false;
     private Vector3 indicatorOriginalPosition;
     private bool isIndicatorActive = false;
+    private AudioSource cry;
 
     private void Start()
     {
@@ -35,6 +36,8 @@ public class SquirrelTrigger : MonoBehaviour
             interactableIndicatorPanel.SetActive(false);
             StartCoroutine(ShowIndicatorAfterDelay());
         }
+        cry = GetComponent<AudioSource>();
+        cry.Pause();
     }
 
     private void Update()
@@ -59,6 +62,7 @@ public class SquirrelTrigger : MonoBehaviour
             interactableIndicatorPanel.SetActive(true);
             isIndicatorActive = true;
         }
+        cry.Play();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -71,7 +75,7 @@ public class SquirrelTrigger : MonoBehaviour
 
         if (!isTyping)
         {
-            Destroy(GetComponent<AudioSource>());
+            Destroy(cry);
             isTyping = true;
             StartCoroutine(SquirrelSequence());
             Debug.Log("Squirrel triggered, starting coroutine");
