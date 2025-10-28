@@ -4,39 +4,38 @@ public class BuildingScript : MonoBehaviour
 {
     public GameObject[] EcoHeroes;
     public Vector3 playerPosition;
-    
+
     public Vector3 characterPosition;
     public float timeTostay = 15f;
     private Vector3 _worldPosition;
     private Transform _player;
     private bool _isMovingPlayer = false;
-    private bool isReturningToHome = true;
-    private bool _isLookingAtTarget = false;
+
     public string textToShow;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     private void Awake()
     {
-        
-        _worldPosition =transform.TransformPoint(playerPosition);
-       
+
+        _worldPosition = transform.TransformPoint(playerPosition);
+
     }
 
     void Start()
     {
-        _player=GameObject.FindGameObjectWithTag("Player").transform;
-        
+        _player = GameObject.FindGameObjectWithTag("Player").transform;
+
     }
 
     // Update is called once per frame
     void Update()
     {
-       
+
         if (_isMovingPlayer)
         {
             MovePlayerToPosition(_worldPosition);
         }
-       LookAtTargetCharacter(_player,GameManager.Instance.unSelectedHeroe);
+        LookAtTargetCharacter(_player, GameManager.Instance.unSelectedHeroe);
     }
     public Vector3 GetToGoPosition()
     {
@@ -45,22 +44,22 @@ public class BuildingScript : MonoBehaviour
     private void SetUnselectedCharacter()
     {
 
-        GameObject speakingCharacter=GameManager.Instance.unSelectedHeroe;
+        GameObject speakingCharacter = GameManager.Instance.unSelectedHeroe;
 
 
         speakingCharacter.layer = LayerMask.NameToLayer("Default");
-        speakingCharacter.GetComponentInChildren<SkinnedMeshRenderer>().gameObject.layer 
+        speakingCharacter.GetComponentInChildren<SkinnedMeshRenderer>().gameObject.layer
             = LayerMask.NameToLayer("Default");
         speakingCharacter.GetComponent<CharacterSpeaking>().ShowDialogText(textToShow);
         speakingCharacter.GetComponent<Animator>().Rebind();
         speakingCharacter.GetComponent<Animator>().Update(0f); ;
         speakingCharacter.GetComponent<Animator>().enabled = true;
         speakingCharacter.GetComponentInChildren<SkinnedMeshRenderer>().enabled = true;
-        speakingCharacter.transform.position=GetCharacterPosition();
+        speakingCharacter.transform.position = GetCharacterPosition();
         speakingCharacter.SetActive(true);
-        if(GameManager.Instance.externalTool!=null)GameManager.Instance.externalTool.enabled=true;
+        if (GameManager.Instance.externalTool != null) GameManager.Instance.externalTool.enabled = true;
         Invoke("StartPresenting", 1f);
-        
+
     }
     public Vector3 GetCharacterPosition()
     {
@@ -69,49 +68,45 @@ public class BuildingScript : MonoBehaviour
     private void MovePlayerToPosition(Vector3 Position)
     {
         _player.position = Vector3.Slerp(_player.position, Position, 5f * Time.deltaTime);
-        if(_player.position==Position)_isMovingPlayer=false;
+        if (_player.position == Position) _isMovingPlayer = false;
     }
-   
-  
+
+
     private void StartPresenting()
     {
         GameObject speakingCharacter = GameManager.Instance.unSelectedHeroe;
-        speakingCharacter.GetComponent<Animator>().SetBool("isPresenting",true);
+        speakingCharacter.GetComponent<Animator>().SetBool("isPresenting", true);
     }
     public void StartMovingPlayer()
     {
         _isMovingPlayer = true;
         SetUnselectedCharacter();
         SetButtons();
-        
+
     }
-    
+
     private void SetButtons()
     {
         GameManager.Instance.StartCoroutine(GameManager.Instance.SetButtons(false, 0f));
-        GameManager.Instance.StartCoroutine(GameManager.Instance.SetButtons(true,timeTostay));
-        
+        GameManager.Instance.StartCoroutine(GameManager.Instance.SetButtons(true, timeTostay));
+
     }
-    private void ReturnHome()
-    {
-        isReturningToHome = true;
-        
-    }
+
     private void OnDrawGizmos()
     {
-        
+
         Gizmos.color = Color.pink;
-        Vector3 newWorldPosition=transform.TransformPoint(playerPosition);
-        Gizmos.DrawSphere(newWorldPosition,1f);
+        Vector3 newWorldPosition = transform.TransformPoint(playerPosition);
+        Gizmos.DrawSphere(newWorldPosition, 1f);
 
     }
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
-        Vector3 newCharacterPosition=transform.TransformPoint(characterPosition);
-        Gizmos.DrawSphere(newCharacterPosition,1f);
+        Vector3 newCharacterPosition = transform.TransformPoint(characterPosition);
+        Gizmos.DrawSphere(newCharacterPosition, 1f);
     }
-    private void LookAtTargetCharacter(Transform target,GameObject ObjectRotate)
+    private void LookAtTargetCharacter(Transform target, GameObject ObjectRotate)
     {
         Vector3 lookDir = target.position - ObjectRotate.transform.position;
         if (lookDir.sqrMagnitude > 0.001f)

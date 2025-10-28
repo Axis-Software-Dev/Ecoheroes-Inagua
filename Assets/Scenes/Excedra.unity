@@ -5,8 +5,8 @@ OcclusionCullingSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_OcclusionBakeSettings:
-    smallestOccluder: 2
-    smallestHole: 0.2
+    smallestOccluder: 3
+    smallestHole: 0.15
     backfaceThreshold: 100
   m_SceneGUID: 69644c4a5da4d6d42a7d84f9df6c9d91
   m_OcclusionCullingData: {fileID: 36300000, guid: e0467d224b5e63949a78a5a0f9e2fef3, type: 2}
@@ -254,6 +254,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2944710441182186856, guid: 0d3f662a0fd942c4ba158dc557707d2d, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2944710441182186856, guid: 0d3f662a0fd942c4ba158dc557707d2d, type: 3}
+      propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2944710441182186856, guid: 0d3f662a0fd942c4ba158dc557707d2d, type: 3}
+      propertyPath: m_SkinnedMotionVectors
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5053399450811536113, guid: 0d3f662a0fd942c4ba158dc557707d2d, type: 3}
       propertyPath: m_Name
       value: Fluvi-o
@@ -313,6 +325,18 @@ PrefabInstance:
     - target: {fileID: 5578438945965262923, guid: 0d3f662a0fd942c4ba158dc557707d2d, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6101391309603244482, guid: 0d3f662a0fd942c4ba158dc557707d2d, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6101391309603244482, guid: 0d3f662a0fd942c4ba158dc557707d2d, type: 3}
+      propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6101391309603244482, guid: 0d3f662a0fd942c4ba158dc557707d2d, type: 3}
+      propertyPath: m_SkinnedMotionVectors
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6101391309603244482, guid: 0d3f662a0fd942c4ba158dc557707d2d, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -1271,6 +1295,18 @@ PrefabInstance:
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 8689980395275143799, guid: 0d3f662a0fd942c4ba158dc557707d2d, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8689980395275143799, guid: 0d3f662a0fd942c4ba158dc557707d2d, type: 3}
+      propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8689980395275143799, guid: 0d3f662a0fd942c4ba158dc557707d2d, type: 3}
+      propertyPath: m_SkinnedMotionVectors
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8689980395275143799, guid: 0d3f662a0fd942c4ba158dc557707d2d, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 81afe56c72b93e1469e29fd429b8ef23, type: 2}
@@ -1290,6 +1326,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -8848619517273184814, guid: 6e91414fa2b896d48a14775b44024acb, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8848619517273184814, guid: 6e91414fa2b896d48a14775b44024acb, type: 3}
+      propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8848619517273184814, guid: 6e91414fa2b896d48a14775b44024acb, type: 3}
+      propertyPath: m_SkinnedMotionVectors
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6e91414fa2b896d48a14775b44024acb, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.6323
@@ -1434,6 +1482,18 @@ PrefabInstance:
       value: "se\xF1ora atendiendo"
       objectReference: {fileID: 0}
     - target: {fileID: 4112984690662791721, guid: 0bafb27be1f01ec4fb9cef11ece1a7b4, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4112984690662791721, guid: 0bafb27be1f01ec4fb9cef11ece1a7b4, type: 3}
+      propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4112984690662791721, guid: 0bafb27be1f01ec4fb9cef11ece1a7b4, type: 3}
+      propertyPath: m_SkinnedMotionVectors
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4112984690662791721, guid: 0bafb27be1f01ec4fb9cef11ece1a7b4, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 4b9b6966bab04f543a69c55737d81310, type: 2}
@@ -1444,6 +1504,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0bafb27be1f01ec4fb9cef11ece1a7b4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 147070654}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0bafb27be1f01ec4fb9cef11ece1a7b4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 147070655}
   m_SourcePrefab: {fileID: 100100000, guid: 0bafb27be1f01ec4fb9cef11ece1a7b4, type: 3}
 --- !u!4 &147070652 stripped
 Transform:
@@ -1477,6 +1540,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &147070655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 147070653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a6df2cf7dee0914f8f77f5f40b95313, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MeshCullingOptimizer
 --- !u!1 &190486647
 GameObject:
   m_ObjectHideFlags: 0
@@ -1653,6 +1728,18 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4558125784158161865, guid: c6c802639581d41428074b71af907d1e, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4558125784158161865, guid: c6c802639581d41428074b71af907d1e, type: 3}
+      propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4558125784158161865, guid: c6c802639581d41428074b71af907d1e, type: 3}
+      propertyPath: m_SkinnedMotionVectors
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4558125784158161865, guid: c6c802639581d41428074b71af907d1e, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 1110cb467e39850449ce878d855a73d3, type: 2}
@@ -1663,6 +1750,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c6c802639581d41428074b71af907d1e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1366736941}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c6c802639581d41428074b71af907d1e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1366736942}
   m_SourcePrefab: {fileID: 100100000, guid: c6c802639581d41428074b71af907d1e, type: 3}
 --- !u!137 &259910145 stripped
 SkinnedMeshRenderer:
@@ -1987,6 +2077,22 @@ PrefabInstance:
       propertyPath: m_AABB.m_Extent.z
       value: 3521.7544
       objectReference: {fileID: 0}
+    - target: {fileID: 6684295394808222897, guid: 9a77e45b9be85994d86fe6a8ca6c600d, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6684295394808222897, guid: 9a77e45b9be85994d86fe6a8ca6c600d, type: 3}
+      propertyPath: m_UpdateWhenOffscreen
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6684295394808222897, guid: 9a77e45b9be85994d86fe6a8ca6c600d, type: 3}
+      propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6684295394808222897, guid: 9a77e45b9be85994d86fe6a8ca6c600d, type: 3}
+      propertyPath: m_SkinnedMotionVectors
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2056,6 +2162,18 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8017449571587430431, guid: dc7c4225858ac9d41bdfab94de1c200b, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8017449571587430431, guid: dc7c4225858ac9d41bdfab94de1c200b, type: 3}
+      propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8017449571587430431, guid: dc7c4225858ac9d41bdfab94de1c200b, type: 3}
+      propertyPath: m_SkinnedMotionVectors
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8017449571587430431, guid: dc7c4225858ac9d41bdfab94de1c200b, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 4f333a8941536214c8a7d25e0289cd37, type: 2}
@@ -2078,6 +2196,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: dc7c4225858ac9d41bdfab94de1c200b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 435984188}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: dc7c4225858ac9d41bdfab94de1c200b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 435984189}
   m_SourcePrefab: {fileID: 100100000, guid: dc7c4225858ac9d41bdfab94de1c200b, type: 3}
 --- !u!4 &435984186 stripped
 Transform:
@@ -2111,6 +2232,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &435984189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 435984187}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a6df2cf7dee0914f8f77f5f40b95313, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MeshCullingOptimizer
 --- !u!1 &436042744
 GameObject:
   m_ObjectHideFlags: 0
@@ -2222,6 +2355,18 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: aace4a42417ffd14a8f339c9f2f59961, type: 3}
   m_PrefabInstance: {fileID: 1837471557}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &440139660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 440139657}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a6df2cf7dee0914f8f77f5f40b95313, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MeshCullingOptimizer
 --- !u!1 &456099573 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 210856984330587742, guid: 0d3f662a0fd942c4ba158dc557707d2d, type: 3}
@@ -2298,6 +2443,18 @@ PrefabInstance:
       value: 2.096
       objectReference: {fileID: 0}
     - target: {fileID: -3642248809546156846, guid: 42689342ede9397458a1df319c5d4c91, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3642248809546156846, guid: 42689342ede9397458a1df319c5d4c91, type: 3}
+      propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3642248809546156846, guid: 42689342ede9397458a1df319c5d4c91, type: 3}
+      propertyPath: m_SkinnedMotionVectors
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3642248809546156846, guid: 42689342ede9397458a1df319c5d4c91, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: ad0caca2c9ed3854884f0b704be92358, type: 2}
@@ -2312,6 +2469,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 42689342ede9397458a1df319c5d4c91, type: 3}
       insertIndex: -1
       addedObject: {fileID: 459672503}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 42689342ede9397458a1df319c5d4c91, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 459672504}
   m_SourcePrefab: {fileID: 100100000, guid: 42689342ede9397458a1df319c5d4c91, type: 3}
 --- !u!4 &459672501 stripped
 Transform:
@@ -2345,6 +2505,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &459672504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 459672502}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a6df2cf7dee0914f8f77f5f40b95313, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MeshCullingOptimizer
 --- !u!1 &487060912
 GameObject:
   m_ObjectHideFlags: 0
@@ -2479,6 +2651,18 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4558125784158161865, guid: c6c802639581d41428074b71af907d1e, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4558125784158161865, guid: c6c802639581d41428074b71af907d1e, type: 3}
+      propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4558125784158161865, guid: c6c802639581d41428074b71af907d1e, type: 3}
+      propertyPath: m_SkinnedMotionVectors
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4558125784158161865, guid: c6c802639581d41428074b71af907d1e, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 729fa67963334ea4583e42f4726a48e0, type: 2}
@@ -2489,6 +2673,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c6c802639581d41428074b71af907d1e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1710558311}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c6c802639581d41428074b71af907d1e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1710558312}
   m_SourcePrefab: {fileID: 100100000, guid: c6c802639581d41428074b71af907d1e, type: 3}
 --- !u!4 &613263425 stripped
 Transform:
@@ -2634,6 +2821,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &726597409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 726597404}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a6df2cf7dee0914f8f77f5f40b95313, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MeshCullingOptimizer
 --- !u!1 &738725840
 GameObject:
   m_ObjectHideFlags: 0
@@ -2856,6 +3055,18 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4558125784158161865, guid: c6c802639581d41428074b71af907d1e, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4558125784158161865, guid: c6c802639581d41428074b71af907d1e, type: 3}
+      propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4558125784158161865, guid: c6c802639581d41428074b71af907d1e, type: 3}
+      propertyPath: m_SkinnedMotionVectors
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4558125784158161865, guid: c6c802639581d41428074b71af907d1e, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 729fa67963334ea4583e42f4726a48e0, type: 2}
@@ -2866,6 +3077,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c6c802639581d41428074b71af907d1e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 925451920}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c6c802639581d41428074b71af907d1e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 925451921}
   m_SourcePrefab: {fileID: 100100000, guid: c6c802639581d41428074b71af907d1e, type: 3}
 --- !u!1 &789413644 stripped
 GameObject:
@@ -3056,7 +3270,7 @@ Animator:
   m_Enabled: 1
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 2d9478f73c9dd824798c9c24def07dbc, type: 2}
-  m_CullingMode: 0
+  m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
@@ -3446,6 +3660,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &925451921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 925451916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a6df2cf7dee0914f8f77f5f40b95313, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MeshCullingOptimizer
 --- !u!1001 &930144954
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3511,9 +3737,33 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -6762293412594061902, guid: 1af8b043bae203a42b5f3717d0f4e88e, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -6762293412594061902, guid: 1af8b043bae203a42b5f3717d0f4e88e, type: 3}
+      propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -6762293412594061902, guid: 1af8b043bae203a42b5f3717d0f4e88e, type: 3}
+      propertyPath: m_SkinnedMotionVectors
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -6762293412594061902, guid: 1af8b043bae203a42b5f3717d0f4e88e, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: b59cb861b862ddb4997777a355bd56b7, type: 2}
+    - target: {fileID: -5543397271349633314, guid: 1af8b043bae203a42b5f3717d0f4e88e, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -5543397271349633314, guid: 1af8b043bae203a42b5f3717d0f4e88e, type: 3}
+      propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -5543397271349633314, guid: 1af8b043bae203a42b5f3717d0f4e88e, type: 3}
+      propertyPath: m_SkinnedMotionVectors
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: -5543397271349633314, guid: 1af8b043bae203a42b5f3717d0f4e88e, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -3533,12 +3783,27 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1af8b043bae203a42b5f3717d0f4e88e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 409817817}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1af8b043bae203a42b5f3717d0f4e88e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 930144956}
   m_SourcePrefab: {fileID: 100100000, guid: 1af8b043bae203a42b5f3717d0f4e88e, type: 3}
 --- !u!4 &930144955 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1af8b043bae203a42b5f3717d0f4e88e, type: 3}
   m_PrefabInstance: {fileID: 930144954}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &930144956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 409817815}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a6df2cf7dee0914f8f77f5f40b95313, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MeshCullingOptimizer
 --- !u!1 &943266826 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 001747b105bb82e4a9fae8106b59ad9c, type: 3}
@@ -3571,6 +3836,18 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 001747b105bb82e4a9fae8106b59ad9c, type: 3}
   m_PrefabInstance: {fileID: 1217269269}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &943266829
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 943266826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a6df2cf7dee0914f8f77f5f40b95313, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MeshCullingOptimizer
 --- !u!114 &1003422843 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7526055021244852452, guid: 0d3f662a0fd942c4ba158dc557707d2d, type: 3}
@@ -3661,7 +3938,7 @@ Light:
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 2
+    m_Type: 1
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -3790,6 +4067,18 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5429606892716286460, guid: ac88b660ae10be04192c0ee0297cea71, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5429606892716286460, guid: ac88b660ae10be04192c0ee0297cea71, type: 3}
+      propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5429606892716286460, guid: ac88b660ae10be04192c0ee0297cea71, type: 3}
+      propertyPath: m_SkinnedMotionVectors
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5429606892716286460, guid: ac88b660ae10be04192c0ee0297cea71, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 729fa67963334ea4583e42f4726a48e0, type: 2}
@@ -3804,6 +4093,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ac88b660ae10be04192c0ee0297cea71, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2107495080}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ac88b660ae10be04192c0ee0297cea71, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2107495081}
   m_SourcePrefab: {fileID: 100100000, guid: ac88b660ae10be04192c0ee0297cea71, type: 3}
 --- !u!4 &1141367386 stripped
 Transform:
@@ -3908,6 +4200,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -325096610197296102, guid: 597c9c5939812744e92db2e99f2f2a55, type: 3}
       propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -299325509466227476, guid: 597c9c5939812744e92db2e99f2f2a55, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -299325509466227476, guid: 597c9c5939812744e92db2e99f2f2a55, type: 3}
+      propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -299325509466227476, guid: 597c9c5939812744e92db2e99f2f2a55, type: 3}
+      propertyPath: m_SkinnedMotionVectors
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -299325509466227476, guid: 597c9c5939812744e92db2e99f2f2a55, type: 3}
@@ -4025,6 +4329,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 597c9c5939812744e92db2e99f2f2a55, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1198673896}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 597c9c5939812744e92db2e99f2f2a55, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1198673898}
   m_SourcePrefab: {fileID: 100100000, guid: 597c9c5939812744e92db2e99f2f2a55, type: 3}
 --- !u!1 &1198673895 stripped
 GameObject:
@@ -4058,6 +4365,18 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 597c9c5939812744e92db2e99f2f2a55, type: 3}
   m_PrefabInstance: {fileID: 1183965373}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1198673898
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1198673895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a6df2cf7dee0914f8f77f5f40b95313, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MeshCullingOptimizer
 --- !u!1001 &1214897285
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4815,6 +5134,18 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -6500418043424506551, guid: 001747b105bb82e4a9fae8106b59ad9c, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -6500418043424506551, guid: 001747b105bb82e4a9fae8106b59ad9c, type: 3}
+      propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -6500418043424506551, guid: 001747b105bb82e4a9fae8106b59ad9c, type: 3}
+      propertyPath: m_SkinnedMotionVectors
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 001747b105bb82e4a9fae8106b59ad9c, type: 3}
       propertyPath: m_Name
       value: Perro
@@ -4830,6 +5161,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 001747b105bb82e4a9fae8106b59ad9c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 943266827}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 001747b105bb82e4a9fae8106b59ad9c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 943266829}
   m_SourcePrefab: {fileID: 100100000, guid: 001747b105bb82e4a9fae8106b59ad9c, type: 3}
 --- !u!1001 &1220812243
 PrefabInstance:
@@ -4896,6 +5230,18 @@ PrefabInstance:
       value: "Pueso de tacos- se\xF1ora esperando"
       objectReference: {fileID: 0}
     - target: {fileID: 8277621716882622865, guid: c9b20d84a3c86424896bcdf7cc3ebf11, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8277621716882622865, guid: c9b20d84a3c86424896bcdf7cc3ebf11, type: 3}
+      propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8277621716882622865, guid: c9b20d84a3c86424896bcdf7cc3ebf11, type: 3}
+      propertyPath: m_SkinnedMotionVectors
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8277621716882622865, guid: c9b20d84a3c86424896bcdf7cc3ebf11, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: f26177a11fafe57478d498c59ecd75c4, type: 2}
@@ -4906,6 +5252,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c9b20d84a3c86424896bcdf7cc3ebf11, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1220812246}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c9b20d84a3c86424896bcdf7cc3ebf11, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1220812247}
   m_SourcePrefab: {fileID: 100100000, guid: c9b20d84a3c86424896bcdf7cc3ebf11, type: 3}
 --- !u!4 &1220812244 stripped
 Transform:
@@ -4939,6 +5288,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1220812247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1220812245}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a6df2cf7dee0914f8f77f5f40b95313, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MeshCullingOptimizer
 --- !u!1 &1221612355 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: ec91d7252ba54d34e854602ccc2f7aa4, type: 3}
@@ -4971,6 +5332,18 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: ec91d7252ba54d34e854602ccc2f7aa4, type: 3}
   m_PrefabInstance: {fileID: 1780571929}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1221612358
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1221612355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a6df2cf7dee0914f8f77f5f40b95313, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MeshCullingOptimizer
 --- !u!1 &1262304591
 GameObject:
   m_ObjectHideFlags: 0
@@ -5230,6 +5603,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1268325971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1268325968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a6df2cf7dee0914f8f77f5f40b95313, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MeshCullingOptimizer
 --- !u!1001 &1288709921
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5368,6 +5753,18 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8017449571587430431, guid: 1f1ae9d39e6e69340a2c896dedc740dd, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8017449571587430431, guid: 1f1ae9d39e6e69340a2c896dedc740dd, type: 3}
+      propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8017449571587430431, guid: 1f1ae9d39e6e69340a2c896dedc740dd, type: 3}
+      propertyPath: m_SkinnedMotionVectors
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8017449571587430431, guid: 1f1ae9d39e6e69340a2c896dedc740dd, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: b4beb332bd19bcf45833a1115a6cb8d0, type: 2}
@@ -5482,6 +5879,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1f1ae9d39e6e69340a2c896dedc740dd, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1289030648}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1f1ae9d39e6e69340a2c896dedc740dd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1289030650}
   m_SourcePrefab: {fileID: 100100000, guid: 1f1ae9d39e6e69340a2c896dedc740dd, type: 3}
 --- !u!1 &1289030647 stripped
 GameObject:
@@ -5515,6 +5915,18 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1f1ae9d39e6e69340a2c896dedc740dd, type: 3}
   m_PrefabInstance: {fileID: 1289030646}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1289030650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1289030647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a6df2cf7dee0914f8f77f5f40b95313, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MeshCullingOptimizer
 --- !u!1 &1322052285
 GameObject:
   m_ObjectHideFlags: 0
@@ -5745,6 +6157,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1366736942
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1366736938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a6df2cf7dee0914f8f77f5f40b95313, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MeshCullingOptimizer
 --- !u!1001 &1491169346
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6996,6 +7420,18 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -6048211532495231933, guid: 7734955e3840ca1488e6079059bfa6f8, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -6048211532495231933, guid: 7734955e3840ca1488e6079059bfa6f8, type: 3}
+      propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -6048211532495231933, guid: 7734955e3840ca1488e6079059bfa6f8, type: 3}
+      propertyPath: m_SkinnedMotionVectors
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -6048211532495231933, guid: 7734955e3840ca1488e6079059bfa6f8, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: eb26ee0f763b2df488dc643b4bcca707, type: 2}
@@ -7010,6 +7446,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7734955e3840ca1488e6079059bfa6f8, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1573588183}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7734955e3840ca1488e6079059bfa6f8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1573588184}
   m_SourcePrefab: {fileID: 100100000, guid: 7734955e3840ca1488e6079059bfa6f8, type: 3}
 --- !u!4 &1573588181 stripped
 Transform:
@@ -7043,6 +7482,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1573588184
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1573588182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a6df2cf7dee0914f8f77f5f40b95313, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MeshCullingOptimizer
 --- !u!1 &1608076151 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: c6c802639581d41428074b71af907d1e, type: 3}
@@ -7075,6 +7526,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1608076156
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1608076151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a6df2cf7dee0914f8f77f5f40b95313, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MeshCullingOptimizer
 --- !u!1001 &1611051253
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7238,6 +7701,18 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -3150739373531814018, guid: dc29d99b0931c2441acd6965262d1376, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3150739373531814018, guid: dc29d99b0931c2441acd6965262d1376, type: 3}
+      propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3150739373531814018, guid: dc29d99b0931c2441acd6965262d1376, type: 3}
+      propertyPath: m_SkinnedMotionVectors
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3150739373531814018, guid: dc29d99b0931c2441acd6965262d1376, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 8d6aff5aec4c9de44b240834157fd9b3, type: 2}
@@ -7340,6 +7815,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: dc29d99b0931c2441acd6965262d1376, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2117101795}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: dc29d99b0931c2441acd6965262d1376, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2117101797}
   m_SourcePrefab: {fileID: 100100000, guid: dc29d99b0931c2441acd6965262d1376, type: 3}
 --- !u!1 &1662580538
 GameObject:
@@ -7391,7 +7869,7 @@ ReflectionProbe:
   m_BoxSize: {x: 10, y: 10, z: 10}
   m_BoxOffset: {x: 0, y: 0, z: 0}
   m_NearClip: 0.3
-  m_FarClip: 1000
+  m_FarClip: 100
   m_ShadowDistance: 100
   m_ClearFlags: 1
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
@@ -7520,6 +7998,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1710558312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1710558309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a6df2cf7dee0914f8f77f5f40b95313, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MeshCullingOptimizer
 --- !u!1001 &1725825726
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7581,6 +8071,18 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8017449571587430431, guid: 9fb35c01614af4041a11745985adc120, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8017449571587430431, guid: 9fb35c01614af4041a11745985adc120, type: 3}
+      propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8017449571587430431, guid: 9fb35c01614af4041a11745985adc120, type: 3}
+      propertyPath: m_SkinnedMotionVectors
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8017449571587430431, guid: 9fb35c01614af4041a11745985adc120, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: b74374e58b72c214db009602fd39bf32, type: 2}
@@ -7595,6 +8097,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9fb35c01614af4041a11745985adc120, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1725825733}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9fb35c01614af4041a11745985adc120, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1725825734}
     - targetCorrespondingSourceObject: {fileID: 7036213049465896255, guid: 9fb35c01614af4041a11745985adc120, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1725825732}
@@ -7688,6 +8193,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1725825734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1725825730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a6df2cf7dee0914f8f77f5f40b95313, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MeshCullingOptimizer
 --- !u!1 &1729970669
 GameObject:
   m_ObjectHideFlags: 0
@@ -8205,6 +8722,18 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4112984690662791721, guid: ec91d7252ba54d34e854602ccc2f7aa4, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4112984690662791721, guid: ec91d7252ba54d34e854602ccc2f7aa4, type: 3}
+      propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4112984690662791721, guid: ec91d7252ba54d34e854602ccc2f7aa4, type: 3}
+      propertyPath: m_SkinnedMotionVectors
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4112984690662791721, guid: ec91d7252ba54d34e854602ccc2f7aa4, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 20e852f28363fd845bec54d8add21638, type: 2}
@@ -8239,6 +8768,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ec91d7252ba54d34e854602ccc2f7aa4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1221612356}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ec91d7252ba54d34e854602ccc2f7aa4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1221612358}
   m_SourcePrefab: {fileID: 100100000, guid: ec91d7252ba54d34e854602ccc2f7aa4, type: 3}
 --- !u!1001 &1813129242
 PrefabInstance:
@@ -8305,8 +8837,20 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -3722405182657794361, guid: bb0e850c2d16235448760ac08a2cb9b0, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3722405182657794361, guid: bb0e850c2d16235448760ac08a2cb9b0, type: 3}
       propertyPath: m_Materials.Array.size
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -3722405182657794361, guid: bb0e850c2d16235448760ac08a2cb9b0, type: 3}
+      propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3722405182657794361, guid: bb0e850c2d16235448760ac08a2cb9b0, type: 3}
+      propertyPath: m_SkinnedMotionVectors
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -3722405182657794361, guid: bb0e850c2d16235448760ac08a2cb9b0, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -8671,6 +9215,18 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8277621716882622865, guid: aace4a42417ffd14a8f339c9f2f59961, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8277621716882622865, guid: aace4a42417ffd14a8f339c9f2f59961, type: 3}
+      propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8277621716882622865, guid: aace4a42417ffd14a8f339c9f2f59961, type: 3}
+      propertyPath: m_SkinnedMotionVectors
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8277621716882622865, guid: aace4a42417ffd14a8f339c9f2f59961, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: e3587df2a70add4469fa11e599519830, type: 2}
@@ -8685,6 +9241,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: aace4a42417ffd14a8f339c9f2f59961, type: 3}
       insertIndex: -1
       addedObject: {fileID: 440139658}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: aace4a42417ffd14a8f339c9f2f59961, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 440139660}
   m_SourcePrefab: {fileID: 100100000, guid: aace4a42417ffd14a8f339c9f2f59961, type: 3}
 --- !u!1 &1840761331 stripped
 GameObject:
@@ -8718,6 +9277,18 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f5a41bfa295abbe4397cede3fdddcd53, type: 3}
   m_PrefabInstance: {fileID: 1979824617}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1840761334
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1840761331}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a6df2cf7dee0914f8f77f5f40b95313, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MeshCullingOptimizer
 --- !u!1 &1884043143
 GameObject:
   m_ObjectHideFlags: 0
@@ -9337,6 +9908,18 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4558125784158161865, guid: c6c802639581d41428074b71af907d1e, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4558125784158161865, guid: c6c802639581d41428074b71af907d1e, type: 3}
+      propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4558125784158161865, guid: c6c802639581d41428074b71af907d1e, type: 3}
+      propertyPath: m_SkinnedMotionVectors
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4558125784158161865, guid: c6c802639581d41428074b71af907d1e, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 1110cb467e39850449ce878d855a73d3, type: 2}
@@ -9347,6 +9930,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c6c802639581d41428074b71af907d1e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1608076155}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c6c802639581d41428074b71af907d1e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1608076156}
   m_SourcePrefab: {fileID: 100100000, guid: c6c802639581d41428074b71af907d1e, type: 3}
 --- !u!1001 &1976754192
 PrefabInstance:
@@ -9413,6 +9999,18 @@ PrefabInstance:
       value: "se\xF1ora atendiendo (1)"
       objectReference: {fileID: 0}
     - target: {fileID: 4112984690662791721, guid: 0bafb27be1f01ec4fb9cef11ece1a7b4, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4112984690662791721, guid: 0bafb27be1f01ec4fb9cef11ece1a7b4, type: 3}
+      propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4112984690662791721, guid: 0bafb27be1f01ec4fb9cef11ece1a7b4, type: 3}
+      propertyPath: m_SkinnedMotionVectors
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4112984690662791721, guid: 0bafb27be1f01ec4fb9cef11ece1a7b4, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 4b9b6966bab04f543a69c55737d81310, type: 2}
@@ -9423,6 +10021,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0bafb27be1f01ec4fb9cef11ece1a7b4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1976754195}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0bafb27be1f01ec4fb9cef11ece1a7b4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1976754196}
   m_SourcePrefab: {fileID: 100100000, guid: 0bafb27be1f01ec4fb9cef11ece1a7b4, type: 3}
 --- !u!4 &1976754193 stripped
 Transform:
@@ -9456,6 +10057,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1976754196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1976754194}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a6df2cf7dee0914f8f77f5f40b95313, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MeshCullingOptimizer
 --- !u!1001 &1979824617
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9509,6 +10122,18 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -4783279570278820635, guid: f5a41bfa295abbe4397cede3fdddcd53, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4783279570278820635, guid: f5a41bfa295abbe4397cede3fdddcd53, type: 3}
+      propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4783279570278820635, guid: f5a41bfa295abbe4397cede3fdddcd53, type: 3}
+      propertyPath: m_SkinnedMotionVectors
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4783279570278820635, guid: f5a41bfa295abbe4397cede3fdddcd53, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 42dd1b5753abd314fb8e011d1093207d, type: 2}
@@ -9527,6 +10152,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f5a41bfa295abbe4397cede3fdddcd53, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1840761332}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f5a41bfa295abbe4397cede3fdddcd53, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1840761334}
   m_SourcePrefab: {fileID: 100100000, guid: f5a41bfa295abbe4397cede3fdddcd53, type: 3}
 --- !u!1001 &1981187638
 PrefabInstance:
@@ -9982,6 +10610,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &2107495081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2107495077}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a6df2cf7dee0914f8f77f5f40b95313, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MeshCullingOptimizer
 --- !u!1 &2117101794 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: dc29d99b0931c2441acd6965262d1376, type: 3}
@@ -10014,6 +10654,18 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: dc29d99b0931c2441acd6965262d1376, type: 3}
   m_PrefabInstance: {fileID: 1618322752}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2117101797
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2117101794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a6df2cf7dee0914f8f77f5f40b95313, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MeshCullingOptimizer
 --- !u!1001 &2117797182
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10095,6 +10747,18 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4558125784158161865, guid: c6c802639581d41428074b71af907d1e, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4558125784158161865, guid: c6c802639581d41428074b71af907d1e, type: 3}
+      propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4558125784158161865, guid: c6c802639581d41428074b71af907d1e, type: 3}
+      propertyPath: m_SkinnedMotionVectors
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4558125784158161865, guid: c6c802639581d41428074b71af907d1e, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: ca6feb501fb4942489dc919cbf9e3670, type: 2}
@@ -10105,6 +10769,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c6c802639581d41428074b71af907d1e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1268325970}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c6c802639581d41428074b71af907d1e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1268325971}
   m_SourcePrefab: {fileID: 100100000, guid: c6c802639581d41428074b71af907d1e, type: 3}
 --- !u!1 &2124608485 stripped
 GameObject:
@@ -10316,6 +10983,18 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4558125784158161865, guid: c6c802639581d41428074b71af907d1e, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4558125784158161865, guid: c6c802639581d41428074b71af907d1e, type: 3}
+      propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4558125784158161865, guid: c6c802639581d41428074b71af907d1e, type: 3}
+      propertyPath: m_SkinnedMotionVectors
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4558125784158161865, guid: c6c802639581d41428074b71af907d1e, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: ca6feb501fb4942489dc919cbf9e3670, type: 2}
@@ -10326,6 +11005,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c6c802639581d41428074b71af907d1e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 726597408}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c6c802639581d41428074b71af907d1e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 726597409}
   m_SourcePrefab: {fileID: 100100000, guid: c6c802639581d41428074b71af907d1e, type: 3}
 --- !u!1001 &2144140873
 PrefabInstance:
@@ -10335,13 +11017,37 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 88634665887781541, guid: b588eab963c642742a09b9c6e0433831, type: 3}
+      propertyPath: m_UpdateWhenOffscreen
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 88634665887781541, guid: b588eab963c642742a09b9c6e0433831, type: 3}
+      propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 88634665887781541, guid: b588eab963c642742a09b9c6e0433831, type: 3}
+      propertyPath: m_SkinnedMotionVectors
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 305538597129993250, guid: b588eab963c642742a09b9c6e0433831, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 305538597129993250, guid: b588eab963c642742a09b9c6e0433831, type: 3}
+      propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 305538597129993250, guid: b588eab963c642742a09b9c6e0433831, type: 3}
+      propertyPath: m_SkinnedMotionVectors
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 504569987756839747, guid: b588eab963c642742a09b9c6e0433831, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 736360658291915917, guid: b588eab963c642742a09b9c6e0433831, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.589
+      value: -1.45
       objectReference: {fileID: 0}
     - target: {fileID: 736360658291915917, guid: b588eab963c642742a09b9c6e0433831, type: 3}
       propertyPath: m_LocalPosition.y
@@ -10379,6 +11085,46 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1746159843914091588, guid: b588eab963c642742a09b9c6e0433831, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1746159843914091588, guid: b588eab963c642742a09b9c6e0433831, type: 3}
+      propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1746159843914091588, guid: b588eab963c642742a09b9c6e0433831, type: 3}
+      propertyPath: m_SkinnedMotionVectors
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2230497711445291596, guid: b588eab963c642742a09b9c6e0433831, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2230497711445291596, guid: b588eab963c642742a09b9c6e0433831, type: 3}
+      propertyPath: m_UpdateWhenOffscreen
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2230497711445291596, guid: b588eab963c642742a09b9c6e0433831, type: 3}
+      propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2230497711445291596, guid: b588eab963c642742a09b9c6e0433831, type: 3}
+      propertyPath: m_SkinnedMotionVectors
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300594458653554513, guid: b588eab963c642742a09b9c6e0433831, type: 3}
+      propertyPath: m_UpdateWhenOffscreen
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300594458653554513, guid: b588eab963c642742a09b9c6e0433831, type: 3}
+      propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300594458653554513, guid: b588eab963c642742a09b9c6e0433831, type: 3}
+      propertyPath: m_SkinnedMotionVectors
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7547335998316742650, guid: b588eab963c642742a09b9c6e0433831, type: 3}
       propertyPath: m_Name
       value: XR Rig
@@ -10386,6 +11132,22 @@ PrefabInstance:
     - target: {fileID: 7547335998316742650, guid: b588eab963c642742a09b9c6e0433831, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8653655204447019539, guid: b588eab963c642742a09b9c6e0433831, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8653655204447019539, guid: b588eab963c642742a09b9c6e0433831, type: 3}
+      propertyPath: m_UpdateWhenOffscreen
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8653655204447019539, guid: b588eab963c642742a09b9c6e0433831, type: 3}
+      propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8653655204447019539, guid: b588eab963c642742a09b9c6e0433831, type: 3}
+      propertyPath: m_SkinnedMotionVectors
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -10404,6 +11166,7 @@ SceneRoots:
   - {fileID: 59371576}
   - {fileID: 39937458}
   - {fileID: 1729970673}
+  - {fileID: 1745537587}
   - {fileID: 2012527344}
   - {fileID: 1886670050}
   - {fileID: 1892243755}
@@ -10415,4 +11178,3 @@ SceneRoots:
   - {fileID: 1288709921}
   - {fileID: 2135132054}
   - {fileID: 1262304594}
-  - {fileID: 1745537587}

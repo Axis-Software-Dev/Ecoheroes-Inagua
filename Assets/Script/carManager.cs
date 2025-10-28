@@ -7,29 +7,32 @@ using UnityEngine.UIElements;
 public class carManager : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    public GameObject[] carModelStraight,carModelRight;
-    Transform[] spawnerStraight,spawnerRight;
+    public GameObject[] carModelStraight, carModelRight;
+    Transform[] spawnerStraight, spawnerRight;
     [HideInInspector]
     public float timer = 0;
     [HideInInspector]
-    public float timeToSpawn=1f;
+    public float timeToSpawn = 1f;
     int lastCarSpawnedRight, lastCarSpawnedStraight;
     public float minSpeed = 0.5f, maxSpeed = 1.5f, minTimeToSpawn = 1f, maxTimeToSpawn = 5f, timeToDestroy = 10f;
     bool timerActive = false;
-    
-    
+    private CarPool pool;
+
+
     private void Awake()
     {
         GameObject[] spawnerObjectStraight = GameObject.FindGameObjectsWithTag("CarSpawnerStraight");
-        spawnerStraight= new Transform[spawnerObjectStraight.Length];   
-        for (int i=0;i<spawnerObjectStraight.Length; i++) {spawnerStraight[i]=spawnerObjectStraight[i].transform;}
-        foreach (GameObject car in carModelStraight) { 
+        spawnerStraight = new Transform[spawnerObjectStraight.Length];
+        for (int i = 0; i < spawnerObjectStraight.Length; i++) { spawnerStraight[i] = spawnerObjectStraight[i].transform; }
+        foreach (GameObject car in carModelStraight)
+        {
             car.SetActive(false);
         }
         GameObject[] spawnerObjectRight = GameObject.FindGameObjectsWithTag("CarSpawnerRight");
-        spawnerRight= new Transform[spawnerObjectRight.Length];   
-        for (int i=0;i<spawnerObjectRight.Length; i++) {spawnerRight[i]=spawnerObjectRight[i].transform;}
-        foreach (GameObject car in carModelRight) { 
+        spawnerRight = new Transform[spawnerObjectRight.Length];
+        for (int i = 0; i < spawnerObjectRight.Length; i++) { spawnerRight[i] = spawnerObjectRight[i].transform; }
+        foreach (GameObject car in carModelRight)
+        {
             car.SetActive(false);
         }
     }
@@ -37,10 +40,9 @@ public class carManager : MonoBehaviour
 
     void Start()
     {
-        
+        pool = gameObject.AddComponent<CarPool>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         spawnCars();
@@ -48,15 +50,16 @@ public class carManager : MonoBehaviour
     void spawnCars()
     {
         if (timerActive == true) timer += Time.deltaTime;
-        if (timer <= timeToSpawn) {
+        if (timer <= timeToSpawn)
+        {
             timerActive = true;
 
         }
         else
         {
-            timeToSpawn = Random.Range(minTimeToSpawn,maxTimeToSpawn);
-            float randomInit = Random.Range(0,1f);
-            Invoke("spawnCarRight",randomInit);
+            timeToSpawn = Random.Range(minTimeToSpawn, maxTimeToSpawn);
+            float randomInit = Random.Range(0, 1f);
+            Invoke("spawnCarRight", randomInit);
             randomInit = Random.Range(0, 1f);
             Invoke("spawnCarStraight", randomInit);
             resetTimer();
@@ -73,32 +76,35 @@ public class carManager : MonoBehaviour
     }
     void spawnCarStraight()
     {
-        int randNum= Mathf.FloorToInt(Random.Range(0, carModelStraight.Length));
-        if (randNum==lastCarSpawnedStraight)
+        int randNum = Mathf.FloorToInt(Random.Range(0, carModelStraight.Length));
+        if (randNum == lastCarSpawnedStraight)
         {
-                int upOrDown = Mathf.FloorToInt(Random.Range(0, 1));
-                
-                if(upOrDown==1) randNum -= 1;
-                if (upOrDown == 0) randNum += 1;
+            int upOrDown = Mathf.FloorToInt(Random.Range(0, 1));
+
+            if (upOrDown == 1) randNum -= 1;
+            if (upOrDown == 0) randNum += 1;
 
             if (randNum < 0)
-                {
-             randNum = carModelStraight.Length-1;
-            }else if (randNum > carModelStraight.Length - 1)
             {
-             randNum = 0;
-            }  
+                randNum = carModelStraight.Length - 1;
+            }
+            else if (randNum > carModelStraight.Length - 1)
+            {
+                randNum = 0;
+            }
 
         }
-            
-        
+
+
         lastCarSpawnedStraight = randNum;
         int randSpawn = Mathf.FloorToInt(Random.Range(0, spawnerStraight.Length));
-        GameObject mostRecentObject = Instantiate(carModelStraight[randNum], spawnerStraight[randSpawn].position, spawnerStraight[randSpawn].rotation);
-        //float randomSpeed = Random.Range(minSpeed, maxSpeed);
-        //mostRecentObject.GetComponent<Animator>().speed = randomSpeed;
+        GameObject mostRecentObject = pool.Get(
+    carModelStraight[randNum],
+    spawnerStraight[randSpawn].position,
+    spawnerStraight[randSpawn].rotation
+);
         mostRecentObject.SetActive(true);
-        StartCoroutine(destroyObject(mostRecentObject));
+        pool.Return(mostRecentObject, timeToDestroy);
     }
     void spawnCarRight()
     {
@@ -123,8 +129,6 @@ public class carManager : MonoBehaviour
         lastCarSpawnedRight = randNum;
         int randSpawn = Mathf.FloorToInt(Random.Range(0, spawnerRight.Length));
         GameObject mostRecentObject = Instantiate(carModelRight[randNum], spawnerRight[randSpawn].position, spawnerRight[randSpawn].rotation);
-        //float randomSpeed = Random.Range(minSpeed, maxSpeed);
-        //mostRecentObject.GetComponent<Animator>().speed = randomSpeed;
         mostRecentObject.SetActive(true);
         StartCoroutine(destroyObject(mostRecentObject));
     }
