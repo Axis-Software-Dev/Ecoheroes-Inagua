@@ -20,7 +20,6 @@ public class LoadingScreen : MonoBehaviour
     IEnumerator LoadSceneAsync(int sceneId)
     {
         yield return StartCoroutine(FadeToWhite());
-        LoadingPanel.SetActive(true);
 
         AsyncOperation operation = SceneManager.LoadSceneAsync(sceneId);
 
