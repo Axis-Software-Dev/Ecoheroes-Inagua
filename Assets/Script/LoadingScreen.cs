@@ -54,6 +54,10 @@ public class LoadingScreen : MonoBehaviour
         {
             yield return null;
         }
+
+        yield return Resources.UnloadUnusedAssets();
+
+        System.GC.Collect();
     }
 
     private IEnumerator FadeToWhite()

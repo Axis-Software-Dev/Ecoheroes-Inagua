@@ -43,7 +43,7 @@ public class ShipController : MonoBehaviour
     [Header("Fluvio")]
     public FluvioController fluvioController;
     [Header("Scene to load")]
-    public SceneField newScene;
+    public LoadingScreen loadingScreen;
 
     // internals
     private Dictionary<string, Sound> soundMap;
@@ -202,22 +202,10 @@ public class ShipController : MonoBehaviour
                 break;
 
             case 3:
-                GameObject.Find("SceneManager").GetComponent<LoadingScreen>().LoadScene(2);
+                loadingScreen.LoadScene(2);
                 break;
 
             case 4:
-
-                break;
-
-            case 5:
-
-                break;
-
-            case 6:
-
-                break;
-
-            case 7:
 
                 break;
 
@@ -241,43 +229,6 @@ public class ShipController : MonoBehaviour
     #endregion
 
     #region Walking / movement
-    private void StartWalkingTo(int index, bool lookTowardsTarget)
-    {
-        if (toFollowPositions == null || index < 0 || index >= toFollowPositions.Length)
-        {
-            Debug.LogWarning($"StartWalkingTo: invalid index {index}. toFollowPositions length = {(toFollowPositions == null ? 0 : toFollowPositions.Length)}");
-            activeWalkTarget = -1;
-            return;
-        }
-
-        activeWalkTarget = index;
-        activeWalkShouldLook = lookTowardsTarget;
-    }
-    private void StartWalkingCurve(int index, Vector3 controlPoint, bool lookTowardsTarget)
-    {
-        if (toFollowPositions == null || index < 0 || index >= toFollowPositions.Length)
-        {
-            Debug.LogWarning($"StartWalkingCurve: invalid index {index}. toFollowPositions length = {(toFollowPositions == null ? 0 : toFollowPositions.Length)}");
-            activeWalkTarget = -1;
-            return;
-        }
-
-        activeWalkTarget = index;
-        activeWalkShouldLook = lookTowardsTarget;
-        walkProgress = 0f;
-
-        curveStart = transform.position;
-        curveEnd = GetWorldPosition(index);
-        curveControl = controlPoint;
-        useCurve = true;
-    }
-
-    private void StopWalking()
-    {
-        activeWalkTarget = -1;
-        activeWalkShouldLook = false;
-    }
-
     private void MoveTowardsActiveTarget()
     {
         if (activeWalkTarget < 0 || toFollowPositions == null || activeWalkTarget >= toFollowPositions.Length) return;

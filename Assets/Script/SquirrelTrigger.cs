@@ -62,7 +62,7 @@ public class SquirrelTrigger : MonoBehaviour
             interactableIndicatorPanel.SetActive(true);
             isIndicatorActive = true;
         }
-        cry.Play();
+        if (cry) cry.Play();
     }
 
     private void OnTriggerEnter(Collider other)

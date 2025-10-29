@@ -715,6 +715,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4612613129801691096, guid: c10a9a778bd1e69479c04c3101a58311, type: 3}
+      propertyPath: m_ReferenceResolution.x
+      value: 1920
+      objectReference: {fileID: 0}
+    - target: {fileID: 4612613129801691096, guid: c10a9a778bd1e69479c04c3101a58311, type: 3}
+      propertyPath: m_ReferenceResolution.y
+      value: 1080
+      objectReference: {fileID: 0}
+    - target: {fileID: 4693861850790090768, guid: c10a9a778bd1e69479c04c3101a58311, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 890956460}
     - target: {fileID: 5016612675520595525, guid: c10a9a778bd1e69479c04c3101a58311, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -1258,6 +1270,11 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   lightOverride: {fileID: 463675376}
+--- !u!20 &890956460 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 2759543005406544888, guid: b588eab963c642742a09b9c6e0433831, type: 3}
+  m_PrefabInstance: {fileID: 1089458410}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &944306922
 PrefabInstance:
   m_ObjectHideFlags: 0

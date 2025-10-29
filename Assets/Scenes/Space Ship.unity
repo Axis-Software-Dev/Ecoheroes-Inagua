@@ -4596,6 +4596,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 597810241}
+        m_TargetAssemblyTypeName: TriviaController, Assembly-CSharp
+        m_MethodName: InitiateTrivia
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!4 &1424631682
 Transform:
   m_ObjectHideFlags: 0
@@ -5386,6 +5398,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4693861850790090768, guid: c10a9a778bd1e69479c04c3101a58311, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 106968534}
     - target: {fileID: 5054093926006930667, guid: c10a9a778bd1e69479c04c3101a58311, type: 3}
       propertyPath: m_Name
       value: sceneManager
@@ -10624,6 +10640,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7424507524287867659, guid: a1d1ebda36a09e341ab41d08fcb2ea62, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -89.98021
+      objectReference: {fileID: 0}
     - target: {fileID: -236412653614841994, guid: a1d1ebda36a09e341ab41d08fcb2ea62, type: 3}
       propertyPath: m_LightProbeUsage
       value: 0
@@ -10635,6 +10655,26 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: a1d1ebda36a09e341ab41d08fcb2ea62, type: 3}
       propertyPath: m_Name
       value: Control Pad
+      objectReference: {fileID: 0}
+    - target: {fileID: 2463392784168864273, guid: a1d1ebda36a09e341ab41d08fcb2ea62, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 45.391544
+      objectReference: {fileID: 0}
+    - target: {fileID: 2463392784168864273, guid: a1d1ebda36a09e341ab41d08fcb2ea62, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 2463392784168864273, guid: a1d1ebda36a09e341ab41d08fcb2ea62, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 4867744173144237078, guid: a1d1ebda36a09e341ab41d08fcb2ea62, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 89.98021
+      objectReference: {fileID: 0}
+    - target: {fileID: 8430233666813424446, guid: a1d1ebda36a09e341ab41d08fcb2ea62, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 89.98021
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

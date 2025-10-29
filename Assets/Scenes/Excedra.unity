@@ -4307,6 +4307,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4693861850790090768, guid: c10a9a778bd1e69479c04c3101a58311, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 1536137453}
     - target: {fileID: 5016612675520595525, guid: c10a9a778bd1e69479c04c3101a58311, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -4396,6 +4400,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c10a9a778bd1e69479c04c3101a58311, type: 3}
+--- !u!114 &861923321 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5451999710099873115, guid: c10a9a778bd1e69479c04c3101a58311, type: 3}
+  m_PrefabInstance: {fileID: 815148062}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ebfda2cbe723fa49a6ba3145da8ad94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LoadingScreen
 --- !u!1001 &885069944
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6388,9 +6403,7 @@ MonoBehaviour:
   drawPositionGizmos: 1
   positionGizmosColor: {r: 1, g: 0, b: 0, a: 1}
   fluvioController: {fileID: 1248366073}
-  newScene:
-    m_SceneAsset: {fileID: 102900000, guid: 291a4072167b1f44fafda635c4ca04d9, type: 3}
-    m_SceneName: Space Ship
+  loadingScreen: {fileID: 861923321}
 --- !u!95 &1108031352
 Animator:
   serializedVersion: 7
@@ -8641,7 +8654,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 736360658291915917, guid: b588eab963c642742a09b9c6e0433831, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.589
+      value: -1.212
       objectReference: {fileID: 0}
     - target: {fileID: 736360658291915917, guid: b588eab963c642742a09b9c6e0433831, type: 3}
       propertyPath: m_LocalPosition.y
@@ -8692,6 +8705,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b588eab963c642742a09b9c6e0433831, type: 3}
+--- !u!20 &1536137453 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 2759543005406544888, guid: b588eab963c642742a09b9c6e0433831, type: 3}
+  m_PrefabInstance: {fileID: 1536137452}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1546055855
 PrefabInstance:
   m_ObjectHideFlags: 0
