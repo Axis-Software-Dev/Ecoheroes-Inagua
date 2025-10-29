@@ -167,7 +167,7 @@ public class CalorInfernalScript : MonoBehaviour
             switch (target.gameObject.GetComponent<PipeBehavior>().getSectionType())
             {
                 case "wheel":
-                    lookDir = new Vector3(lookDir.x + 2f, lookDir.y, lookDir.z + 10f); // Ajuste específico para la rueda
+                    lookDir = new Vector3(lookDir.x - 10f, lookDir.y, lookDir.z - 2f); // Ajuste específico para la rueda
                     break;
                 default:
                     break;
