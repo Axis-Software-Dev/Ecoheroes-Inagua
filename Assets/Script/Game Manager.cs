@@ -36,14 +36,18 @@ public class GameManager : MonoBehaviour
     public GameObject unSelectedHeroe;
     public Button[] buttons;
     public MeshRenderer externalTool;
+    public GameObject Mirror;
     persistanceData data;
     private Dictionary<string, BackgroundSound> _soundMap;
     private int lastPointScore = 0;
     private bool isPlayingLoop = true;
     private LoadingScreen sceneManager;
+    [SerializeField]
+    private bool hasMirrorShowed = false;
     private void Awake()
     {
-        if(ThankYou!=null)ThankYou.enabled = false;
+        Mirror.SetActive(false);
+        if (ThankYou!=null)ThankYou.enabled = false;
         sceneManager = GameObject.Find("SceneManager").GetComponent<LoadingScreen>();
         externalTool.enabled = false;
         data = Resources.Load<persistanceData>("persistanceData");
@@ -109,8 +113,13 @@ public class GameManager : MonoBehaviour
     {
         if (minijuegosCompletados == POINTS_TO_WIN && lastPointScore == POINTS_TO_WIN - 1) EndGame();
         lastPointScore = minijuegosCompletados;
+       
     }
 
+    public void ShowMirror()
+    {
+        Mirror.SetActive(true);
+    }
     public IEnumerator PlayBGM(string audioName, float LoopDelay)
     {
 
