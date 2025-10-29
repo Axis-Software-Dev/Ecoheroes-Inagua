@@ -1,5 +1,8 @@
+
 using Fluvio;
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -7,11 +10,26 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    [Serializable]
+    public class BackgroundSound
+    {
+        public string name;
+        public AudioClip clip;
+        [Range(0f, 1f)] public float volume = 1f;
+        public float pitch = 1f;
+        public float timeToSkip = 0f;
+        [Range(0f, 1f)] public float spatialSound = 0f;
+
+        [NonSerialized] public AudioSource source;
+    }
+    public BackgroundSound[] sounds;
+    public float timeBeforeReturnToMenu = 120f;
     public static GameManager Instance;
     public FluvioController fluvio;
     public CalorInfernalScript calorInfernal;
     public int minijuegosCompletados = 0;
     public Canvas teleportCanvas;
+    public Canvas ThankYou;
     [SerializeField]
     public int POINTS_TO_WIN = 3;
     public GameObject[] Heroes;
@@ -19,25 +37,31 @@ public class GameManager : MonoBehaviour
     public Button[] buttons;
     public MeshRenderer externalTool;
     persistanceData data;
-    private int lastPointScore=0;
+    private Dictionary<string, BackgroundSound> _soundMap;
+    private int lastPointScore = 0;
+    private bool isPlayingLoop = true;
+    private LoadingScreen sceneManager;
     private void Awake()
     {
+        if(ThankYou!=null)ThankYou.enabled = false;
+        sceneManager = GameObject.Find("SceneManager").GetComponent<LoadingScreen>();
         externalTool.enabled = false;
         data = Resources.Load<persistanceData>("persistanceData");
         switch (data.getSelectedCharacter())
         {
             case "aguita":
-                unSelectedHeroe=Heroes[0];
+                unSelectedHeroe = Heroes[0];
                 externalTool = null;
                 break;
             case "lluvia":
-                unSelectedHeroe=Heroes[1];
-                
+                unSelectedHeroe = Heroes[1];
+
                 break;
             default:
-                unSelectedHeroe=Heroes[0];
+                unSelectedHeroe = Heroes[0];
                 break;
         }
+
         minijuegosCompletados = (0 - calorInfernal.pipeSection.Length);
         if (Instance == null)
         {
@@ -47,52 +71,144 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        StartCoroutine(SetButtons(false,0f));
+
+        StartCoroutine(SetButtons(false, 0f));
         teleportCanvas.enabled = false;
+
+        _soundMap = new Dictionary<string, BackgroundSound>(StringComparer.OrdinalIgnoreCase);
+        if (sounds != null)
+        {
+            foreach (var s in sounds)
+            {
+                if (s == null) continue;
+                // create audio source for each sound (small projects okay). Consider pooling if many sounds.
+                s.source = gameObject.AddComponent<AudioSource>();
+                s.source.clip = s.clip;
+                s.source.volume = s.volume;
+                s.source.pitch = s.pitch;
+                s.source.time = s.timeToSkip;
+                s.source.spatialBlend = s.spatialSound;
+
+                if (!string.IsNullOrEmpty(s.name))
+                {
+                    if (!_soundMap.ContainsKey(s.name)) _soundMap.Add(s.name, s);
+                    else Debug.LogWarning($"Duplicate sound name '{s.name}' on {name}.");
+                }
+            }
+        }
+
     }
 
     void Start()
     {
-      
 
+        StartCoroutine(PlayStartingAudio());
     }
-    
+
     void Update()
     {
-        if (minijuegosCompletados == POINTS_TO_WIN && lastPointScore == POINTS_TO_WIN-1) EndGame();
+        if (minijuegosCompletados == POINTS_TO_WIN && lastPointScore == POINTS_TO_WIN - 1) EndGame();
         lastPointScore = minijuegosCompletados;
     }
 
+    public IEnumerator PlayBGM(string audioName, float LoopDelay)
+    {
+
+        if (string.IsNullOrEmpty(audioName) || _soundMap == null) yield return null;
+        if (_soundMap.TryGetValue(audioName, out var s) && s?.source != null)
+        {
+            s.source = gameObject.AddComponent<AudioSource>();
+            s.source.clip = s.clip;
+            s.source.volume = s.volume;
+            s.source.pitch = s.pitch;
+            s.source.time = s.timeToSkip;
+            s.source.spatialBlend = s.spatialSound;
+            if (!s.source.isPlaying) s.source.Play();
+            StartCoroutine(DestroyAudioSource(s.source));
+
+        }
+        else
+        {
+            Debug.LogWarning($"PlayAudio: sound '{audioName}' not found on {name}");
+        }
+        yield return new WaitForSeconds(LoopDelay);
+        if(isPlayingLoop)StartCoroutine(PlayBGM(audioName, LoopDelay));
+    }
+    IEnumerator StopBGM()
+    {
+        isPlayingLoop = false;
+        StopCoroutine(PlayBGM("Evil Loop", 6f));
+        AudioSource[] audioSources = GetComponents<AudioSource>();
+        while (audioSources != null)
+        {
+            audioSources = GetComponents<AudioSource>();
+            foreach (AudioSource audioS in audioSources)
+            {
+                Debug.Log("Fading out audio source" + audioSources);
+                audioS.volume -= 0.1f * Time.deltaTime;
+                if (audioS.volume <= 0f)
+                {
+                    Destroy(audioS); ;
+                }
+            }
+            yield return null;
+        }
+        
+        
+    }
+    private IEnumerator PlayStartingAudio()
+    {
+        yield return new WaitForSeconds(9.5f);
+        StartCoroutine(PlayBGM("Evil Loop", 6f));
+    }
 
     public void StartFluvioAnimation()
     {
         fluvio.StartAnimationOnFlag = true;
 
     }
+    private IEnumerator DestroyAudioSource(AudioSource AudioToDestroy)
+    {
+        yield return new WaitForSeconds(9f);    
+        Destroy(AudioToDestroy);
+    }
     public void EndGame()
     {
         calorInfernal.EndGame();
-        Invoke("StartFluvioAnimation",5f);
-        StartCoroutine(SetButtons(true,37f));
+        Invoke("StartFluvioAnimation", 5f);
+        StartCoroutine(SetButtons(true, 37f));
+        StartCoroutine(StopBGM());
         Invoke("SetCanvasOn", 61f);
+        Invoke("EndExploringPhase", timeBeforeReturnToMenu+61f);
     }
-    private void SetCanvasOn() {
+    private void SetCanvasOn()
+    {
         teleportCanvas.enabled = true;
     }
 
+    private void EndExploringPhase()
+    {
+        if(ThankYou!=null)ThankYou.enabled = true;
+        Invoke("GoToMenu", 10f);
+    }
+
+    private void GoToMenu()
+    {
+        sceneManager.LoadScene(0);
+    }
 
     public void AddMinigamePoint()
     {
         minijuegosCompletados++;
     }
-    public IEnumerator SetButtons(bool State,float Time)
+    public IEnumerator SetButtons(bool State, float Time)
     {
 
         yield return new WaitForSeconds(Time);
         foreach (Button button in buttons)
         {
-          button.interactable = State;
+            button.interactable = State;
         }
-        
+
     }
 }
