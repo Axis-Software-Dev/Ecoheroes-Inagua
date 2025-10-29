@@ -23,11 +23,13 @@ public class GameManager : MonoBehaviour
         [NonSerialized] public AudioSource source;
     }
     public BackgroundSound[] sounds;
+    public float timeBeforeReturnToMenu = 120f;
     public static GameManager Instance;
     public FluvioController fluvio;
     public CalorInfernalScript calorInfernal;
     public int minijuegosCompletados = 0;
     public Canvas teleportCanvas;
+    public Canvas ThankYou;
     [SerializeField]
     public int POINTS_TO_WIN = 3;
     public GameObject[] Heroes;
@@ -38,8 +40,11 @@ public class GameManager : MonoBehaviour
     private Dictionary<string, BackgroundSound> _soundMap;
     private int lastPointScore = 0;
     private bool isPlayingLoop = true;
+    private LoadingScreen sceneManager;
     private void Awake()
     {
+        if(ThankYou!=null)ThankYou.enabled = false;
+        sceneManager = GameObject.Find("SceneManager").GetComponent<LoadingScreen>();
         externalTool.enabled = false;
         data = Resources.Load<persistanceData>("persistanceData");
         switch (data.getSelectedCharacter())
@@ -174,12 +179,23 @@ public class GameManager : MonoBehaviour
         StartCoroutine(SetButtons(true, 37f));
         StartCoroutine(StopBGM());
         Invoke("SetCanvasOn", 61f);
+        Invoke("EndExploringPhase", timeBeforeReturnToMenu+61f);
     }
     private void SetCanvasOn()
     {
         teleportCanvas.enabled = true;
     }
 
+    private void EndExploringPhase()
+    {
+        if(ThankYou!=null)ThankYou.enabled = true;
+        Invoke("GoToMenu", 10f);
+    }
+
+    private void GoToMenu()
+    {
+        sceneManager.LoadScene(0);
+    }
 
     public void AddMinigamePoint()
     {

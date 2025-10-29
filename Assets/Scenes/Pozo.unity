@@ -1653,10 +1653,12 @@ MonoBehaviour:
     pitch: 1
     timeToSkip: 0
     spatialSound: 0
+  timeBeforeReturnToMenu: 120
   fluvio: {fileID: 1015938017}
   calorInfernal: {fileID: 1802205246}
   minijuegosCompletados: 0
   teleportCanvas: {fileID: 1070294484}
+  ThankYou: {fileID: 1108093403}
   POINTS_TO_WIN: 3
   Heroes:
   - {fileID: 1271973193}
@@ -9239,17 +9241,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1108093400}
-  m_LocalRotation: {x: -0.35208663, y: 0, z: 0, w: 0.93596745}
-  m_LocalPosition: {x: 0, y: 0, z: 55.8}
+  m_LocalRotation: {x: -0.21074492, y: -0, z: -0, w: 0.97754115}
+  m_LocalPosition: {x: 0, y: 0, z: 29.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2025529793}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: -41.23, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -24.332, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 66}
+  m_AnchoredPosition: {x: 0, y: 54.2}
   m_SizeDelta: {x: 100, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!137 &1120073872 stripped
@@ -13662,9 +13664,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Gracias Por Jugar
-
-    Recuerda Cuidar el agua'
+  m_text: "Gracias Por Jugar\nRecuerda cuidar \nel agua"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -13691,8 +13691,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 18
+  m_fontSizeBase: 18
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
