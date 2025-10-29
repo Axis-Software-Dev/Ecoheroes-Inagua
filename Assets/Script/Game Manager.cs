@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour
     persistanceData data;
     private Dictionary<string, BackgroundSound> _soundMap;
     private int lastPointScore = 0;
+    private bool isPlayingLoop = true;
     private void Awake()
     {
         externalTool.enabled = false;
@@ -118,14 +119,37 @@ public class GameManager : MonoBehaviour
             s.source.time = s.timeToSkip;
             s.source.spatialBlend = s.spatialSound;
             if (!s.source.isPlaying) s.source.Play();
-            
+            StartCoroutine(DestroyAudioSource(s.source));
+
         }
         else
         {
             Debug.LogWarning($"PlayAudio: sound '{audioName}' not found on {name}");
         }
         yield return new WaitForSeconds(LoopDelay);
-        StartCoroutine(PlayBGM(audioName, LoopDelay));
+        if(isPlayingLoop)StartCoroutine(PlayBGM(audioName, LoopDelay));
+    }
+    IEnumerator StopBGM()
+    {
+        isPlayingLoop = false;
+        StopCoroutine(PlayBGM("Evil Loop", 6f));
+        AudioSource[] audioSources = GetComponents<AudioSource>();
+        while (audioSources != null)
+        {
+            audioSources = GetComponents<AudioSource>();
+            foreach (AudioSource audioS in audioSources)
+            {
+                Debug.Log("Fading out audio source" + audioSources);
+                audioS.volume -= 0.1f * Time.deltaTime;
+                if (audioS.volume <= 0f)
+                {
+                    Destroy(audioS); ;
+                }
+            }
+            yield return null;
+        }
+        
+        
     }
     private IEnumerator PlayStartingAudio()
     {
@@ -138,11 +162,17 @@ public class GameManager : MonoBehaviour
         fluvio.StartAnimationOnFlag = true;
 
     }
+    private IEnumerator DestroyAudioSource(AudioSource AudioToDestroy)
+    {
+        yield return new WaitForSeconds(9f);    
+        Destroy(AudioToDestroy);
+    }
     public void EndGame()
     {
         calorInfernal.EndGame();
         Invoke("StartFluvioAnimation", 5f);
         StartCoroutine(SetButtons(true, 37f));
+        StartCoroutine(StopBGM());
         Invoke("SetCanvasOn", 61f);
     }
     private void SetCanvasOn()
