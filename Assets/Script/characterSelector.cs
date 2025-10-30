@@ -3,86 +3,88 @@ using UnityEngine.SceneManagement;
 
 public class CharacterSelector : MonoBehaviour
 {
-    persistanceData characterData;
-    bool modelRotation = false;
-    persistanceData.Character selectedCharacter = persistanceData.Character.none;
-    public SceneField newScene;
-    GameObject[] showCharacterModels = new GameObject[2];
-    Transform[] modelBasePosition = new Transform[2];
-    float timeForRotation = 0f;
+    [Header("Character Prefabs")]
+    public GameObject lluviaPrefab;
+    public GameObject aguitaPrefab;
 
-    public Scene sceneHolder;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [Header("Spawn Position")]
+    public Transform spawnPoint;
+
+    private persistanceData characterData;
+    private persistanceData.Character selectedCharacter = persistanceData.Character.none;
+    private GameObject currentCharacterInstance;
+
+    private bool modelRotation = false;
+    private float timeForRotation = 0f;
+
     private void Awake()
     {
         characterData = Resources.Load<persistanceData>("persistanceData");
-        showCharacterModels[0] = GameObject.Find("LluviaSelection 1");
-        showCharacterModels[1] = GameObject.Find("AguitaSelection 1");
-        modelBasePosition[0] = showCharacterModels[0].transform;
-        modelBasePosition[1] = showCharacterModels[1].transform;
-
-    }
-    void Start()
-    {
-        showCharacterModels[0].SetActive(false);
-        showCharacterModels[1].SetActive(false);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        if (modelRotation)
+        if (modelRotation && currentCharacterInstance != null)
         {
-            if (timeForRotation <= 2)
+            if (timeForRotation <= 2f)
             {
-                if (selectedCharacter == persistanceData.Character.lluvia)
-                {
-                    rotateModel(showCharacterModels[0]);
-                }
-                else if (selectedCharacter == persistanceData.Character.aguita)
-                {
-                    rotateModel(showCharacterModels[1]);
-                }
+                RotateModel(currentCharacterInstance);
             }
             else
             {
                 modelRotation = false;
-
             }
         }
     }
-    void selectCharacter()
+
+    private void SelectCharacter()
     {
+        // Destroy the currently displayed character
+        if (currentCharacterInstance != null)
+        {
+            Destroy(currentCharacterInstance);
+        }
+
+        // Choose which prefab to instantiate
+        GameObject prefabToInstantiate = null;
         if (selectedCharacter == persistanceData.Character.lluvia)
         {
-            showCharacterModels[0].SetActive(true);
-
-            showCharacterModels[1].SetActive(false);
+            prefabToInstantiate = lluviaPrefab;
         }
         else if (selectedCharacter == persistanceData.Character.aguita)
         {
-            showCharacterModels[0].SetActive(false);
-            showCharacterModels[1].SetActive(true);
+            prefabToInstantiate = aguitaPrefab;
         }
-        if (selectedCharacter == persistanceData.Character.lluvia)
 
-            showCharacterModels[0].transform.rotation = Quaternion.Euler(0f, -180f, 0f);
-        showCharacterModels[1].transform.rotation = Quaternion.Euler(0f, -180f, 0f);
+        // Instantiate the chosen character
+        if (prefabToInstantiate != null && spawnPoint != null)
+        {
+            currentCharacterInstance = Instantiate(prefabToInstantiate, spawnPoint.position, spawnPoint.rotation);
 
-        activateRotation();
+            // Trigger the "selected" animation
+            Animator anim = currentCharacterInstance.GetComponent<Animator>();
+            if (anim != null)
+            {
+                anim.SetTrigger("selected");
+            }
 
+            ActivateRotation();
+        }
     }
-    public void lluviaSelected()
+
+    public void LluviaSelected()
     {
         selectedCharacter = persistanceData.Character.lluvia;
-        selectCharacter();
+        SelectCharacter();
     }
-    public void aguitaSelected()
+
+    public void AguitaSelected()
     {
         selectedCharacter = persistanceData.Character.aguita;
-        selectCharacter();
+        SelectCharacter();
     }
-    public void gameStart()
+
+    public void GameStart()
     {
         characterData.changeCharacter(selectedCharacter);
         if (selectedCharacter != persistanceData.Character.none)
@@ -90,13 +92,14 @@ public class CharacterSelector : MonoBehaviour
             GameObject.Find("SceneManager").GetComponent<LoadingScreen>().LoadScene(1);
         }
     }
-    void rotateModel(GameObject objectToRotate)
-    {
 
-        objectToRotate.transform.rotation = Quaternion.Slerp(objectToRotate.transform.rotation, Quaternion.Euler(0f, objectToRotate.transform.rotation.y + 360f, 0f), 2f * Time.deltaTime);
+    private void RotateModel(GameObject objectToRotate)
+    {
+        objectToRotate.transform.Rotate(Vector3.up, 100f * Time.deltaTime);
         timeForRotation += Time.deltaTime;
     }
-    void activateRotation()
+
+    private void ActivateRotation()
     {
         timeForRotation = 0f;
         modelRotation = true;
