@@ -59,7 +59,7 @@ public class CharacterSelector : MonoBehaviour
         // Instantiate the chosen character
         if (prefabToInstantiate != null && spawnPoint != null)
         {
-            currentCharacterInstance = Instantiate(prefabToInstantiate, spawnPoint.position, spawnPoint.rotation);
+            currentCharacterInstance = Instantiate(prefabToInstantiate, spawnPoint.position + new Vector3(0f, 0.78f, 0f), spawnPoint.rotation);
 
             // Trigger the "selected" animation
             Animator anim = currentCharacterInstance.GetComponent<Animator>();
