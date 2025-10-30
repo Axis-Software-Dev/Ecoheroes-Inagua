@@ -109,6 +109,10 @@ public class SquirrelTrigger : MonoBehaviour
             isTyping = false;
         }
         shipController.startAnimation = true;
+
+        yield return new WaitForSeconds(4);
+
+        squirrelAnimator.SetTrigger("asustado");
     }
     private IEnumerator TypeText(string textToType)
     {
