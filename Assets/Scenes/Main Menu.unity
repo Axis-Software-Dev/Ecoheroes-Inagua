@@ -707,6 +707,11 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!4 &279778672 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: e3f8415253b7b11498a464e889e3c774, type: 3}
+  m_PrefabInstance: {fileID: 279778669}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &363197187
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2559,11 +2564,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 720483beec683df449514d547a24a761, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::characterSelector
-  newScene:
-    m_SceneAsset: {fileID: 102900000, guid: 69644c4a5da4d6d42a7d84f9df6c9d91, type: 3}
-    m_SceneName: Excedra
-  sceneHolder:
-    m_Handle: 0
+  lluviaPrefab: {fileID: 194686288}
+  aguitaPrefab: {fileID: 1185830262}
+  spawnPoint: {fileID: 279778672}
 --- !u!4 &1623409523
 Transform:
   m_ObjectHideFlags: 0
