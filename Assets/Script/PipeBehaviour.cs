@@ -56,6 +56,7 @@ public class PipeBehavior : MonoBehaviour
     [SerializeField] private bool cableGrabed;
     private destinationDetection endDestination;
     private bool previousCableState = false;
+    public GameObject indicator;
 
 
 
@@ -360,10 +361,12 @@ public class PipeBehavior : MonoBehaviour
             cableRenderer.enabled = true;
             cableRenderer.SetPosition(0, transform.position);
             cableRenderer.SetPosition(1, rightController.position);
+            indicator?.SetActive(true);
         }
         else
         {
             cableRenderer.enabled = false;
+            indicator.SetActive(false);
         }
         previousCableState = rightGrippedPressed;
     }

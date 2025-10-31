@@ -1624,15 +1624,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5402185456d335f4dad7613ef08b6c50, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.69
+      value: -0.651
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5402185456d335f4dad7613ef08b6c50, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.153
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5402185456d335f4dad7613ef08b6c50, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2.6
+      value: -2.51
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5402185456d335f4dad7613ef08b6c50, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1800,6 +1800,7 @@ MonoBehaviour:
   destination: {fileID: 0}
   cableMesh: {fileID: 0}
   cableGrabed: 0
+  indicator: {fileID: 0}
 --- !u!54 &443412059
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2478,6 +2479,7 @@ MonoBehaviour:
   destination: {fileID: 0}
   cableMesh: {fileID: 0}
   cableGrabed: 0
+  indicator: {fileID: 0}
 --- !u!65 &576674538
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2937,6 +2939,7 @@ MonoBehaviour:
   destination: {fileID: 0}
   cableMesh: {fileID: 0}
   cableGrabed: 0
+  indicator: {fileID: 0}
 --- !u!54 &667902519
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -9053,6 +9056,7 @@ Transform:
   - {fileID: 1103012714}
   - {fileID: 2067939146}
   - {fileID: 1170120996}
+  - {fileID: 1364867073}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -70.599, z: 0}
 --- !u!114 &1060866516
@@ -9083,6 +9087,7 @@ MonoBehaviour:
   destination: {fileID: 1170120995}
   cableMesh: {fileID: 2067939144}
   cableGrabed: 0
+  indicator: {fileID: 1364867072}
 --- !u!120 &1060866517
 LineRenderer:
   serializedVersion: 2
@@ -9703,8 +9708,8 @@ Transform:
   m_GameObject: {fileID: 1170120995}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.871, y: -0.156, z: -2.33}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -0.87, y: -0.41, z: -2.08}
+  m_LocalScale: {x: 1.81, y: 1.81, z: 1.81}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1060866515}
@@ -9737,7 +9742,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1170120995}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -11096,6 +11101,117 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 784f5c37cfc8544448c49f4f3aef951b, type: 3}
   m_PrefabInstance: {fileID: 1363353825}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1364867072
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1364867073}
+  - component: {fileID: 1364867076}
+  - component: {fileID: 1364867075}
+  - component: {fileID: 1364867074}
+  m_Layer: 8
+  m_Name: Cube
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1364867073
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1364867072}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.23845458, z: -0, w: 0.97115374}
+  m_LocalPosition: {x: -1.151, y: 0, z: -2.208}
+  m_LocalScale: {x: 0.49619, y: 0.49619, z: 0.49619}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1060866515}
+  m_LocalEulerAnglesHint: {x: 0, y: 27.591, z: 0}
+--- !u!65 &1364867074
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1364867072}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &1364867075
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1364867072}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: bbb56ac3cf3c61a46ab3887c0fdbda8f, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1364867076
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1364867072}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &1370860239
 GameObject:
   m_ObjectHideFlags: 0
@@ -11686,6 +11802,7 @@ MonoBehaviour:
   destination: {fileID: 0}
   cableMesh: {fileID: 0}
   cableGrabed: 0
+  indicator: {fileID: 0}
 --- !u!54 &1486194864
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -12870,6 +12987,7 @@ MonoBehaviour:
   destination: {fileID: 0}
   cableMesh: {fileID: 0}
   cableGrabed: 0
+  indicator: {fileID: 0}
 --- !u!1001 &1728691854
 PrefabInstance:
   m_ObjectHideFlags: 0
