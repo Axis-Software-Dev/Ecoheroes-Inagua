@@ -1,3 +1,4 @@
+using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -63,9 +64,15 @@ public class CharacterSelector : MonoBehaviour
 
             // Trigger the "selected" animation
             Animator anim = currentCharacterInstance.GetComponent<Animator>();
-            if (anim != null)
+            anim.SetTrigger("selected");
+
+            //Script change
+            var interactable = currentCharacterInstance.GetComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable>();
+
+            if (interactable != null)
             {
-                anim.SetTrigger("selected");
+                interactable.selectEntered = new SelectEnterEvent();
+                interactable.selectEntered.AddListener((args) => { GameStart(); });
             }
 
             ActivateRotation();
