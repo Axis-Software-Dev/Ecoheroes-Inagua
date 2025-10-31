@@ -104,7 +104,7 @@ public class PipeBehavior : MonoBehaviour
                 if (isActive) wheelBehaviour();
                 break;
             case sectionBehavior.screw:
-                if (isActive) screwBehaviour();
+                 screwBehaviour();
                 break;
             case sectionBehavior.cables:
                 if (isActive) cableBehaviour();
@@ -269,13 +269,13 @@ public class PipeBehavior : MonoBehaviour
             if (newY <= screwMinHeight + 0.01f)
             {
                 deactivate();
+                transform.position = new Vector3(transform.position.x, screwMinHeight, transform.position.z);
             }
         }
         else
         {
             // Si no esta activo, asegurate de que la posicion este clamped (por si acaso)
-            float clampedY = Mathf.Clamp(transform.position.y, screwMinHeight, screwMaxHeight);
-            transform.position = new Vector3(transform.position.x, clampedY, transform.position.z);
+            transform.position = new Vector3(transform.position.x,  screwMinHeight, transform.position.z);
         }
     }
     #endregion
@@ -380,7 +380,7 @@ public class PipeBehavior : MonoBehaviour
                 if (cableMesh != null) cableMesh.enabled = false;
                 break;
             case sectionBehavior.screw:
-                transform.position = new Vector3(transform.position.x, 0.02f, transform.position.z);
+                transform.position = new Vector3(transform.position.x, screwMinHeight+0.05f, transform.position.z);
 
 
                 break;
@@ -426,7 +426,9 @@ public class PipeBehavior : MonoBehaviour
     {
         
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(worldPosition, 0.3f);
+        Vector3 newWorldPosition=transform.TransformPoint(InfernalPosition);
+
+        Gizmos.DrawWireSphere(newWorldPosition, 0.3f);
 
     }
     #endregion
