@@ -10,6 +10,7 @@ public class GrabScrollController : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private bool hideOnRelease = true;
     [SerializeField] private bool resetScrollOnRelease = true;
+    [SerializeField] private bool useFixedText = false;
 
     private XRGrabInteractable grabInteractable;
 
@@ -54,20 +55,14 @@ public class GrabScrollController : MonoBehaviour
 
     private void OnEnable()
     {
-        if (grabInteractable != null)
-        {
-            grabInteractable.selectEntered.AddListener(OnGrabbed);
-            grabInteractable.selectExited.AddListener(OnReleased);
-        }
+        grabInteractable.selectEntered.AddListener(OnGrabbed);
+        grabInteractable.selectExited.AddListener(OnReleased);
     }
 
     private void OnDisable()
     {
-        if (grabInteractable != null)
-        {
-            grabInteractable.selectEntered.RemoveListener(OnGrabbed);
-            grabInteractable.selectExited.RemoveListener(OnReleased);
-        }
+        grabInteractable.selectEntered.RemoveListener(OnGrabbed);
+        grabInteractable.selectExited.RemoveListener(OnReleased);
     }
 
     private void OnGrabbed(UnityEngine.XR.Interaction.Toolkit.SelectEnterEventArgs args)
@@ -79,13 +74,20 @@ public class GrabScrollController : MonoBehaviour
 
         if (textScroller != null)
         {
-            textScroller.RestartScroll();
+            textScroller.SetScrollMode(
+                useFixedText ? TextScroller.ScrollMode.Fixed : TextScroller.ScrollMode.Scrolling
+            );
+
+            if (!useFixedText)
+            {
+                textScroller.RestartScroll();
+            }
         }
     }
 
     private void OnReleased(UnityEngine.XR.Interaction.Toolkit.SelectExitEventArgs args)
     {
-        if (resetScrollOnRelease && textScroller != null)
+        if (resetScrollOnRelease && textScroller != null && !useFixedText)
         {
             textScroller.ResetScroll();
         }

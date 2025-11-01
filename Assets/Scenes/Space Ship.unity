@@ -597,6 +597,7 @@ MonoBehaviour:
   textScroller: {fileID: 541414576}
   hideOnRelease: 1
   resetScrollOnRelease: 1
+  useFixedText: 1
 --- !u!1 &92397281
 GameObject:
   m_ObjectHideFlags: 0
@@ -1255,6 +1256,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 666db0356f686df46afc1d238864f022, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextScroller
+  scrollMode: 1
   scrollSpeed: 0.1
   autoStart: 0
   loop: 1
@@ -1308,15 +1310,15 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.04
-  m_fontSizeBase: 0.04
+  m_fontSize: 0.026
+  m_fontSizeBase: 0.026
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -1762,6 +1764,7 @@ MonoBehaviour:
   textScroller: {fileID: 223780652}
   hideOnRelease: 1
   resetScrollOnRelease: 1
+  useFixedText: 1
 --- !u!1 &374373659
 GameObject:
   m_ObjectHideFlags: 0
@@ -2276,15 +2279,15 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.04
-  m_fontSizeBase: 0.04
+  m_fontSize: 0.026
+  m_fontSizeBase: 0.026
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -2340,6 +2343,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 666db0356f686df46afc1d238864f022, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextScroller
+  scrollMode: 1
   scrollSpeed: 0.1
   autoStart: 0
   loop: 1
@@ -3261,6 +3265,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 666db0356f686df46afc1d238864f022, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextScroller
+  scrollMode: 1
   scrollSpeed: 0.1
   autoStart: 0
   loop: 1
@@ -3312,15 +3317,15 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.04
-  m_fontSizeBase: 0.04
+  m_fontSize: 0.026
+  m_fontSizeBase: 0.026
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -3991,6 +3996,7 @@ MonoBehaviour:
   textScroller: {fileID: 928390556}
   hideOnRelease: 1
   resetScrollOnRelease: 1
+  useFixedText: 1
 --- !u!1001 &1300027166
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4580,6 +4586,18 @@ MonoBehaviour:
       - m_Target: {fileID: 222471013}
         m_TargetAssemblyTypeName: Fluvio.FluvioController, Assembly-CSharp
         m_MethodName: StartAnimation
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 360198957}
+        m_TargetAssemblyTypeName: FloatingInteractableObject, Assembly-CSharp
+        m_MethodName: AppearFrom
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

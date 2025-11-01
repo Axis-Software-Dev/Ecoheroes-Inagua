@@ -3,7 +3,14 @@ using TMPro;
 
 public class TextScroller : MonoBehaviour
 {
+    public enum ScrollMode
+    {
+        Scrolling,
+        Fixed
+    }
+
     [Header("Scroll Settings")]
+    [SerializeField] private ScrollMode scrollMode = ScrollMode.Scrolling;
     [SerializeField] private float scrollSpeed = 50f;
     [SerializeField] private bool autoStart = true;
     [SerializeField] private bool loop = false;
@@ -38,7 +45,12 @@ public class TextScroller : MonoBehaviour
         CalculateTextHeight();
         startY = textRectTransform.anchoredPosition.y;
 
-        if (autoStart)
+        if (scrollMode == ScrollMode.Fixed)
+        {
+            StopScrolling();
+            textRectTransform.anchoredPosition = new Vector2(0, startY);
+        }
+        else if (autoStart)
         {
             StartScrolling();
         }
@@ -46,7 +58,7 @@ public class TextScroller : MonoBehaviour
 
     private void Update()
     {
-        if (!isScrolling) return;
+        if (scrollMode == ScrollMode.Fixed || !isScrolling) return;
 
         Vector2 currentPos = textRectTransform.anchoredPosition;
         currentPos.y += scrollSpeed * Time.deltaTime;
@@ -76,7 +88,8 @@ public class TextScroller : MonoBehaviour
 
     public void StartScrolling()
     {
-        isScrolling = true;
+        if (scrollMode == ScrollMode.Scrolling)
+            isScrolling = true;
     }
 
     public void StopScrolling()
@@ -102,4 +115,21 @@ public class TextScroller : MonoBehaviour
         ResetScroll();
         StartScrolling();
     }
+
+    public void SetScrollMode(ScrollMode mode)
+    {
+        scrollMode = mode;
+
+        if (scrollMode == ScrollMode.Fixed)
+        {
+            StopScrolling();
+            textRectTransform.anchoredPosition = new Vector2(0, startY);
+        }
+        else if (autoStart)
+        {
+            RestartScroll();
+        }
+    }
+
+    public ScrollMode GetScrollMode() => scrollMode;
 }
