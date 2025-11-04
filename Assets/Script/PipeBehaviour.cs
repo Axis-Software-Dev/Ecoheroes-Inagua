@@ -160,15 +160,27 @@ public class PipeBehavior : MonoBehaviour
     }
     private float getAngle(Quaternion previous, Quaternion current)
     {
-        if (previous == Quaternion.identity || current == Quaternion.identity) return 0f;
-        Vector3 previousForward = previous * Vector3.forward;
-        Vector3 currentForward = current * Vector3.forward;
+        // Evita errores con identity
+        if (previous == Quaternion.identity || current == Quaternion.identity)
+            return 0f;
 
+        // Proyectamos en el plano XY (ignoramos Z)
+        Vector3 prevDir = (previous * Vector3.forward);
+        Vector3 currDir = (current * Vector3.forward);
 
-        previousForward.y = 0;
-        currentForward.y = 0;
+        // Proyectar al plano XY: ponemos Z = 0 y normalizamos
+        prevDir.z = 0f;
+        currDir.z = 0f;
 
-        float angleDelta = Vector3.SignedAngle(previousForward, currentForward, Vector3.up);
+        if (prevDir == Vector3.zero || currDir == Vector3.zero)
+            return 0f;
+
+        prevDir.Normalize();
+        currDir.Normalize();
+
+        // Usamos Vector3.forward (Z) como eje de rotación
+        float angleDelta = Vector3.SignedAngle(prevDir, currDir, Vector3.forward);
+
         return angleDelta;
     }
     private void setWheelRotation(float angle, float currentPosition)
