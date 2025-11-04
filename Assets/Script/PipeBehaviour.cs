@@ -258,7 +258,7 @@ public class PipeBehavior : MonoBehaviour
         if (isActive)
         {
             // Calcula la nueva posicion Y con SmoothDamp
-            float newY = Mathf.SmoothDamp(transform.position.y, screwMaxHeight, ref speedValue, screwSpeed * Time.deltaTime);
+            float newY = Mathf.SmoothDamp(transform.position.y, screwMaxHeight, ref speedValue, screwSpeed);
 
             // Aplica el clamp inmediatamente para evitar sobrepasos
             newY = Mathf.Clamp(newY, screwMinHeight, screwMaxHeight);
