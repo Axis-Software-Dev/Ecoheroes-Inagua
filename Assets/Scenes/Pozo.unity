@@ -950,47 +950,47 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 9fb1bd7b896e1b94dbd3a3ad66b6fde1, type: 3}
       propertyPath: m_LocalScale.x
-      value: 160.67
+      value: 400
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9fb1bd7b896e1b94dbd3a3ad66b6fde1, type: 3}
       propertyPath: m_LocalScale.y
-      value: 160.67
+      value: 400
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9fb1bd7b896e1b94dbd3a3ad66b6fde1, type: 3}
       propertyPath: m_LocalScale.z
-      value: 160.67
+      value: 400
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9fb1bd7b896e1b94dbd3a3ad66b6fde1, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 21.19
+      value: 22.54
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9fb1bd7b896e1b94dbd3a3ad66b6fde1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 8.85
+      value: 20.92
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9fb1bd7b896e1b94dbd3a3ad66b6fde1, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -12.39
+      value: -13.93
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9fb1bd7b896e1b94dbd3a3ad66b6fde1, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071067
+      value: 0.69164056
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9fb1bd7b896e1b94dbd3a3ad66b6fde1, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.7071068
+      value: -0.6916406
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9fb1bd7b896e1b94dbd3a3ad66b6fde1, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: 0.14708275
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9fb1bd7b896e1b94dbd3a3ad66b6fde1, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0.14708275
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9fb1bd7b896e1b94dbd3a3ad66b6fde1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: -90
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9fb1bd7b896e1b94dbd3a3ad66b6fde1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -998,7 +998,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9fb1bd7b896e1b94dbd3a3ad66b6fde1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
+      value: 24.011
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9fb1bd7b896e1b94dbd3a3ad66b6fde1, type: 3}
       propertyPath: m_ConstrainProportionsScale
@@ -2488,7 +2488,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   sounds:
   - name: Evil Loop
-    clip: {fileID: 8300000, guid: 2443d11fe9288564c8205294cc6437f4, type: 3}
+    clip: {fileID: 8300000, guid: 54d2d108296585649b71719d409b1fce, type: 3}
     volume: 1
     pitch: 1
     timeToSkip: 0
@@ -3413,9 +3413,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BuildingScript
   EcoHeroes: []
-  playerPosition: {x: -0.06, y: 0.06, z: -0.035}
+  playerPosition: {x: -0.03, y: 0.05, z: -0.038}
   playerTeleportEffect: {fileID: 0}
-  characterPosition: {x: -0.038, y: 0.055, z: -0.03}
+  characterPosition: {x: -0.03, y: 0.042, z: -0.036}
   timeTostay: 15
   textToShow: "Este es un dep\xF3sito donde se acumula toda el agua recolectada de
     los mantos acu\xEDferos."
@@ -15798,7 +15798,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Torre
+  m_text: Depocito
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
