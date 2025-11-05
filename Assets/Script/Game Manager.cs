@@ -30,6 +30,7 @@ public class GameManager : MonoBehaviour
     public int minijuegosCompletados = 0;
     public Canvas teleportCanvas;
     public Canvas ThankYou;
+    public Canvas tpCanvas;
     [SerializeField]
     public int POINTS_TO_WIN = 3;
     public GameObject[] Heroes;
@@ -156,7 +157,7 @@ public class GameManager : MonoBehaviour
         {
             while (s.source.isPlaying&&s.source.volume>0f)
             {
-                s.source.volume -= Time.deltaTime * 0.1f;
+                s.source.volume -= Time.deltaTime * 0.2f;
                 yield return null;
             }
         }
@@ -191,6 +192,7 @@ public class GameManager : MonoBehaviour
     private void EndExploringPhase()
     {
         if(ThankYou!=null)ThankYou.enabled = true;
+        if(tpCanvas!=null)tpCanvas.enabled = false;
         Invoke("GoToMenu", 10f);
     }
 
