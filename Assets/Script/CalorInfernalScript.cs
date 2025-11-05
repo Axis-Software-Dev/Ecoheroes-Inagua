@@ -29,7 +29,7 @@ public class CalorInfernalScript : MonoBehaviour
     public PipeBehavior[] pipeSection;  // Asigna en Inspector para evitar Find en runtime
     private Transform _playerTransform;
     private SkinnedMeshRenderer _meshRenderer;  // Cacheado para eficiencia
-
+    private Rigidbody _calorInfernalRB;
     [Header("Settings")]
     public bool isLookingAtPlayer = false;
     public bool isMoving = false;
@@ -62,11 +62,12 @@ public class CalorInfernalScript : MonoBehaviour
     #region Initialization
     private void Awake()
     {
+
         // Cachear referencias
         calorInfAnimator = GetComponent<Animator>();
         _meshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
         _playerTransform = Camera.main != null ? Camera.main.transform : GameObject.FindWithTag("MainCamera")?.transform;
-
+        _calorInfernalRB = GetComponent<Rigidbody>();
         // Inicializar posición
         positionToGo = startPosition;
 
@@ -349,6 +350,7 @@ public class CalorInfernalScript : MonoBehaviour
         calorInfAnimator.enabled = true;
         Debug.Log("Calor Infernal game started");
         transform.position = startPosition;
+        _calorInfernalRB.linearVelocity = Vector3.zero;
         Invoke("SetSkinActive", 1f);
         calorInfAnimator.SetTrigger("Appear");
         calorInfAnimator.SetBool("isGameStarted", true);
@@ -359,14 +361,18 @@ public class CalorInfernalScript : MonoBehaviour
     }
     public void EndGame()
     {
+        float FinalDelay = 5f;
         isGameStarted = false;
         isInteracting = false;
         isLookingAtPlayer = false;
         isMoving = false;
         positionToGo = startPosition;
         calorInfAnimator.SetTrigger("Goodbye");
-        Invoke("stopAnimator", STOP_ANIMATOR_DELAY);
+        Invoke("stopAnimator", FinalDelay);
+        Invoke("DisableCL", FinalDelay);
         Debug.Log("Calor Infernal game ended");
+        _calorInfernalRB.linearVelocity = Vector3.zero; 
+
     }
     private void stopAnimator()
     {
@@ -374,6 +380,11 @@ public class CalorInfernalScript : MonoBehaviour
         calorInfAnimator.Update(0f);
         calorInfAnimator.enabled = false;
         if (_meshRenderer != null) _meshRenderer.enabled = false;
+        
+    }
+    private void DisableCL()
+    {
+        gameObject.SetActive(false);
     }
     #endregion
 
