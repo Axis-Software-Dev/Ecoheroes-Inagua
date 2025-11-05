@@ -30,7 +30,7 @@ public class GameManager : MonoBehaviour
     public int minijuegosCompletados = 0;
     public Canvas teleportCanvas;
     public Canvas ThankYou;
-    public Canvas tpCanvas;
+    public GameObject tpCanvas;
     [SerializeField]
     public int POINTS_TO_WIN = 3;
     public GameObject[] Heroes;
@@ -79,7 +79,7 @@ public class GameManager : MonoBehaviour
 
         StartCoroutine(SetButtons(false, 0f));
         teleportCanvas.enabled = false;
-
+        tpCanvas?.SetActive(false);
         _soundMap = new Dictionary<string, BackgroundSound>(StringComparer.OrdinalIgnoreCase);
         if (sounds != null)
         {
@@ -192,10 +192,13 @@ public class GameManager : MonoBehaviour
     private void EndExploringPhase()
     {
         if(ThankYou!=null)ThankYou.enabled = true;
-        if(tpCanvas!=null)tpCanvas.enabled = false;
+        if(tpCanvas!=null)tpCanvas.SetActive(false);
         Invoke("GoToMenu", 10f);
     }
-
+    public void ShowTablet()
+    {
+        tpCanvas?.SetActive(true);
+    }
     private void GoToMenu()
     {
         sceneManager.LoadScene(0);
