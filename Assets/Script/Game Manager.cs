@@ -107,7 +107,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
 
-        Invoke("PlayBGM", 9.5f);
+        StartCoroutine(PlayBGM("Evil Loop", 9.5f));
     }
 
     void Update()
@@ -132,13 +132,35 @@ public class GameManager : MonoBehaviour
     {
         Mirror.SetActive(true);
     }
-    public void PlayBGM()
+    public IEnumerator PlayBGM(string audioName, float Delay)
     {
-        PlayAudio("Evil Loop");
+       
+        yield return new WaitForSeconds(Delay);
+        if (string.IsNullOrEmpty(audioName) || _soundMap == null) yield return null;
+        if (_soundMap.TryGetValue(audioName, out var s) && s?.source != null)
+        {
+            if (!s.source.loop==false) s.source.loop = true;
+            PlayAudio(audioName);
+        }
+        else
+        {
+            Debug.LogWarning($"BGM: music '{audioName}' not found on {name}");
+        }
+        
 
     }
-    private void StopBGM()
+    private IEnumerator StopBGM(string audioName)
     {
+        if (string.IsNullOrEmpty(audioName) || _soundMap == null) yield return null;
+        if (_soundMap.TryGetValue(audioName, out var s) && s?.source != null)
+        {
+            while (s.source.isPlaying&&s.source.volume>0f)
+            {
+                s.source.volume -= Time.deltaTime * 0.1f;
+                yield return null;
+            }
+        }
+        
 
     }
 
@@ -157,7 +179,7 @@ public class GameManager : MonoBehaviour
         calorInfernal.EndGame();
         Invoke("StartFluvioAnimation", 5f);
         StartCoroutine(SetButtons(true, 37f));
-        StopBGM();
+        StartCoroutine(StopBGM("Evil Loop"));
         Invoke("SetCanvasOn", 61f);
         Invoke("EndExploringPhase", timeBeforeReturnToMenu+61f);
     }

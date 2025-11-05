@@ -18,6 +18,7 @@ public class TeleportEffect : MonoBehaviour
 
     public void PlayCurtainEffect()
     {
+        originalPosition = transform.position;
         gameObject.SetActive(true);
         StartCoroutine(CurtainAnimation());
     }

@@ -1,9 +1,29 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using static GameManager;
 
 public class CalorInfernalScript : MonoBehaviour
 {
+    [Serializable]
+    public class InfernalSound
+    {
+        public string name;
+        public AudioClip clip;
+
+        [Range(0f, 1f)] 
+        public float volume = 1f;
+        [Range(0f, 3f)]
+        public float pitch = 1f;
+        public float timeToSkip = 0f;
+        [Range(0f, 1f)]
+        public float spatialSound = 0f;
+        [NonSerialized] public AudioSource source;
+    }
+
     #region Variables
+    public InfernalSound[] sounds;
     [Header("References")]
     private Animator calorInfAnimator;
     public PipeBehavior[] pipeSection;  // Asigna en Inspector para evitar Find en runtime
@@ -33,9 +53,10 @@ public class CalorInfernalScript : MonoBehaviour
     public float RESTART_GAME_DELAY = 10f;
     public float ANIMATION_DELAY = 3f;
     public float VALVE_DELAY = 1f;
-
+    
     // Enum para tipos de objetos (mejor que strings)
     private enum ObjectType { Cables, Screw, Wheel }
+    private Dictionary<string, InfernalSound> _soundMap;
     #endregion
 
     #region Initialization
@@ -64,6 +85,29 @@ public class CalorInfernalScript : MonoBehaviour
 
         // Iniciar animación inicial
         calorInfAnimator?.Play("CalorInfernalAnim");
+        
+        _soundMap = new Dictionary<string, InfernalSound>(StringComparer.OrdinalIgnoreCase);
+        if (sounds != null)
+        {
+            foreach (var s in sounds)
+            {
+                if (s == null) continue;
+                // create audio source for each sound (small projects okay). Consider pooling if many sounds.
+                s.source = gameObject.AddComponent<AudioSource>();
+                s.source.clip = s.clip;
+                s.source.volume = s.volume;
+                s.source.pitch = s.pitch;
+                s.source.time = s.timeToSkip;
+           
+                s.source.spatialBlend = s.spatialSound;
+
+                if (!string.IsNullOrEmpty(s.name))
+                {
+                    if (!_soundMap.ContainsKey(s.name)) _soundMap.Add(s.name, s);
+                    else Debug.LogWarning($"Duplicate sound name '{s.name}' on {name}.");
+                }
+            }
+        }
     }
 
     void Start()
@@ -82,7 +126,18 @@ public class CalorInfernalScript : MonoBehaviour
         HandleLooking();
         HandleMovement();
     }
-
+    public void PlayAudio(string audioName)
+    {
+        if (string.IsNullOrEmpty(audioName) || _soundMap == null) return;
+        if (_soundMap.TryGetValue(audioName, out var s) && s?.source != null)
+        {
+            if (!s.source.isPlaying) s.source.Play();
+        }
+        else
+        {
+            Debug.LogWarning($"PlayAudio: sound '{audioName}' not found on {name}");
+        }
+    }
     private void HandleLooking()
     {
         Transform target = isLookingAtPlayer ? _playerTransform : pipeSection[randObj]?.transform;
@@ -212,7 +267,7 @@ public class CalorInfernalScript : MonoBehaviour
         int maxAttempts = pipeSection.Length;  // Un poco más para asegurar
         do
         {
-            randObj = Random.Range(0, pipeSection.Length);
+            randObj = UnityEngine.Random.Range(0, pipeSection.Length);
             attempts++;
         } while (pipeSection[randObj].isActive);
         Debug.Log("Selected objective: " + randObj + " (" + pipeSection[randObj].getSectionType() + ")");
@@ -262,6 +317,7 @@ public class CalorInfernalScript : MonoBehaviour
     private void StopGame()
     {
         calorInfAnimator.SetTrigger("FuckOff");
+        PlayAudio("FuckOff");
         calorInfAnimator.SetBool("isGameStarted", false);
         isGameStarted = false;
         isInteracting = false;
@@ -279,6 +335,7 @@ public class CalorInfernalScript : MonoBehaviour
 
     private void StartGame()
     {
+        PlayAudio("Laugh");
         calorInfAnimator.enabled = true;
         Debug.Log("Calor Infernal game started");
         transform.position = startPosition;
