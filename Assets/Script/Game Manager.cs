@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
         public float pitch = 1f;
         public float timeToSkip = 0f;
         [Range(0f, 1f)] public float spatialSound = 0f;
-
+        public bool loop = false;
         [NonSerialized] public AudioSource source;
     }
     public BackgroundSound[] sounds;
@@ -91,6 +91,7 @@ public class GameManager : MonoBehaviour
                 s.source.volume = s.volume;
                 s.source.pitch = s.pitch;
                 s.source.time = s.timeToSkip;
+                s.source.loop = s.loop;
                 s.source.spatialBlend = s.spatialSound;
 
                 if (!string.IsNullOrEmpty(s.name))
@@ -106,7 +107,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
 
-        StartCoroutine(PlayStartingAudio());
+        Invoke("PlayBGM", 9.5f);
     }
 
     void Update()
@@ -115,60 +116,30 @@ public class GameManager : MonoBehaviour
         lastPointScore = minijuegosCompletados;
        
     }
-
-    public void ShowMirror()
+    public void PlayAudio(string audioName)
     {
-        Mirror.SetActive(true);
-    }
-    public IEnumerator PlayBGM(string audioName, float LoopDelay)
-    {
-
-        if (string.IsNullOrEmpty(audioName) || _soundMap == null) yield return null;
+        if (string.IsNullOrEmpty(audioName) || _soundMap == null) return;
         if (_soundMap.TryGetValue(audioName, out var s) && s?.source != null)
         {
-            s.source = gameObject.AddComponent<AudioSource>();
-            s.source.clip = s.clip;
-            s.source.volume = s.volume;
-            s.source.pitch = s.pitch;
-            s.source.time = s.timeToSkip;
-            s.source.spatialBlend = s.spatialSound;
             if (!s.source.isPlaying) s.source.Play();
-            StartCoroutine(DestroyAudioSource(s.source));
-
         }
         else
         {
             Debug.LogWarning($"PlayAudio: sound '{audioName}' not found on {name}");
         }
-        yield return new WaitForSeconds(LoopDelay);
-        if(isPlayingLoop)StartCoroutine(PlayBGM(audioName, LoopDelay));
     }
-    IEnumerator StopBGM()
+    public void ShowMirror()
     {
-        isPlayingLoop = false;
-        StopCoroutine(PlayBGM("Evil Loop", 6f));
-        AudioSource[] audioSources = GetComponents<AudioSource>();
-        while (audioSources != null)
-        {
-            audioSources = GetComponents<AudioSource>();
-            foreach (AudioSource audioS in audioSources)
-            {
-                Debug.Log("Fading out audio source" + audioSources);
-                audioS.volume -= 0.1f * Time.deltaTime;
-                if (audioS.volume <= 0f)
-                {
-                    Destroy(audioS); ;
-                }
-            }
-            yield return null;
-        }
-        
-        
+        Mirror.SetActive(true);
     }
-    private IEnumerator PlayStartingAudio()
+    public void PlayBGM()
     {
-        yield return new WaitForSeconds(9.5f);
-        StartCoroutine(PlayBGM("Evil Loop", 6f));
+        PlayAudio("Evil Loop");
+
+    }
+    private void StopBGM()
+    {
+
     }
 
     public void StartFluvioAnimation()
@@ -186,7 +157,7 @@ public class GameManager : MonoBehaviour
         calorInfernal.EndGame();
         Invoke("StartFluvioAnimation", 5f);
         StartCoroutine(SetButtons(true, 37f));
-        StartCoroutine(StopBGM());
+        StopBGM();
         Invoke("SetCanvasOn", 61f);
         Invoke("EndExploringPhase", timeBeforeReturnToMenu+61f);
     }
