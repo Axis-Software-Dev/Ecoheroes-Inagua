@@ -171,8 +171,8 @@ public class PipeBehavior : MonoBehaviour
         Vector3 currDir = (current * Vector3.forward);
 
         // Proyectar al plano XY: ponemos Z = 0 y normalizamos
-        prevDir.z = 0f;
-        currDir.z = 0f;
+        prevDir.y = 0f;
+        currDir.y = 0f;
 
         if (prevDir == Vector3.zero || currDir == Vector3.zero)
             return 0f;
