@@ -57,7 +57,7 @@ public class PipeBehavior : MonoBehaviour
     [SerializeField] private bool cableGrabed;
     private destinationDetection endDestination;
     private bool previousCableState = false;
-    public GameObject indicator;
+    public MeshRenderer brokenCable;
 
 
 
@@ -68,6 +68,7 @@ public class PipeBehavior : MonoBehaviour
         //infernalCollider.radius = colliderRadiius;
         worldPosition = transform.TransformPoint(InfernalPosition);
         infernalCollider.transform.position = worldPosition;
+        if(brokenCable!=null)brokenCable.enabled = false;
     }
 
 
@@ -171,8 +172,8 @@ public class PipeBehavior : MonoBehaviour
         Vector3 currDir = (current * Vector3.forward);
 
         // Proyectar al plano XY: ponemos Z = 0 y normalizamos
-        prevDir.y = 0f;
-        currDir.y = 0f;
+        prevDir.x = 0f;
+        currDir.x = 0f;
 
         if (prevDir == Vector3.zero || currDir == Vector3.zero)
             return 0f;
@@ -375,12 +376,12 @@ public class PipeBehavior : MonoBehaviour
             cableRenderer.enabled = true;
             cableRenderer.SetPosition(0, transform.position);
             cableRenderer.SetPosition(1, rightController.position);
-            indicator?.SetActive(true);
+            //Show indicator to grab cable
         }
         else
         {
             cableRenderer.enabled = false;
-            indicator.SetActive(false);
+            //Hide indicator to grab cable
         }
         previousCableState = rightGrippedPressed;
     }
@@ -390,7 +391,7 @@ public class PipeBehavior : MonoBehaviour
     public void activate()
     {
         isActive = true;
-
+        brokenCable.enabled = true;
         switch (section)
         {
             case sectionBehavior.cables:
@@ -412,11 +413,13 @@ public class PipeBehavior : MonoBehaviour
     public void deactivate()
     {
         isActive = false;
+        
         GameManager.Instance.AddMinigamePoint();
         switch (section)
         {
             case sectionBehavior.cables:
                 if (cableMesh != null) cableMesh.enabled = true;
+                if(brokenCable!=null)brokenCable.enabled = false;
                 break;
             case sectionBehavior.screw:
                 transform.position = new Vector3(transform.position.x, screwMinHeight, transform.position.z);
@@ -436,7 +439,7 @@ public class PipeBehavior : MonoBehaviour
     public Vector3 getInfernalPosition()
     {
         
-        return transform.TransformPoint(InfernalPosition);
+        return worldPosition;
     }
 
     private void OnDrawGizmos()
