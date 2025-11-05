@@ -18,11 +18,16 @@ public class TeleportEffect : MonoBehaviour
 
     public void PlayCurtainEffect()
     {
-        originalPosition = transform.position;
+       
         gameObject.SetActive(true);
         StartCoroutine(CurtainAnimation());
     }
-
+    public void PlayCurtainEffectOnPosition()
+    {
+        if(transform.parent!=null)originalPosition = transform.parent.transform.position;
+        gameObject.SetActive(true);
+        StartCoroutine(CurtainAnimation());
+    }
     private IEnumerator CurtainAnimation()
     {
         float appearDuration = .2f;
