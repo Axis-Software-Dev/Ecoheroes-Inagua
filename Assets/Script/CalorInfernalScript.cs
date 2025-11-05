@@ -55,7 +55,7 @@ public class CalorInfernalScript : MonoBehaviour
     public float VALVE_DELAY = 1f;
     
     // Enum para tipos de objetos (mejor que strings)
-    private enum ObjectType { Cables, Screw, Wheel }
+    private enum ObjectType { Cables, Screw, Wheel, BigWheel }
     private Dictionary<string, InfernalSound> _soundMap;
     #endregion
 
@@ -195,11 +195,16 @@ public class CalorInfernalScript : MonoBehaviour
                 pipeSection[randObj]?.activate();
                 break;
             case ObjectType.Screw:
-                calorInfAnimator.SetTrigger("Crank");
+                calorInfAnimator.SetTrigger("Valve");
                 pipeSection[randObj]?.activate();
                 break;
             case ObjectType.Wheel:
                 calorInfAnimator.SetTrigger("Valve");
+                yield return new WaitForSeconds(VALVE_DELAY);
+                pipeSection[randObj]?.activate();
+                break;
+            case ObjectType.BigWheel:
+                calorInfAnimator.SetTrigger("Crank");
                 yield return new WaitForSeconds(VALVE_DELAY);
                 pipeSection[randObj]?.activate();
                 break;
@@ -224,11 +229,15 @@ public class CalorInfernalScript : MonoBehaviour
                 case "wheel":
                     lookDir = new Vector3(lookDir.x - 10f, lookDir.y, lookDir.z - 2f); // Ajuste específico para la rueda
                     break;
+                case "screw":
+                    lookDir = new Vector3(lookDir.x-2f , lookDir.y, lookDir.z - 10f); // Ajuste específico para la rueda
+                    break;
                 default:
                     break;
             }
         }
-            if (lookDir.sqrMagnitude > 0.001f)
+        lookDir.y = 0f;
+        if (lookDir.sqrMagnitude > 0.001f)
             {
                 Quaternion targetRot = Quaternion.LookRotation(lookDir);
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, Time.deltaTime);
@@ -300,6 +309,7 @@ public class CalorInfernalScript : MonoBehaviour
             case "cables": return ObjectType.Cables;
             case "screw": return ObjectType.Screw;
             case "wheel": return ObjectType.Wheel;
+            case "bigWheel": return ObjectType.BigWheel;
             default: return ObjectType.Cables;  // Default
         }
     }

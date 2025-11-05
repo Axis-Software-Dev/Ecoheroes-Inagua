@@ -10,7 +10,8 @@ public class PipeBehavior : MonoBehaviour
     {
         wheel,
         screw,
-        cables
+        cables,
+        bigWheel
     }
 
     [Header("Type of pipe Minigame")]
@@ -102,6 +103,7 @@ public class PipeBehavior : MonoBehaviour
         switch (section)
         {
             case sectionBehavior.wheel:
+            case sectionBehavior.bigWheel:
                 if (isActive) wheelBehaviour();
                 break;
             case sectionBehavior.screw:
