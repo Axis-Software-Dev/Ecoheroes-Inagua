@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
     persistanceData data;
     private Dictionary<string, BackgroundSound> _soundMap;
     private int lastPointScore = 0;
-    private bool isPlayingLoop = true;
+   
     private LoadingScreen sceneManager;
     [SerializeField]
     private bool hasMirrorShowed = false;

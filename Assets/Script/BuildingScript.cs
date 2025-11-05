@@ -11,6 +11,7 @@ public class BuildingScript : MonoBehaviour
     public float timeTostay = 15f;
     private Vector3 _worldPosition;
     private Transform _player;
+    private Transform _mainCamera;
     private bool _isMovingPlayer = false;
     private TeleportationProvider _teleportationProvider;
     public string textToShow;
@@ -29,6 +30,7 @@ public class BuildingScript : MonoBehaviour
     void Start()
     {
         _player = GameObject.FindGameObjectWithTag("Player").transform;
+        _mainCamera = Camera.main != null ? Camera.main.transform : GameObject.FindWithTag("MainCamera")?.transform;
 
     }
 
@@ -37,7 +39,7 @@ public class BuildingScript : MonoBehaviour
     {
 
         
-        LookAtTargetCharacter(_player, GameManager.Instance.unSelectedHeroe);
+        LookAtTargetCharacter(_mainCamera, GameManager.Instance.unSelectedHeroe);
     }
     public Vector3 GetToGoPosition()
     {
