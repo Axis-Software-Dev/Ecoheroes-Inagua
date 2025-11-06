@@ -71,8 +71,8 @@ public class CharacterSelector : MonoBehaviour
 
             if (interactable != null)
             {
-                interactable.selectEntered = new SelectEnterEvent();
-                interactable.selectEntered.AddListener((args) => { GameStart(); });
+                interactable.activated = new ActivateEvent();
+                interactable.activated.AddListener((args) => { GameStart(); });
             }
 
             ActivateRotation();

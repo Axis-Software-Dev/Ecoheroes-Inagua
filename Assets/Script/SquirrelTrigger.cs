@@ -24,6 +24,7 @@ public class SquirrelTrigger : MonoBehaviour
     [Header("Alien slave")]
     public ShipController shipController;
     private bool isTyping = false;
+    private bool hasTriggered = false;
     private Vector3 indicatorOriginalPosition;
     private bool isIndicatorActive = false;
     private AudioSource cry;
@@ -67,6 +68,11 @@ public class SquirrelTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (hasTriggered)
+        {
+            return;
+        }
+
         if (interactableIndicatorPanel != null && isIndicatorActive)
         {
             interactableIndicatorPanel.SetActive(false);
@@ -77,6 +83,7 @@ public class SquirrelTrigger : MonoBehaviour
         {
             Destroy(cry);
             isTyping = true;
+            hasTriggered = true;
             StartCoroutine(SquirrelSequence());
             Debug.Log("Squirrel triggered, starting coroutine");
         }
