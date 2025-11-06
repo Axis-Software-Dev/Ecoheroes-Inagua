@@ -10,7 +10,8 @@ public class PipeBehavior : MonoBehaviour
     {
         wheel,
         screw,
-        cables
+        cables,
+        bigWheel
     }
 
     [Header("Type of pipe Minigame")]
@@ -56,7 +57,7 @@ public class PipeBehavior : MonoBehaviour
     [SerializeField] private bool cableGrabed;
     private destinationDetection endDestination;
     private bool previousCableState = false;
-    public GameObject indicator;
+    public MeshRenderer brokenCable;
 
 
 
@@ -67,6 +68,7 @@ public class PipeBehavior : MonoBehaviour
         //infernalCollider.radius = colliderRadiius;
         worldPosition = transform.TransformPoint(InfernalPosition);
         infernalCollider.transform.position = worldPosition;
+        if(brokenCable!=null)brokenCable.enabled = false;
     }
 
 
@@ -102,6 +104,7 @@ public class PipeBehavior : MonoBehaviour
         switch (section)
         {
             case sectionBehavior.wheel:
+            case sectionBehavior.bigWheel:
                 if (isActive) wheelBehaviour();
                 break;
             case sectionBehavior.screw:
@@ -160,16 +163,16 @@ public class PipeBehavior : MonoBehaviour
     }
     private float getAngle(Quaternion previous, Quaternion current)
     {
-        if (previous == Quaternion.identity || current == Quaternion.identity) return 0f;
-        Vector3 previousForward = previous * Vector3.forward;
-        Vector3 currentForward = current * Vector3.forward;
+        if (previous == Quaternion.identity || current == Quaternion.identity)
+            return 0f;
 
+        Quaternion delta = current * Quaternion.Inverse(previous);
+        float angle = delta.eulerAngles.y;
 
-        previousForward.y = 0;
-        currentForward.y = 0;
+        // Normalizar a -180..180
+        if (angle > 180f) angle -= 360f;
 
-        float angleDelta = Vector3.SignedAngle(previousForward, currentForward, Vector3.up);
-        return angleDelta;
+        return angle;
     }
     private void setWheelRotation(float angle, float currentPosition)
     {
@@ -258,7 +261,7 @@ public class PipeBehavior : MonoBehaviour
         if (isActive)
         {
             // Calcula la nueva posicion Y con SmoothDamp
-            float newY = Mathf.SmoothDamp(transform.position.y, screwMaxHeight, ref speedValue, screwSpeed * Time.deltaTime);
+            float newY = Mathf.SmoothDamp(transform.position.y, screwMaxHeight, ref speedValue, screwSpeed);
 
             // Aplica el clamp inmediatamente para evitar sobrepasos
             newY = Mathf.Clamp(newY, screwMinHeight, screwMaxHeight);
@@ -361,12 +364,12 @@ public class PipeBehavior : MonoBehaviour
             cableRenderer.enabled = true;
             cableRenderer.SetPosition(0, transform.position);
             cableRenderer.SetPosition(1, rightController.position);
-            indicator?.SetActive(true);
+            //Show indicator to grab cable
         }
         else
         {
             cableRenderer.enabled = false;
-            indicator.SetActive(false);
+            //Hide indicator to grab cable
         }
         previousCableState = rightGrippedPressed;
     }
@@ -376,11 +379,12 @@ public class PipeBehavior : MonoBehaviour
     public void activate()
     {
         isActive = true;
-
+       
         switch (section)
         {
             case sectionBehavior.cables:
                 if (cableMesh != null) cableMesh.enabled = false;
+                brokenCable.enabled = true;
                 break;
             case sectionBehavior.screw:
                 transform.position = new Vector3(transform.position.x, screwMinHeight+0.05f, transform.position.z);
@@ -398,11 +402,13 @@ public class PipeBehavior : MonoBehaviour
     public void deactivate()
     {
         isActive = false;
+        
         GameManager.Instance.AddMinigamePoint();
         switch (section)
         {
             case sectionBehavior.cables:
                 if (cableMesh != null) cableMesh.enabled = true;
+                if(brokenCable!=null)brokenCable.enabled = false;
                 break;
             case sectionBehavior.screw:
                 transform.position = new Vector3(transform.position.x, screwMinHeight, transform.position.z);
@@ -422,7 +428,7 @@ public class PipeBehavior : MonoBehaviour
     public Vector3 getInfernalPosition()
     {
         
-        return transform.TransformPoint(InfernalPosition);
+        return worldPosition;
     }
 
     private void OnDrawGizmos()

@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
         public float pitch = 1f;
         public float timeToSkip = 0f;
         [Range(0f, 1f)] public float spatialSound = 0f;
-
+        public bool loop = false;
         [NonSerialized] public AudioSource source;
     }
     public BackgroundSound[] sounds;
@@ -30,6 +30,7 @@ public class GameManager : MonoBehaviour
     public int minijuegosCompletados = 0;
     public Canvas teleportCanvas;
     public Canvas ThankYou;
+    public GameObject tpCanvas;
     [SerializeField]
     public int POINTS_TO_WIN = 3;
     public GameObject[] Heroes;
@@ -40,7 +41,7 @@ public class GameManager : MonoBehaviour
     persistanceData data;
     private Dictionary<string, BackgroundSound> _soundMap;
     private int lastPointScore = 0;
-    private bool isPlayingLoop = true;
+   
     private LoadingScreen sceneManager;
     [SerializeField]
     private bool hasMirrorShowed = false;
@@ -78,7 +79,7 @@ public class GameManager : MonoBehaviour
 
         StartCoroutine(SetButtons(false, 0f));
         teleportCanvas.enabled = false;
-
+        tpCanvas?.SetActive(false);
         _soundMap = new Dictionary<string, BackgroundSound>(StringComparer.OrdinalIgnoreCase);
         if (sounds != null)
         {
@@ -91,6 +92,7 @@ public class GameManager : MonoBehaviour
                 s.source.volume = s.volume;
                 s.source.pitch = s.pitch;
                 s.source.time = s.timeToSkip;
+                s.source.loop = s.loop;
                 s.source.spatialBlend = s.spatialSound;
 
                 if (!string.IsNullOrEmpty(s.name))
@@ -106,7 +108,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
 
-        StartCoroutine(PlayStartingAudio());
+        StartCoroutine(PlayBGM("Evil Loop", 9.5f));
     }
 
     void Update()
@@ -115,60 +117,52 @@ public class GameManager : MonoBehaviour
         lastPointScore = minijuegosCompletados;
        
     }
-
-    public void ShowMirror()
+    public void PlayAudio(string audioName)
     {
-        Mirror.SetActive(true);
-    }
-    public IEnumerator PlayBGM(string audioName, float LoopDelay)
-    {
-
-        if (string.IsNullOrEmpty(audioName) || _soundMap == null) yield return null;
+        if (string.IsNullOrEmpty(audioName) || _soundMap == null) return;
         if (_soundMap.TryGetValue(audioName, out var s) && s?.source != null)
         {
-            s.source = gameObject.AddComponent<AudioSource>();
-            s.source.clip = s.clip;
-            s.source.volume = s.volume;
-            s.source.pitch = s.pitch;
-            s.source.time = s.timeToSkip;
-            s.source.spatialBlend = s.spatialSound;
             if (!s.source.isPlaying) s.source.Play();
-            StartCoroutine(DestroyAudioSource(s.source));
-
         }
         else
         {
             Debug.LogWarning($"PlayAudio: sound '{audioName}' not found on {name}");
         }
-        yield return new WaitForSeconds(LoopDelay);
-        if(isPlayingLoop)StartCoroutine(PlayBGM(audioName, LoopDelay));
     }
-    IEnumerator StopBGM()
+    public void ShowMirror()
     {
-        isPlayingLoop = false;
-        StopCoroutine(PlayBGM("Evil Loop", 6f));
-        AudioSource[] audioSources = GetComponents<AudioSource>();
-        while (audioSources != null)
+        Mirror.SetActive(true);
+    }
+    public IEnumerator PlayBGM(string audioName, float Delay)
+    {
+       
+        yield return new WaitForSeconds(Delay);
+        if (string.IsNullOrEmpty(audioName) || _soundMap == null) yield return null;
+        if (_soundMap.TryGetValue(audioName, out var s) && s?.source != null)
         {
-            audioSources = GetComponents<AudioSource>();
-            foreach (AudioSource audioS in audioSources)
-            {
-                Debug.Log("Fading out audio source" + audioSources);
-                audioS.volume -= 0.1f * Time.deltaTime;
-                if (audioS.volume <= 0f)
-                {
-                    Destroy(audioS); ;
-                }
-            }
-            yield return null;
+            if (!s.source.loop==false) s.source.loop = true;
+            PlayAudio(audioName);
+        }
+        else
+        {
+            Debug.LogWarning($"BGM: music '{audioName}' not found on {name}");
         }
         
-        
+
     }
-    private IEnumerator PlayStartingAudio()
+    private IEnumerator StopBGM(string audioName)
     {
-        yield return new WaitForSeconds(9.5f);
-        StartCoroutine(PlayBGM("Evil Loop", 6f));
+        if (string.IsNullOrEmpty(audioName) || _soundMap == null) yield return null;
+        if (_soundMap.TryGetValue(audioName, out var s) && s?.source != null)
+        {
+            while (s.source.isPlaying&&s.source.volume>0f)
+            {
+                s.source.volume -= Time.deltaTime * 0.2f;
+                yield return null;
+            }
+        }
+        
+
     }
 
     public void StartFluvioAnimation()
@@ -186,7 +180,7 @@ public class GameManager : MonoBehaviour
         calorInfernal.EndGame();
         Invoke("StartFluvioAnimation", 5f);
         StartCoroutine(SetButtons(true, 37f));
-        StartCoroutine(StopBGM());
+        StartCoroutine(StopBGM("Evil Loop"));
         Invoke("SetCanvasOn", 61f);
         Invoke("EndExploringPhase", timeBeforeReturnToMenu+61f);
     }
@@ -198,9 +192,13 @@ public class GameManager : MonoBehaviour
     private void EndExploringPhase()
     {
         if(ThankYou!=null)ThankYou.enabled = true;
+        if(tpCanvas!=null)tpCanvas.SetActive(false);
         Invoke("GoToMenu", 10f);
     }
-
+    public void ShowTablet()
+    {
+        tpCanvas?.SetActive(true);
+    }
     private void GoToMenu()
     {
         sceneManager.LoadScene(0);

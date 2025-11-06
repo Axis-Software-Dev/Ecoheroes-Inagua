@@ -1,15 +1,35 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using static GameManager;
 
 public class CalorInfernalScript : MonoBehaviour
 {
+    [Serializable]
+    public class InfernalSound
+    {
+        public string name;
+        public AudioClip clip;
+
+        [Range(0f, 1f)] 
+        public float volume = 1f;
+        [Range(0f, 3f)]
+        public float pitch = 1f;
+        public float timeToSkip = 0f;
+        [Range(0f, 1f)]
+        public float spatialSound = 0f;
+        [NonSerialized] public AudioSource source;
+    }
+
     #region Variables
+    public InfernalSound[] sounds;
     [Header("References")]
     private Animator calorInfAnimator;
     public PipeBehavior[] pipeSection;  // Asigna en Inspector para evitar Find en runtime
     private Transform _playerTransform;
     private SkinnedMeshRenderer _meshRenderer;  // Cacheado para eficiencia
-
+    private Rigidbody _calorInfernalRB;
     [Header("Settings")]
     public bool isLookingAtPlayer = false;
     public bool isMoving = false;
@@ -33,19 +53,21 @@ public class CalorInfernalScript : MonoBehaviour
     public float RESTART_GAME_DELAY = 10f;
     public float ANIMATION_DELAY = 3f;
     public float VALVE_DELAY = 1f;
-
+    
     // Enum para tipos de objetos (mejor que strings)
-    private enum ObjectType { Cables, Screw, Wheel }
+    private enum ObjectType { Cables, Screw, Wheel, BigWheel }
+    private Dictionary<string, InfernalSound> _soundMap;
     #endregion
 
     #region Initialization
     private void Awake()
     {
+
         // Cachear referencias
         calorInfAnimator = GetComponent<Animator>();
         _meshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
         _playerTransform = Camera.main != null ? Camera.main.transform : GameObject.FindWithTag("MainCamera")?.transform;
-
+        _calorInfernalRB = GetComponent<Rigidbody>();
         // Inicializar posición
         positionToGo = startPosition;
 
@@ -64,6 +86,29 @@ public class CalorInfernalScript : MonoBehaviour
 
         // Iniciar animación inicial
         calorInfAnimator?.Play("CalorInfernalAnim");
+        
+        _soundMap = new Dictionary<string, InfernalSound>(StringComparer.OrdinalIgnoreCase);
+        if (sounds != null)
+        {
+            foreach (var s in sounds)
+            {
+                if (s == null) continue;
+                // create audio source for each sound (small projects okay). Consider pooling if many sounds.
+                s.source = gameObject.AddComponent<AudioSource>();
+                s.source.clip = s.clip;
+                s.source.volume = s.volume;
+                s.source.pitch = s.pitch;
+                s.source.time = s.timeToSkip;
+           
+                s.source.spatialBlend = s.spatialSound;
+
+                if (!string.IsNullOrEmpty(s.name))
+                {
+                    if (!_soundMap.ContainsKey(s.name)) _soundMap.Add(s.name, s);
+                    else Debug.LogWarning($"Duplicate sound name '{s.name}' on {name}.");
+                }
+            }
+        }
     }
 
     void Start()
@@ -82,7 +127,18 @@ public class CalorInfernalScript : MonoBehaviour
         HandleLooking();
         HandleMovement();
     }
-
+    public void PlayAudio(string audioName)
+    {
+        if (string.IsNullOrEmpty(audioName) || _soundMap == null) return;
+        if (_soundMap.TryGetValue(audioName, out var s) && s?.source != null)
+        {
+            if (!s.source.isPlaying) s.source.Play();
+        }
+        else
+        {
+            Debug.LogWarning($"PlayAudio: sound '{audioName}' not found on {name}");
+        }
+    }
     private void HandleLooking()
     {
         Transform target = isLookingAtPlayer ? _playerTransform : pipeSection[randObj]?.transform;
@@ -140,11 +196,16 @@ public class CalorInfernalScript : MonoBehaviour
                 pipeSection[randObj]?.activate();
                 break;
             case ObjectType.Screw:
-                calorInfAnimator.SetTrigger("Crank");
+                calorInfAnimator.SetTrigger("Valve");
                 pipeSection[randObj]?.activate();
                 break;
             case ObjectType.Wheel:
                 calorInfAnimator.SetTrigger("Valve");
+                yield return new WaitForSeconds(VALVE_DELAY);
+                pipeSection[randObj]?.activate();
+                break;
+            case ObjectType.BigWheel:
+                calorInfAnimator.SetTrigger("Crank");
                 yield return new WaitForSeconds(VALVE_DELAY);
                 pipeSection[randObj]?.activate();
                 break;
@@ -169,11 +230,15 @@ public class CalorInfernalScript : MonoBehaviour
                 case "wheel":
                     lookDir = new Vector3(lookDir.x - 10f, lookDir.y, lookDir.z - 2f); // Ajuste específico para la rueda
                     break;
+                case "screw":
+                    lookDir = new Vector3(lookDir.x-2f , lookDir.y, lookDir.z - 10f); // Ajuste específico para la rueda
+                    break;
                 default:
                     break;
             }
         }
-            if (lookDir.sqrMagnitude > 0.001f)
+        lookDir.y = 0f;
+        if (lookDir.sqrMagnitude > 0.001f)
             {
                 Quaternion targetRot = Quaternion.LookRotation(lookDir);
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, Time.deltaTime);
@@ -212,7 +277,7 @@ public class CalorInfernalScript : MonoBehaviour
         int maxAttempts = pipeSection.Length;  // Un poco más para asegurar
         do
         {
-            randObj = Random.Range(0, pipeSection.Length);
+            randObj = UnityEngine.Random.Range(0, pipeSection.Length);
             attempts++;
         } while (pipeSection[randObj].isActive);
         Debug.Log("Selected objective: " + randObj + " (" + pipeSection[randObj].getSectionType() + ")");
@@ -245,6 +310,7 @@ public class CalorInfernalScript : MonoBehaviour
             case "cables": return ObjectType.Cables;
             case "screw": return ObjectType.Screw;
             case "wheel": return ObjectType.Wheel;
+            case "bigWheel": return ObjectType.BigWheel;
             default: return ObjectType.Cables;  // Default
         }
     }
@@ -262,6 +328,7 @@ public class CalorInfernalScript : MonoBehaviour
     private void StopGame()
     {
         calorInfAnimator.SetTrigger("FuckOff");
+        PlayAudio("FuckOff");
         calorInfAnimator.SetBool("isGameStarted", false);
         isGameStarted = false;
         isInteracting = false;
@@ -279,9 +346,11 @@ public class CalorInfernalScript : MonoBehaviour
 
     private void StartGame()
     {
+        PlayAudio("Laugh");
         calorInfAnimator.enabled = true;
         Debug.Log("Calor Infernal game started");
         transform.position = startPosition;
+        _calorInfernalRB.linearVelocity = Vector3.zero;
         Invoke("SetSkinActive", 1f);
         calorInfAnimator.SetTrigger("Appear");
         calorInfAnimator.SetBool("isGameStarted", true);
@@ -292,14 +361,18 @@ public class CalorInfernalScript : MonoBehaviour
     }
     public void EndGame()
     {
+        float FinalDelay = 5f;
         isGameStarted = false;
         isInteracting = false;
         isLookingAtPlayer = false;
         isMoving = false;
         positionToGo = startPosition;
         calorInfAnimator.SetTrigger("Goodbye");
-        Invoke("stopAnimator", STOP_ANIMATOR_DELAY);
+        Invoke("stopAnimator", FinalDelay);
+        Invoke("DisableCL", FinalDelay);
         Debug.Log("Calor Infernal game ended");
+        _calorInfernalRB.linearVelocity = Vector3.zero; 
+
     }
     private void stopAnimator()
     {
@@ -307,6 +380,11 @@ public class CalorInfernalScript : MonoBehaviour
         calorInfAnimator.Update(0f);
         calorInfAnimator.enabled = false;
         if (_meshRenderer != null) _meshRenderer.enabled = false;
+        
+    }
+    private void DisableCL()
+    {
+        gameObject.SetActive(false);
     }
     #endregion
 
