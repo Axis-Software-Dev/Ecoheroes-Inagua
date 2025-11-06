@@ -163,28 +163,16 @@ public class PipeBehavior : MonoBehaviour
     }
     private float getAngle(Quaternion previous, Quaternion current)
     {
-        // Evita errores con identity
         if (previous == Quaternion.identity || current == Quaternion.identity)
             return 0f;
 
-        // Proyectamos en el plano XY (ignoramos Z)
-        Vector3 prevDir = (previous * Vector3.forward);
-        Vector3 currDir = (current * Vector3.forward);
+        Quaternion delta = current * Quaternion.Inverse(previous);
+        float angle = delta.eulerAngles.y;
 
-        // Proyectar al plano XY: ponemos Z = 0 y normalizamos
-        prevDir.x = 0f;
-        currDir.x = 0f;
+        // Normalizar a -180..180
+        if (angle > 180f) angle -= 360f;
 
-        if (prevDir == Vector3.zero || currDir == Vector3.zero)
-            return 0f;
-
-        prevDir.Normalize();
-        currDir.Normalize();
-
-        // Usamos Vector3.forward (Z) como eje de rotación
-        float angleDelta = Vector3.SignedAngle(prevDir, currDir, Vector3.forward);
-
-        return angleDelta;
+        return angle;
     }
     private void setWheelRotation(float angle, float currentPosition)
     {
@@ -391,11 +379,12 @@ public class PipeBehavior : MonoBehaviour
     public void activate()
     {
         isActive = true;
-        brokenCable.enabled = true;
+       
         switch (section)
         {
             case sectionBehavior.cables:
                 if (cableMesh != null) cableMesh.enabled = false;
+                brokenCable.enabled = true;
                 break;
             case sectionBehavior.screw:
                 transform.position = new Vector3(transform.position.x, screwMinHeight+0.05f, transform.position.z);
