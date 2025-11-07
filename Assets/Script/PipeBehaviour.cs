@@ -56,7 +56,7 @@ public class PipeBehavior : MonoBehaviour
     private int checkPoints = 0;
     private int lastCheckpoint = 0;
     public float colliderRadiius = 0.3f;
-
+    public Animator waterAnimator;
 
     [Header("Screw Settings")]
     public float screwMinHeight;
@@ -175,7 +175,7 @@ public class PipeBehavior : MonoBehaviour
         if (string.IsNullOrEmpty(audioName) || _soundMap == null) return;
         if (_soundMap.TryGetValue(audioName, out var s) && s?.source != null)
         {
-            if (!s.source.isPlaying) s.source.Stop();
+            if (s.source.isPlaying) s.source.Stop();
         }
         else
         {
@@ -209,11 +209,12 @@ public class PipeBehavior : MonoBehaviour
     private void OnLeftGrip()
     {
         initialLeftControllerAngle = getControllerAngle(leftController);
+        if(section==sectionBehavior.wheel&&isActive)PlayAudio("ValveSFX");
     }
     private void OnRightGrip()
     {
         initialRightControllerAngle = getControllerAngle(rightController);
-
+        if (section == sectionBehavior.wheel&&isActive) PlayAudio("ValveSFX");
     }
 
 
@@ -447,16 +448,20 @@ public class PipeBehavior : MonoBehaviour
         {
             case sectionBehavior.cables:
                 if (cableMesh != null) cableMesh.enabled = false;
-                brokenCable.enabled = true;
+                if (brokenCable != null) brokenCable.enabled = true;
+                PlayAudio("CableSFX");
                 break;
             case sectionBehavior.screw:
                 transform.position = new Vector3(transform.position.x, screwMinHeight+0.05f, transform.position.z);
-
+                PlayAudio("ScrewSFX");
 
                 break;
             case sectionBehavior.wheel:
+            case sectionBehavior.bigWheel:
                 checkPoints = 0;
                 lastCheckpoint = 0;
+                PlayAudio("WaterSFX");
+                if(waterAnimator!=null)waterAnimator.SetTrigger("Open");
                 break;
         }
 
@@ -472,14 +477,19 @@ public class PipeBehavior : MonoBehaviour
             case sectionBehavior.cables:
                 if (cableMesh != null) cableMesh.enabled = true;
                 if(brokenCable!=null)brokenCable.enabled = false;
+                StopAudio("CableSFX");
                 break;
             case sectionBehavior.screw:
                 transform.position = new Vector3(transform.position.x, screwMinHeight, transform.position.z);
+                StopAudio("ScrewSFX");
                 break;
             case sectionBehavior.wheel:
+            case sectionBehavior.bigWheel:
+                StopAudio("WaterSFX");
                 checkPoints = 0;
                 lastCheckpoint = 0;
                 Debug.Log("Wheel spinned 1 time");
+                if (waterAnimator != null) waterAnimator.SetTrigger("Close");
                 break;
 
         }
