@@ -1,9 +1,10 @@
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.XR;
 using UnityEngine.InputSystem;
-using System;
+using UnityEngine.XR;
+using static GameManager;
 public class PipeBehavior : MonoBehaviour
 {
     enum sectionBehavior
@@ -13,7 +14,19 @@ public class PipeBehavior : MonoBehaviour
         cables,
         bigWheel
     }
-
+    [Serializable]
+    public class BackgroundSFX
+    {
+        public string name;
+        public AudioClip clip;
+        [UnityEngine.Range(0f, 1f)] public float volume = 1f;
+        public float pitch = 1f;
+        public float timeToSkip = 0f;
+        [UnityEngine.Range(0f, 1f)] public float spatialSound = 0f;
+        public bool loop = false;
+        public GameObject soundObject=null;
+        [NonSerialized] public AudioSource source;
+    }
     [Header("Type of pipe Minigame")]
     [SerializeField] private sectionBehavior section;
 
@@ -30,7 +43,8 @@ public class PipeBehavior : MonoBehaviour
     public Vector3 InfernalPosition;
     private Vector3 worldPosition;
     public SphereCollider infernalCollider;
-
+    public BackgroundSFX[] sounds;
+    private Dictionary<string, BackgroundSFX> _soundMap;
     [Header("Wheel Settings")]
     [SerializeField] private float currentWheelPosition = 0;
     private Quaternion initialLeftControllerAngle;
@@ -69,6 +83,32 @@ public class PipeBehavior : MonoBehaviour
         worldPosition = transform.TransformPoint(InfernalPosition);
         infernalCollider.transform.position = worldPosition;
         if(brokenCable!=null)brokenCable.enabled = false;
+        _soundMap = new Dictionary<string, BackgroundSFX>(StringComparer.OrdinalIgnoreCase);
+        if (sounds != null)
+        {
+            foreach (var s in sounds)
+            {
+                if (s == null) continue;
+                // create audio source for each sound (small projects okay). Consider pooling if many sounds.
+                
+                if(s.soundObject==null)
+                    s.source = gameObject.AddComponent<AudioSource>();
+                else
+                    s.source = s.soundObject.AddComponent<AudioSource>();
+                s.source.clip = s.clip;
+                s.source.volume = s.volume;
+                s.source.pitch = s.pitch;
+                s.source.time = s.timeToSkip;
+                s.source.loop = s.loop;
+                s.source.spatialBlend = s.spatialSound;
+
+                if (!string.IsNullOrEmpty(s.name))
+                {
+                    if (!_soundMap.ContainsKey(s.name)) _soundMap.Add(s.name, s);
+                    else Debug.LogWarning($"Duplicate sound name '{s.name}' on {name}.");
+                }
+            }
+        }
     }
 
 
@@ -118,7 +158,30 @@ public class PipeBehavior : MonoBehaviour
         }
 
     }
-
+    public void PlayAudio(string audioName)
+    {
+        if (string.IsNullOrEmpty(audioName) || _soundMap == null) return;
+        if (_soundMap.TryGetValue(audioName, out var s) && s?.source != null)
+        {
+            if (!s.source.isPlaying) s.source.Play();
+        }
+        else
+        {
+            Debug.LogWarning($"PlayAudio: sound '{audioName}' not found on {name}");
+        }
+    }
+    public void StopAudio(string audioName)
+    {
+        if (string.IsNullOrEmpty(audioName) || _soundMap == null) return;
+        if (_soundMap.TryGetValue(audioName, out var s) && s?.source != null)
+        {
+            if (!s.source.isPlaying) s.source.Stop();
+        }
+        else
+        {
+            Debug.LogWarning($"PlayAudio: sound '{audioName}' not found on {name}");
+        }
+    }
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("LeftController"))
