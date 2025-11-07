@@ -1,9 +1,10 @@
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.XR;
 using UnityEngine.InputSystem;
-using System;
+using UnityEngine.XR;
+using static GameManager;
 public class PipeBehavior : MonoBehaviour
 {
     enum sectionBehavior
@@ -13,7 +14,19 @@ public class PipeBehavior : MonoBehaviour
         cables,
         bigWheel
     }
-
+    [Serializable]
+    public class BackgroundSFX
+    {
+        public string name;
+        public AudioClip clip;
+        [UnityEngine.Range(0f, 1f)] public float volume = 1f;
+        public float pitch = 1f;
+        public float timeToSkip = 0f;
+        [UnityEngine.Range(0f, 1f)] public float spatialSound = 0f;
+        public bool loop = false;
+        public GameObject soundObject=null;
+        [NonSerialized] public AudioSource source;
+    }
     [Header("Type of pipe Minigame")]
     [SerializeField] private sectionBehavior section;
 
@@ -30,7 +43,8 @@ public class PipeBehavior : MonoBehaviour
     public Vector3 InfernalPosition;
     private Vector3 worldPosition;
     public SphereCollider infernalCollider;
-
+    public BackgroundSFX[] sounds;
+    private Dictionary<string, BackgroundSFX> _soundMap;
     [Header("Wheel Settings")]
     [SerializeField] private float currentWheelPosition = 0;
     private Quaternion initialLeftControllerAngle;
@@ -42,7 +56,7 @@ public class PipeBehavior : MonoBehaviour
     private int checkPoints = 0;
     private int lastCheckpoint = 0;
     public float colliderRadiius = 0.3f;
-
+    public Animator waterAnimator;
 
     [Header("Screw Settings")]
     public float screwMinHeight;
@@ -69,6 +83,32 @@ public class PipeBehavior : MonoBehaviour
         worldPosition = transform.TransformPoint(InfernalPosition);
         infernalCollider.transform.position = worldPosition;
         if(brokenCable!=null)brokenCable.enabled = false;
+        _soundMap = new Dictionary<string, BackgroundSFX>(StringComparer.OrdinalIgnoreCase);
+        if (sounds != null)
+        {
+            foreach (var s in sounds)
+            {
+                if (s == null) continue;
+                // create audio source for each sound (small projects okay). Consider pooling if many sounds.
+                
+                if(s.soundObject==null)
+                    s.source = gameObject.AddComponent<AudioSource>();
+                else
+                    s.source = s.soundObject.AddComponent<AudioSource>();
+                s.source.clip = s.clip;
+                s.source.volume = s.volume;
+                s.source.pitch = s.pitch;
+                s.source.time = s.timeToSkip;
+                s.source.loop = s.loop;
+                s.source.spatialBlend = s.spatialSound;
+
+                if (!string.IsNullOrEmpty(s.name))
+                {
+                    if (!_soundMap.ContainsKey(s.name)) _soundMap.Add(s.name, s);
+                    else Debug.LogWarning($"Duplicate sound name '{s.name}' on {name}.");
+                }
+            }
+        }
     }
 
 
@@ -118,7 +158,30 @@ public class PipeBehavior : MonoBehaviour
         }
 
     }
-
+    public void PlayAudio(string audioName)
+    {
+        if (string.IsNullOrEmpty(audioName) || _soundMap == null) return;
+        if (_soundMap.TryGetValue(audioName, out var s) && s?.source != null)
+        {
+            if (!s.source.isPlaying) s.source.Play();
+        }
+        else
+        {
+            Debug.LogWarning($"PlayAudio: sound '{audioName}' not found on {name}");
+        }
+    }
+    public void StopAudio(string audioName)
+    {
+        if (string.IsNullOrEmpty(audioName) || _soundMap == null) return;
+        if (_soundMap.TryGetValue(audioName, out var s) && s?.source != null)
+        {
+            if (s.source.isPlaying) s.source.Stop();
+        }
+        else
+        {
+            Debug.LogWarning($"PlayAudio: sound '{audioName}' not found on {name}");
+        }
+    }
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("LeftController"))
@@ -146,11 +209,12 @@ public class PipeBehavior : MonoBehaviour
     private void OnLeftGrip()
     {
         initialLeftControllerAngle = getControllerAngle(leftController);
+        if(section==sectionBehavior.wheel&&isActive)PlayAudio("ValveSFX");
     }
     private void OnRightGrip()
     {
         initialRightControllerAngle = getControllerAngle(rightController);
-
+        if (section == sectionBehavior.wheel&&isActive) PlayAudio("ValveSFX");
     }
 
 
@@ -384,16 +448,20 @@ public class PipeBehavior : MonoBehaviour
         {
             case sectionBehavior.cables:
                 if (cableMesh != null) cableMesh.enabled = false;
-                brokenCable.enabled = true;
+                if (brokenCable != null) brokenCable.enabled = true;
+                PlayAudio("CableSFX");
                 break;
             case sectionBehavior.screw:
                 transform.position = new Vector3(transform.position.x, screwMinHeight+0.05f, transform.position.z);
-
+                PlayAudio("ScrewSFX");
 
                 break;
             case sectionBehavior.wheel:
+            case sectionBehavior.bigWheel:
                 checkPoints = 0;
                 lastCheckpoint = 0;
+                PlayAudio("WaterSFX");
+                if(waterAnimator!=null)waterAnimator.SetTrigger("Open");
                 break;
         }
 
@@ -409,14 +477,19 @@ public class PipeBehavior : MonoBehaviour
             case sectionBehavior.cables:
                 if (cableMesh != null) cableMesh.enabled = true;
                 if(brokenCable!=null)brokenCable.enabled = false;
+                StopAudio("CableSFX");
                 break;
             case sectionBehavior.screw:
                 transform.position = new Vector3(transform.position.x, screwMinHeight, transform.position.z);
+                StopAudio("ScrewSFX");
                 break;
             case sectionBehavior.wheel:
+            case sectionBehavior.bigWheel:
+                StopAudio("WaterSFX");
                 checkPoints = 0;
                 lastCheckpoint = 0;
                 Debug.Log("Wheel spinned 1 time");
+                if (waterAnimator != null) waterAnimator.SetTrigger("Close");
                 break;
 
         }

@@ -192,7 +192,9 @@ public class CalorInfernalScript : MonoBehaviour
         {
             case ObjectType.Cables:
                 calorInfAnimator.SetTrigger("Punch");
+                PlayAudio("Punch");
                 yield return new WaitForSeconds(ANIMATION_DELAY);
+                
                 pipeSection[randObj]?.activate();
                 break;
             case ObjectType.Screw:
@@ -319,6 +321,7 @@ public class CalorInfernalScript : MonoBehaviour
     {
         calorInfAnimator.SetTrigger("Idle");
         positionToGo = startPosition;
+        _calorInfernalRB.linearVelocity = Vector3.zero;
         isLookingAtPlayer = true;
         isInteracting = false;
     }
@@ -328,6 +331,7 @@ public class CalorInfernalScript : MonoBehaviour
     private void StopGame()
     {
         calorInfAnimator.SetTrigger("FuckOff");
+        GameManager.Instance.AddMinigamePoint();
         PlayAudio("FuckOff");
         calorInfAnimator.SetBool("isGameStarted", false);
         isGameStarted = false;
@@ -370,8 +374,17 @@ public class CalorInfernalScript : MonoBehaviour
         calorInfAnimator.SetTrigger("Goodbye");
         Invoke("stopAnimator", FinalDelay);
         Invoke("DisableCL", FinalDelay);
+        Invoke("PlayNewBGM", FinalDelay+2f);
         Debug.Log("Calor Infernal game ended");
         _calorInfernalRB.linearVelocity = Vector3.zero; 
+        PlayAudio("Scream");
+        foreach (var pipe in pipeSection)
+        {
+            if (pipe != null)
+            {
+                pipe.deactivate();
+            }
+        }
 
     }
     private void stopAnimator()
@@ -385,6 +398,10 @@ public class CalorInfernalScript : MonoBehaviour
     private void DisableCL()
     {
         gameObject.SetActive(false);
+    }
+    private void PlayNewBGM()
+    {
+        GameManager.Instance.PlayAudio("Chill");
     }
     #endregion
 

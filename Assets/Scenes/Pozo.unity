@@ -341,6 +341,38 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8815753603dabac43b3f11ed59d7961a, type: 3}
   m_PrefabInstance: {fileID: 60678484}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &62395402
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 62395403}
+  m_Layer: 0
+  m_Name: Water (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &62395403
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 62395402}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.044734377, y: 0.8000452, z: 0.02773704, w: -0.5976262}
+  m_LocalPosition: {x: -0.475, y: 0.079, z: -0.358}
+  m_LocalScale: {x: 1.134, y: 0.046, z: 1.23}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1887594610}
+  m_Father: {fileID: 388981204}
+  m_LocalEulerAnglesHint: {x: -5.615, y: 253.41, z: 2.213}
 --- !u!1 &83529412
 GameObject:
   m_ObjectHideFlags: 0
@@ -1205,8 +1237,14 @@ PrefabInstance:
       insertIndex: 20
       addedObject: {fileID: 2080285489}
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 7d3cdbf05bddc59449a46d5cf94300a3, type: 3}
-      insertIndex: 23
+      insertIndex: 22
+      addedObject: {fileID: 330588765}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 7d3cdbf05bddc59449a46d5cf94300a3, type: 3}
+      insertIndex: 24
       addedObject: {fileID: 2004288373}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 7d3cdbf05bddc59449a46d5cf94300a3, type: 3}
+      insertIndex: 26
+      addedObject: {fileID: 62395403}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 5447311818932370258, guid: 7d3cdbf05bddc59449a46d5cf94300a3, type: 3}
       insertIndex: -1
@@ -1785,6 +1823,38 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 327098134}
   m_CullTransparentMesh: 1
+--- !u!1 &330588764
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 330588765}
+  m_Layer: 0
+  m_Name: Water
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &330588765
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 330588764}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.00000009141325, y: 0.020589797, z: 0.00000019286597, w: -0.99978805}
+  m_LocalPosition: {x: 1.134, y: 0.046, z: 1.23}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
+  m_Children:
+  - {fileID: 966373340}
+  m_Father: {fileID: 388981204}
+  m_LocalEulerAnglesHint: {x: 0, y: -2.36, z: 0}
 --- !u!1001 &343340637
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2190,8 +2260,18 @@ MonoBehaviour:
   isActive: 0
   InfernalPosition: {x: 4.4, y: -20, z: 0}
   infernalCollider: {fileID: 2026862029}
+  sounds:
+  - name: ScrewSFX
+    clip: {fileID: 8300000, guid: f036513a8134c8d43ab39aacb7b605e7, type: 3}
+    volume: 1
+    pitch: 1
+    timeToSkip: 0
+    spatialSound: 1
+    loop: 0
+    soundObject: {fileID: 0}
   currentWheelPosition: 0
   colliderRadiius: 1
+  waterAnimator: {fileID: 0}
   screwMinHeight: -0.77
   screwMaxHeight: -0.3
   screwSpeed: 5
@@ -2334,7 +2414,7 @@ MonoBehaviour:
   sounds:
   - name: Evil Loop
     clip: {fileID: 8300000, guid: 54d2d108296585649b71719d409b1fce, type: 3}
-    volume: 1
+    volume: 0.5
     pitch: 1
     timeToSkip: 0
     spatialSound: 0
@@ -2353,6 +2433,13 @@ MonoBehaviour:
     timeToSkip: 0
     spatialSound: 0
     loop: 0
+  - name: Chill
+    clip: {fileID: 8300000, guid: 653f25dba2043cb4dba2f0296c038a6b, type: 3}
+    volume: 1
+    pitch: 1
+    timeToSkip: 0
+    spatialSound: 0
+    loop: 1
   timeBeforeReturnToMenu: 120
   fluvio: {fileID: 1015938017}
   calorInfernal: {fileID: 1802205246}
@@ -2360,7 +2447,7 @@ MonoBehaviour:
   teleportCanvas: {fileID: 1070294484}
   ThankYou: {fileID: 1108093403}
   tpCanvas: {fileID: 1357433583}
-  POINTS_TO_WIN: 3
+  POINTS_TO_WIN: 8
   Heroes:
   - {fileID: 1271973193}
   - {fileID: 1978881049}
@@ -2894,8 +2981,10 @@ MonoBehaviour:
   isActive: 0
   InfernalPosition: {x: 0, y: -9.4, z: 0}
   infernalCollider: {fileID: 17461469}
+  sounds: []
   currentWheelPosition: 0
   colliderRadiius: 1
+  waterAnimator: {fileID: 0}
   screwMinHeight: 0
   screwMaxHeight: 0
   screwSpeed: 0
@@ -4539,6 +4628,38 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1271973194}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!1 &966373339 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 8c64fc8d72d77df489e20101ee606409, type: 3}
+  m_PrefabInstance: {fileID: 1855907231}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &966373340 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8c64fc8d72d77df489e20101ee606409, type: 3}
+  m_PrefabInstance: {fileID: 1855907231}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &966373341
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 966373339}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 0c426135b605b374e812e575e6d6cac7, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &975667593
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9160,7 +9281,6 @@ Transform:
   - {fileID: 2100850921}
   - {fileID: 1363353826}
   - {fileID: 1000735082}
-  - {fileID: 1711374806}
   m_Father: {fileID: 56704208}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1047266951
@@ -9270,10 +9390,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 48fa7aff3b5fd824aabb77a49c4d2808, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1479791313}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 48fa7aff3b5fd824aabb77a49c4d2808, type: 3}
 --- !u!1 &1060866511
 GameObject:
@@ -9416,8 +9533,18 @@ MonoBehaviour:
   isActive: 0
   InfernalPosition: {x: -3.43, y: -0.29, z: -4.41}
   infernalCollider: {fileID: 1103012713}
+  sounds:
+  - name: CableSFX
+    clip: {fileID: 8300000, guid: d96408be04ae017449e800e964889c58, type: 3}
+    volume: 1
+    pitch: 1
+    timeToSkip: 0
+    spatialSound: 1
+    loop: 1
+    soundObject: {fileID: 0}
   currentWheelPosition: 0
   colliderRadiius: 1
+  waterAnimator: {fileID: 0}
   screwMinHeight: 0
   screwMaxHeight: 0
   screwSpeed: 0
@@ -11855,6 +11982,78 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!1001 &1278052467
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 62395403}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 8c64fc8d72d77df489e20101ee606409, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8c64fc8d72d77df489e20101ee606409, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8c64fc8d72d77df489e20101ee606409, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8c64fc8d72d77df489e20101ee606409, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8c64fc8d72d77df489e20101ee606409, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8c64fc8d72d77df489e20101ee606409, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8c64fc8d72d77df489e20101ee606409, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8c64fc8d72d77df489e20101ee606409, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8c64fc8d72d77df489e20101ee606409, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8c64fc8d72d77df489e20101ee606409, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8c64fc8d72d77df489e20101ee606409, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8c64fc8d72d77df489e20101ee606409, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8c64fc8d72d77df489e20101ee606409, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8c64fc8d72d77df489e20101ee606409, type: 3}
+      propertyPath: m_Name
+      value: AguaGastada (1)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 8c64fc8d72d77df489e20101ee606409, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1887594611}
+  m_SourcePrefab: {fileID: 100100000, guid: 8c64fc8d72d77df489e20101ee606409, type: 3}
 --- !u!1001 &1299938835
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12868,8 +13067,26 @@ MonoBehaviour:
   isActive: 0
   InfernalPosition: {x: -34.5, y: -9.4, z: -17.6}
   infernalCollider: {fileID: 2004288374}
+  sounds:
+  - name: ValveSFX
+    clip: {fileID: 8300000, guid: 05f0bcc17ef3207438a9a1777a4d4e5b, type: 3}
+    volume: 1
+    pitch: 1
+    timeToSkip: 0
+    spatialSound: 1
+    loop: 0
+    soundObject: {fileID: 0}
+  - name: WaterSFX
+    clip: {fileID: 8300000, guid: badd215a40f2c78479c13b72be344707, type: 3}
+    volume: 0.7
+    pitch: 1
+    timeToSkip: 0
+    spatialSound: 1
+    loop: 1
+    soundObject: {fileID: 1887594609}
   currentWheelPosition: 0
   colliderRadiius: 1
+  waterAnimator: {fileID: 1887594611}
   screwMinHeight: 0
   screwMaxHeight: 0
   screwSpeed: 0
@@ -13944,8 +14161,26 @@ MonoBehaviour:
   isActive: 0
   InfernalPosition: {x: 37.1, y: -0.62, z: 0}
   infernalCollider: {fileID: 2080285490}
+  sounds:
+  - name: ValveSFX
+    clip: {fileID: 8300000, guid: 05f0bcc17ef3207438a9a1777a4d4e5b, type: 3}
+    volume: 1
+    pitch: 1
+    timeToSkip: 0
+    spatialSound: 1
+    loop: 0
+    soundObject: {fileID: 0}
+  - name: WaterSFX
+    clip: {fileID: 8300000, guid: badd215a40f2c78479c13b72be344707, type: 3}
+    volume: 1
+    pitch: 1
+    timeToSkip: 0
+    spatialSound: 1
+    loop: 1
+    soundObject: {fileID: 966373339}
   currentWheelPosition: 0
   colliderRadiius: 1
+  waterAnimator: {fileID: 966373341}
   screwMinHeight: 0
   screwMaxHeight: 0
   screwSpeed: 0
@@ -14343,6 +14578,18 @@ MonoBehaviour:
     spatialSound: 1
   - name: FuckOff
     clip: {fileID: 8300000, guid: 2903bab1b10a9024b8d0fc28ba5eee73, type: 3}
+    volume: 1
+    pitch: 1
+    timeToSkip: 0
+    spatialSound: 1
+  - name: Punch
+    clip: {fileID: 8300000, guid: c9a2987cc768c8d4e80b0d89227bfcf4, type: 3}
+    volume: 1
+    pitch: 1
+    timeToSkip: 0
+    spatialSound: 1
+  - name: Scream
+    clip: {fileID: 8300000, guid: 2e4bafc43d0ce9844ad3c9e5fed251d7, type: 3}
     volume: 1
     pitch: 1
     timeToSkip: 0
@@ -14875,11 +15122,115 @@ Transform:
   - {fileID: 1745226428}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1855907231
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 330588765}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 8c64fc8d72d77df489e20101ee606409, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8c64fc8d72d77df489e20101ee606409, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8c64fc8d72d77df489e20101ee606409, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8c64fc8d72d77df489e20101ee606409, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.15926
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8c64fc8d72d77df489e20101ee606409, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.3928517
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8c64fc8d72d77df489e20101ee606409, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.02304477
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8c64fc8d72d77df489e20101ee606409, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.34438336
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8c64fc8d72d77df489e20101ee606409, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.61757624
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8c64fc8d72d77df489e20101ee606409, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.61757594
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8c64fc8d72d77df489e20101ee606409, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.3443832
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8c64fc8d72d77df489e20101ee606409, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8c64fc8d72d77df489e20101ee606409, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8c64fc8d72d77df489e20101ee606409, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8c64fc8d72d77df489e20101ee606409, type: 3}
+      propertyPath: m_Name
+      value: AguaGastada
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 8c64fc8d72d77df489e20101ee606409, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 966373341}
+  m_SourcePrefab: {fileID: 100100000, guid: 8c64fc8d72d77df489e20101ee606409, type: 3}
 --- !u!4 &1857634488 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4505831165309822532, guid: b588eab963c642742a09b9c6e0433831, type: 3}
   m_PrefabInstance: {fileID: 797302438}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1887594609 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 8c64fc8d72d77df489e20101ee606409, type: 3}
+  m_PrefabInstance: {fileID: 1278052467}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1887594610 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8c64fc8d72d77df489e20101ee606409, type: 3}
+  m_PrefabInstance: {fileID: 1278052467}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1887594611
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1887594609}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 0c426135b605b374e812e575e6d6cac7, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1901822229
 GameObject:
   m_ObjectHideFlags: 0
@@ -16474,3 +16825,4 @@ SceneRoots:
   - {fileID: 1299938835}
   - {fileID: 1965017442}
   - {fileID: 1032416160}
+  - {fileID: 1058736607}
