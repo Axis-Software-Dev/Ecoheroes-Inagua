@@ -24,7 +24,7 @@ public class PipeBehavior : MonoBehaviour
         public float timeToSkip = 0f;
         [UnityEngine.Range(0f, 1f)] public float spatialSound = 0f;
         public bool loop = false;
-        public GameObject soundObject=null;
+        public GameObject soundObject = null;
         [NonSerialized] public AudioSource source;
     }
     [Header("Type of pipe Minigame")]
@@ -47,10 +47,10 @@ public class PipeBehavior : MonoBehaviour
     private Dictionary<string, BackgroundSFX> _soundMap;
     [Header("Wheel Settings")]
     [SerializeField] private float currentWheelPosition = 0;
-    private Quaternion initialLeftControllerAngle;
-    private Quaternion currentLeftControllerAngle;
-    private Quaternion currentRightControllerAngle;
-    private Quaternion initialRightControllerAngle;
+    private Ray initialLeftControllerRay;
+    private Ray currentLeftControllerRay;
+    private Ray currentRightControllerRay;
+    private Ray initialRightControllerRay;
     private float[] rotationRanges = { 0f, 60f, 120f, 180f, 240f, 300f, 360f };
     [SerializeField] private const int MAX_CHECKPOINTS = 5;
     private int checkPoints = 0;
@@ -72,17 +72,18 @@ public class PipeBehavior : MonoBehaviour
     private destinationDetection endDestination;
     private bool previousCableState = false;
     public MeshRenderer brokenCable;
-
+    public GameObject Chispas;
 
 
 
 
     private void Awake()
     {
+        Chispas?.SetActive(false);
         //infernalCollider.radius = colliderRadiius;
         worldPosition = transform.TransformPoint(InfernalPosition);
         infernalCollider.transform.position = worldPosition;
-        if(brokenCable!=null)brokenCable.enabled = false;
+        if (brokenCable != null) brokenCable.enabled = false;
         _soundMap = new Dictionary<string, BackgroundSFX>(StringComparer.OrdinalIgnoreCase);
         if (sounds != null)
         {
@@ -90,8 +91,8 @@ public class PipeBehavior : MonoBehaviour
             {
                 if (s == null) continue;
                 // create audio source for each sound (small projects okay). Consider pooling if many sounds.
-                
-                if(s.soundObject==null)
+
+                if (s.soundObject == null)
                     s.source = gameObject.AddComponent<AudioSource>();
                 else
                     s.source = s.soundObject.AddComponent<AudioSource>();
@@ -140,7 +141,7 @@ public class PipeBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       
+
         switch (section)
         {
             case sectionBehavior.wheel:
@@ -148,7 +149,7 @@ public class PipeBehavior : MonoBehaviour
                 if (isActive) wheelBehaviour();
                 break;
             case sectionBehavior.screw:
-                 screwBehaviour();
+                screwBehaviour();
                 break;
             case sectionBehavior.cables:
                 if (isActive) cableBehaviour();
@@ -208,33 +209,48 @@ public class PipeBehavior : MonoBehaviour
     #region ControllerCallbacks
     private void OnLeftGrip()
     {
-        initialLeftControllerAngle = getControllerAngle(leftController);
-        if(section==sectionBehavior.wheel&&isActive)PlayAudio("ValveSFX");
+        initialLeftControllerRay = GetRay(gameObject.transform.position,
+            getControllerPosition(leftController));
+        if (section == sectionBehavior.wheel && isActive) PlayAudio("ValveSFX");
     }
     private void OnRightGrip()
     {
-        initialRightControllerAngle = getControllerAngle(rightController);
-        if (section == sectionBehavior.wheel&&isActive) PlayAudio("ValveSFX");
+        initialRightControllerRay = GetRay(gameObject.transform.position,
+            getControllerPosition(rightController));
+        if (section == sectionBehavior.wheel && isActive) PlayAudio("ValveSFX");
     }
 
 
     #endregion
     #region Behaviors
     #region Wheel
-    private Quaternion getControllerAngle(Transform controller)
+    private Vector3 getControllerPosition(Transform controller)
     {
-        return controller.rotation;
+        return controller.position;
     }
-    private float getAngle(Quaternion previous, Quaternion current)
+    private Ray GetRay(Vector3 RayOrigin, Vector3 RayDirectionObject)
     {
-        if (previous == Quaternion.identity || current == Quaternion.identity)
-            return 0f;
+        
+        Ray ray = new Ray(RayOrigin, (RayDirectionObject-RayOrigin));
 
-        Quaternion delta = current * Quaternion.Inverse(previous);
-        float angle = delta.eulerAngles.y;
+        return ray;
+    }
+    private float getAngle(Ray previous, Ray current)
+    {
+        Vector3 prevDir = previous.direction.normalized;
+        Vector3 currDir = current.direction.normalized;
 
-        // Normalizar a -180..180
+       
+        prevDir.y = 0;
+        currDir.y = 0;
+        prevDir.Normalize();
+        currDir.Normalize();
+
+        float angle = Vector3.SignedAngle(prevDir, currDir, Vector3.up);
+
+      
         if (angle > 180f) angle -= 360f;
+        if (angle < -180f) angle += 360f;
 
         return angle;
     }
@@ -253,8 +269,11 @@ public class PipeBehavior : MonoBehaviour
         {
             if (leftGrippedPressed)
             {
-                currentLeftControllerAngle = getControllerAngle(leftController);
-                float angle = getAngle(initialLeftControllerAngle, currentLeftControllerAngle);
+                currentLeftControllerRay = GetRay(gameObject.transform.position,
+                    getControllerPosition(leftController));
+                Debug.DrawRay(currentLeftControllerRay.origin, currentLeftControllerRay.direction * 1, Color.blue);
+                Debug.DrawRay(initialLeftControllerRay.origin, initialLeftControllerRay.direction * 1, Color.green);
+                float angle = getAngle(initialLeftControllerRay, currentLeftControllerRay);
 
                 setWheelRotation(angle, currentWheelPosition);
             }
@@ -264,8 +283,12 @@ public class PipeBehavior : MonoBehaviour
         {
             if (rightGrippedPressed)
             {
-                currentRightControllerAngle = getControllerAngle(rightController);
-                float angle = getAngle(initialRightControllerAngle, currentRightControllerAngle);
+                currentRightControllerRay = GetRay(gameObject.transform.position,
+                        getControllerPosition(rightController));
+                Debug.DrawRay(currentRightControllerRay.origin, currentRightControllerRay.direction * 1, Color.blue);
+                Debug.DrawRay(initialRightControllerRay.origin, initialRightControllerRay.direction * 1, Color.green);
+
+                float angle = getAngle(initialRightControllerRay, currentRightControllerRay);
 
                 setWheelRotation(angle, currentWheelPosition);
             }
@@ -313,7 +336,7 @@ public class PipeBehavior : MonoBehaviour
         {
             checkPoints++;
         }
-        
+
     }
 
 
@@ -343,7 +366,7 @@ public class PipeBehavior : MonoBehaviour
         else
         {
             // Si no esta activo, asegurate de que la posicion este clamped (por si acaso)
-            transform.position = new Vector3(transform.position.x,  screwMinHeight, transform.position.z);
+            transform.position = new Vector3(transform.position.x, screwMinHeight, transform.position.z);
         }
     }
     #endregion
@@ -443,16 +466,17 @@ public class PipeBehavior : MonoBehaviour
     public void activate()
     {
         isActive = true;
-       
+
         switch (section)
         {
             case sectionBehavior.cables:
                 if (cableMesh != null) cableMesh.enabled = false;
                 if (brokenCable != null) brokenCable.enabled = true;
                 PlayAudio("CableSFX");
+                Chispas?.SetActive(true);
                 break;
             case sectionBehavior.screw:
-                transform.position = new Vector3(transform.position.x, screwMinHeight+0.05f, transform.position.z);
+                transform.position = new Vector3(transform.position.x, screwMinHeight + 0.05f, transform.position.z);
                 PlayAudio("ScrewSFX");
 
                 break;
@@ -461,7 +485,7 @@ public class PipeBehavior : MonoBehaviour
                 checkPoints = 0;
                 lastCheckpoint = 0;
                 PlayAudio("WaterSFX");
-                if(waterAnimator!=null)waterAnimator.SetTrigger("Open");
+                if (waterAnimator != null) waterAnimator.SetTrigger("Open");
                 break;
         }
 
@@ -470,13 +494,14 @@ public class PipeBehavior : MonoBehaviour
     public void deactivate()
     {
         isActive = false;
-        
+
         GameManager.Instance.AddMinigamePoint();
         switch (section)
         {
             case sectionBehavior.cables:
+                Chispas?.SetActive(false);
                 if (cableMesh != null) cableMesh.enabled = true;
-                if(brokenCable!=null)brokenCable.enabled = false;
+                if (brokenCable != null) brokenCable.enabled = false;
                 StopAudio("CableSFX");
                 break;
             case sectionBehavior.screw:
@@ -500,15 +525,15 @@ public class PipeBehavior : MonoBehaviour
     }
     public Vector3 getInfernalPosition()
     {
-        
+
         return worldPosition;
     }
 
     private void OnDrawGizmos()
     {
-        
+
         Gizmos.color = Color.red;
-        Vector3 newWorldPosition=transform.TransformPoint(InfernalPosition);
+        Vector3 newWorldPosition = transform.TransformPoint(InfernalPosition);
 
         Gizmos.DrawWireSphere(newWorldPosition, 0.3f);
 
