@@ -72,13 +72,14 @@ public class PipeBehavior : MonoBehaviour
     private destinationDetection endDestination;
     private bool previousCableState = false;
     public MeshRenderer brokenCable;
-
+    public GameObject Chispas;
 
 
 
 
     private void Awake()
     {
+        Chispas?.SetActive(false);
         //infernalCollider.radius = colliderRadiius;
         worldPosition = transform.TransformPoint(InfernalPosition);
         infernalCollider.transform.position = worldPosition;
@@ -472,6 +473,7 @@ public class PipeBehavior : MonoBehaviour
                 if (cableMesh != null) cableMesh.enabled = false;
                 if (brokenCable != null) brokenCable.enabled = true;
                 PlayAudio("CableSFX");
+                Chispas?.SetActive(true);
                 break;
             case sectionBehavior.screw:
                 transform.position = new Vector3(transform.position.x, screwMinHeight + 0.05f, transform.position.z);
@@ -497,6 +499,7 @@ public class PipeBehavior : MonoBehaviour
         switch (section)
         {
             case sectionBehavior.cables:
+                Chispas?.SetActive(false);
                 if (cableMesh != null) cableMesh.enabled = true;
                 if (brokenCable != null) brokenCable.enabled = false;
                 StopAudio("CableSFX");
