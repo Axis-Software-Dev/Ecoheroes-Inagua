@@ -1,6 +1,8 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
+using UnityEngine.XR.Interaction.Toolkit;
 using TMPro;
 
 public class CreditsController : MonoBehaviour
@@ -10,6 +12,7 @@ public class CreditsController : MonoBehaviour
     public TextMeshProUGUI creditsText;
     public CanvasGroup buttonCanvasGroup;
     public CanvasGroup creditsCanvasGroup;
+    public XRSimpleInteractable xrInteractable;
 
     [Header("Animation Settings")]
     public float fadeDuration = 1f;
@@ -35,6 +38,11 @@ public class CreditsController : MonoBehaviour
             creditsButton.onClick.AddListener(OnCreditsButtonClicked);
         }
 
+        if (xrInteractable != null)
+        {
+            xrInteractable.activated.AddListener(OnXRActivated);
+        }
+
         if (creditsText != null && !string.IsNullOrEmpty(creditsContent))
         {
             creditsText.text = creditsContent;
@@ -52,13 +60,14 @@ public class CreditsController : MonoBehaviour
         }
     }
 
-    public void SetReferences(Button button, TextMeshProUGUI text, CanvasGroup btnGroup, CanvasGroup creditsGroup, string content)
+    public void SetReferences(Button button, TextMeshProUGUI text, CanvasGroup btnGroup, CanvasGroup creditsGroup, string content, XRSimpleInteractable xrInteract = null)
     {
         creditsButton = button;
         creditsText = text;
         buttonCanvasGroup = btnGroup;
         creditsCanvasGroup = creditsGroup;
         creditsContent = content;
+        xrInteractable = xrInteract;
 
         if (creditsText != null)
         {
@@ -68,6 +77,11 @@ public class CreditsController : MonoBehaviour
         if (creditsButton != null)
         {
             creditsButton.onClick.AddListener(OnCreditsButtonClicked);
+        }
+
+        if (xrInteractable != null)
+        {
+            xrInteractable.activated.AddListener(OnXRActivated);
         }
 
         if (creditsText != null && !string.IsNullOrEmpty(creditsContent))
@@ -88,6 +102,14 @@ public class CreditsController : MonoBehaviour
     }
 
     private void OnCreditsButtonClicked()
+    {
+        if (!isScrolling)
+        {
+            StartCoroutine(PlayCreditsSequence());
+        }
+    }
+
+    public void OnXRActivated(ActivateEventArgs args)
     {
         if (!isScrolling)
         {
