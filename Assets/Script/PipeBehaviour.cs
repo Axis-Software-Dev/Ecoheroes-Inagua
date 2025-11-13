@@ -79,7 +79,7 @@ public class PipeBehavior : MonoBehaviour
 
     private void Awake()
     {
-        Chispas?.SetActive(false);
+        if(Chispas!=null)Chispas.SetActive(false);
         //infernalCollider.radius = colliderRadiius;
         worldPosition = transform.TransformPoint(InfernalPosition);
         infernalCollider.transform.position = worldPosition;
