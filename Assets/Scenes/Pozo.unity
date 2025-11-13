@@ -14852,6 +14852,8 @@ MonoBehaviour:
   intervals:
   - 3
   - 4
+  drillSound: {fileID: 2023461880}
+  rockSound: {fileID: 1403783766}
 --- !u!4 &1058185595 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1b714901d05ca5446bf93e8b7d99baac, type: 3}
@@ -26757,7 +26759,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: d22e0e56e4990f148b296a3c8328b48c, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 0.5
   Loop: 1
