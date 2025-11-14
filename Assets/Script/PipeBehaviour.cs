@@ -45,6 +45,8 @@ public class PipeBehavior : MonoBehaviour
     public SphereCollider infernalCollider;
     public BackgroundSFX[] sounds;
     private Dictionary<string, BackgroundSFX> _soundMap;
+    public MeshRenderer arrowMesh;
+    private Animator arrowAnimator;
     [Header("Wheel Settings")]
     [SerializeField] private float currentWheelPosition = 0;
     private Ray initialLeftControllerRay;
@@ -57,6 +59,7 @@ public class PipeBehavior : MonoBehaviour
     private int lastCheckpoint = 0;
     public float colliderRadiius = 0.3f;
     public Animator waterAnimator;
+    public TutorialScript tutorialScript;
 
     [Header("Screw Settings")]
     public float screwMinHeight;
@@ -79,7 +82,14 @@ public class PipeBehavior : MonoBehaviour
 
     private void Awake()
     {
-        Chispas?.SetActive(false);
+        if(Chispas!=null)Chispas.SetActive(false);
+        if (arrowMesh != null)
+        {
+            arrowMesh.enabled = false;
+            arrowAnimator = arrowMesh.gameObject.GetComponent<Animator>();
+        }
+       
+        if(arrowAnimator!=null)arrowAnimator.enabled=false;
         //infernalCollider.radius = colliderRadiius;
         worldPosition = transform.TransformPoint(InfernalPosition);
         infernalCollider.transform.position = worldPosition;
@@ -466,7 +476,8 @@ public class PipeBehavior : MonoBehaviour
     public void activate()
     {
         isActive = true;
-
+        arrowMesh.enabled = true;
+        arrowAnimator.enabled = true;
         switch (section)
         {
             case sectionBehavior.cables:
@@ -482,6 +493,7 @@ public class PipeBehavior : MonoBehaviour
                 break;
             case sectionBehavior.wheel:
             case sectionBehavior.bigWheel:
+                tutorialScript?.ActivateTutorial();
                 checkPoints = 0;
                 lastCheckpoint = 0;
                 PlayAudio("WaterSFX");
@@ -494,7 +506,8 @@ public class PipeBehavior : MonoBehaviour
     public void deactivate()
     {
         isActive = false;
-
+        arrowMesh.enabled = false;
+        arrowAnimator.enabled= false;
         GameManager.Instance.AddMinigamePoint();
         switch (section)
         {
@@ -510,6 +523,7 @@ public class PipeBehavior : MonoBehaviour
                 break;
             case sectionBehavior.wheel:
             case sectionBehavior.bigWheel:
+                tutorialScript?.DeactivateTutorial();
                 StopAudio("WaterSFX");
                 checkPoints = 0;
                 lastCheckpoint = 0;
