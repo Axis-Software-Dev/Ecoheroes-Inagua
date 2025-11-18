@@ -41,14 +41,22 @@ public class GameManager : MonoBehaviour
     persistanceData data;
     private Dictionary<string, BackgroundSound> _soundMap;
     private int lastPointScore = 0;
-   
+
     private LoadingScreen sceneManager;
     [SerializeField]
     private bool hasMirrorShowed = false;
+
+    private const string TERRAIN_NAME = "TerrenoPlain";
+    private const string XR_RIG_NAME = "XR Rig";
+    private const string SCENE_MANAGER_NAME = "SceneManager";
+    private const string EVENT_SYSTEM_NAME = "EventSystem";
+    private const string XR_INTERACTION_MANAGER_NAME = "XR Interaction Manager";
+    private const string GAME_MANAGER_NAME = "--GameManager";
+
     private void Awake()
     {
         Mirror.SetActive(false);
-        if (ThankYou!=null)ThankYou.enabled = false;
+        if (ThankYou != null) ThankYou.enabled = false;
         sceneManager = GameObject.Find("SceneManager").GetComponent<LoadingScreen>();
         externalTool.enabled = false;
         data = Resources.Load<persistanceData>("persistanceData");
@@ -86,7 +94,6 @@ public class GameManager : MonoBehaviour
             foreach (var s in sounds)
             {
                 if (s == null) continue;
-                // create audio source for each sound (small projects okay). Consider pooling if many sounds.
                 s.source = gameObject.AddComponent<AudioSource>();
                 s.source.clip = s.clip;
                 s.source.volume = s.volume;
@@ -115,7 +122,7 @@ public class GameManager : MonoBehaviour
     {
         if (minijuegosCompletados == POINTS_TO_WIN && lastPointScore == POINTS_TO_WIN - 1) EndGame();
         lastPointScore = minijuegosCompletados;
-       
+
     }
     public void PlayAudio(string audioName)
     {
@@ -135,19 +142,19 @@ public class GameManager : MonoBehaviour
     }
     public IEnumerator PlayBGM(string audioName, float Delay)
     {
-       
+
         yield return new WaitForSeconds(Delay);
         if (string.IsNullOrEmpty(audioName) || _soundMap == null) yield return null;
         if (_soundMap.TryGetValue(audioName, out var s) && s?.source != null)
         {
-            if (!s.source.loop==false) s.source.loop = true;
+            if (!s.source.loop == false) s.source.loop = true;
             PlayAudio(audioName);
         }
         else
         {
             Debug.LogWarning($"BGM: music '{audioName}' not found on {name}");
         }
-        
+
 
     }
     private IEnumerator StopBGM(string audioName)
@@ -155,13 +162,13 @@ public class GameManager : MonoBehaviour
         if (string.IsNullOrEmpty(audioName) || _soundMap == null) yield return null;
         if (_soundMap.TryGetValue(audioName, out var s) && s?.source != null)
         {
-            while (s.source.isPlaying&&s.source.volume>0f)
+            while (s.source.isPlaying && s.source.volume > 0f)
             {
                 s.source.volume -= Time.deltaTime * 0.2f;
                 yield return null;
             }
         }
-        
+
 
     }
 
@@ -172,7 +179,7 @@ public class GameManager : MonoBehaviour
     }
     private IEnumerator DestroyAudioSource(AudioSource AudioToDestroy)
     {
-        yield return new WaitForSeconds(9f);    
+        yield return new WaitForSeconds(9f);
         Destroy(AudioToDestroy);
     }
     public void EndGame()
@@ -182,7 +189,7 @@ public class GameManager : MonoBehaviour
         StartCoroutine(SetButtons(true, 37f));
         StartCoroutine(StopBGM("Evil Loop"));
         Invoke("SetCanvasOn", 61f);
-        Invoke("EndExploringPhase", timeBeforeReturnToMenu+61f);
+        Invoke("EndExploringPhase", timeBeforeReturnToMenu + 61f);
     }
     private void SetCanvasOn()
     {
@@ -191,10 +198,37 @@ public class GameManager : MonoBehaviour
 
     private void EndExploringPhase()
     {
-        if(ThankYou!=null)ThankYou.enabled = true;
-        if(tpCanvas!=null)tpCanvas.SetActive(false);
+        if (ThankYou != null) ThankYou.enabled = true;
+        if (tpCanvas != null) tpCanvas.SetActive(false);
+        DestroyAllExceptTerrain();
         Invoke("GoToMenu", 10f);
     }
+
+    private void DestroyAllExceptTerrain()
+    {
+        GameObject[] allRootObjects = UnityEngine.SceneManagement.SceneManager.GetActiveScene().GetRootGameObjects();
+
+        foreach (GameObject rootObj in allRootObjects)
+        {
+            if (ShouldPreserveObject(rootObj.name))
+            {
+                continue;
+            }
+
+            Destroy(rootObj);
+        }
+    }
+
+    private bool ShouldPreserveObject(string objectName)
+    {
+        return objectName == TERRAIN_NAME ||
+               objectName == XR_RIG_NAME ||
+               objectName == SCENE_MANAGER_NAME ||
+               objectName == EVENT_SYSTEM_NAME ||
+               objectName == XR_INTERACTION_MANAGER_NAME ||
+               objectName == GAME_MANAGER_NAME;
+    }
+
     public void ShowTablet()
     {
         tpCanvas?.SetActive(true);
