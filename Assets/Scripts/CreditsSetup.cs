@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using TMPro;
 
 public class CreditsSetup : MonoBehaviour
@@ -101,6 +102,11 @@ public class CreditsSetup : MonoBehaviour
 
         CanvasGroup buttonCanvasGroup = buttonObject.AddComponent<CanvasGroup>();
 
+        BoxCollider buttonCollider = buttonObject.AddComponent<BoxCollider>();
+        buttonCollider.size = new Vector3(200f, 60f, 1f);
+
+        XRSimpleInteractable xrInteractable = buttonObject.AddComponent<XRSimpleInteractable>();
+
         GameObject buttonTextObj = new GameObject("Text");
         buttonTextObj.transform.SetParent(buttonObject.transform, false);
 
@@ -166,8 +172,9 @@ public class CreditsSetup : MonoBehaviour
         CanvasGroup buttonCanvasGroup = buttonObject.GetComponent<CanvasGroup>();
         TextMeshProUGUI creditsText = creditsObject.GetComponentInChildren<TextMeshProUGUI>();
         CanvasGroup creditsCanvasGroup = creditsObject.GetComponent<CanvasGroup>();
+        XRSimpleInteractable xrInteractable = buttonObject.GetComponent<XRSimpleInteractable>();
 
-        creditsController.SetReferences(button, creditsText, buttonCanvasGroup, creditsCanvasGroup, creditsContent);
+        creditsController.SetReferences(button, creditsText, buttonCanvasGroup, creditsCanvasGroup, creditsContent, xrInteractable);
 
         Debug.Log("Credits UI created successfully below Iso A!");
     }
