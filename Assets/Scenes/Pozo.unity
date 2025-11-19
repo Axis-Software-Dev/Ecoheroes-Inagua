@@ -8325,7 +8325,36 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TeleportEffect
   originalPosition: {x: 0, y: 0, z: 0}
---- !u!1 &705641812
+--- !u!1 &728068903 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 9fb1bd7b896e1b94dbd3a3ad66b6fde1, type: 3}
+  m_PrefabInstance: {fileID: 247373896}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &728068904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 728068903}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4663355c7a2393345a2986c6a813097f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BuildingScript
+  EcoHeroes: []
+  playerPosition: {x: -0.03, y: 0.05, z: -0.038}
+  playerTeleportEffect: {fileID: 1149717672}
+  characterPosition: {x: -0.03, y: 0.042, z: -0.036}
+  timeTostay: 32
+  textToShow: "Este es un dep\xF3sito donde se acumula toda el agua recolectada de
+    los mantos acu\xEDferos."
+--- !u!4 &728068907 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9fb1bd7b896e1b94dbd3a3ad66b6fde1, type: 3}
+  m_PrefabInstance: {fileID: 247373896}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &740452168
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8545,6 +8574,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 740452168}
   m_Mesh: {fileID: 3821897562022437738, guid: d193bb616f5c6044bacb533413b2d294, type: 3}
+--- !u!4 &746603815 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: b58938812551ba347b139575714baf5a, type: 3}
+  m_PrefabInstance: {fileID: 2137143148}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &757382890
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8559,7 +8593,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1317157180370839034, guid: 90fdd41dbb8048648be56b219adfbc91, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5578085489344665934, guid: 90fdd41dbb8048648be56b219adfbc91, type: 3}
       propertyPath: m_LocalScale.x
@@ -10139,7 +10173,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1317157180370839034, guid: 90fdd41dbb8048648be56b219adfbc91, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5578085489344665934, guid: 90fdd41dbb8048648be56b219adfbc91, type: 3}
       propertyPath: m_LocalScale.x
@@ -15268,6 +15302,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1047266950}
   - component: {fileID: 1047266951}
+  - component: {fileID: 1047266952}
   m_Layer: 0
   m_Name: Torre extractora
   m_TagString: Untagged
@@ -15292,6 +15327,7 @@ Transform:
   - {fileID: 2100850921}
   - {fileID: 1363353826}
   - {fileID: 1000735082}
+  - {fileID: 746603815}
   - {fileID: 1860001443}
   - {fileID: 680390919}
   m_Father: {fileID: 56704208}
@@ -15310,11 +15346,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BuildingScript
   EcoHeroes: []
   playerPosition: {x: -16.5, y: -0.82, z: 13.3}
-  playerTeleportEffect: {fileID: 0}
+  playerTeleportEffect: {fileID: 1149717672}
   characterPosition: {x: -18.8, y: 0.66, z: 10.3}
   timeTostay: 32
   textToShow: "Aqu\xED se puede apreciar como se perfora la tierra para poder llegar
     poco a poco a los distintos niveles donde se extrae el agua."
+--- !u!114 &1047266952
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1047266949}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7fd00d8d19b9e040bdaa2424bbf5177, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TaladroAnimationScript
+  dirtParticle: {fileID: 647436736}
+  rockParticle: {fileID: 1403783762}
+  drillAnimator: {fileID: 2023461879}
+  cableAnimator: {fileID: 1461268782}
+  intervals:
+  - 3
+  - 4
+  drillSound: {fileID: 2023461880}
+  rockSound: {fileID: 1403783766}
 --- !u!4 &1058185595 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1b714901d05ca5446bf93e8b7d99baac, type: 3}
@@ -16080,7 +16137,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1108093401
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16293,7 +16350,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1317157180370839034, guid: 90fdd41dbb8048648be56b219adfbc91, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5578085489344665934, guid: 90fdd41dbb8048648be56b219adfbc91, type: 3}
       propertyPath: m_LocalScale.x
@@ -16732,6 +16789,18 @@ MonoBehaviour:
       - m_Target: {fileID: 1047266951}
         m_TargetAssemblyTypeName: BuildingScript, Assembly-CSharp
         m_MethodName: StartMovingPlayer
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1047266952}
+        m_TargetAssemblyTypeName: TaladroAnimationScript, Assembly-CSharp
+        m_MethodName: PlayDrillAnimation
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -18570,6 +18639,7 @@ GameObject:
   - component: {fileID: 1403783765}
   - component: {fileID: 1403783764}
   - component: {fileID: 1403783763}
+  - component: {fileID: 1403783766}
   m_Layer: 0
   m_Name: Tierra
   m_TagString: Untagged
@@ -23395,6 +23465,103 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+--- !u!82 &1403783766
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1403783762}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: a54e45914039d454aa1877ac3eff8103, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1404647680
 GameObject:
   m_ObjectHideFlags: 0
@@ -24734,7 +24901,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BuildingScript
   EcoHeroes: []
   playerPosition: {x: 0, y: -1, z: -0.015}
-  playerTeleportEffect: {fileID: 0}
+  playerTeleportEffect: {fileID: 1149717672}
   characterPosition: {x: -0.013, y: -0.41, z: 0}
   timeTostay: 32
   textToShow: "En este mapa podr\xE1s encontrar todos los pozos activos en todo el
@@ -26287,6 +26454,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3eded9420ea400b489e3a31ed03219e4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2023461879}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3eded9420ea400b489e3a31ed03219e4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2023461880}
   m_SourcePrefab: {fileID: 100100000, guid: 3eded9420ea400b489e3a31ed03219e4, type: 3}
 --- !u!4 &1860001443 stripped
 Transform:
@@ -27393,6 +27563,103 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!82 &2023461880
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2023461878}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: d22e0e56e4990f148b296a3c8328b48c, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 0.5
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &2025529792
 GameObject:
   m_ObjectHideFlags: 0
@@ -27926,19 +28193,19 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1047266950}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: b58938812551ba347b139575714baf5a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.93
+      value: -13.55
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b58938812551ba347b139575714baf5a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.14
+      value: -0.74
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b58938812551ba347b139575714baf5a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 17.32
+      value: 10.2755995
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b58938812551ba347b139575714baf5a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -27946,15 +28213,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b58938812551ba347b139575714baf5a, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b58938812551ba347b139575714baf5a, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b58938812551ba347b139575714baf5a, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b58938812551ba347b139575714baf5a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
