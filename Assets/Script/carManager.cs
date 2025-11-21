@@ -1,135 +1,227 @@
 using System.Collections;
-using System.ComponentModel;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class carManager : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    public GameObject[] carModelStraight, carModelRight;
-    Transform[] spawnerStraight, spawnerRight;
+    public GameObject[] carModelStraight;
+    public GameObject[] carModelRight;
+    
+    private Transform[] spawnerStraight;
+    private Transform[] spawnerRight;
+    
     [HideInInspector]
     public float timer = 0;
     [HideInInspector]
     public float timeToSpawn = 1f;
-    int lastCarSpawnedRight, lastCarSpawnedStraight;
-    public float minSpeed = 0.5f, maxSpeed = 1.5f, minTimeToSpawn = 1f, maxTimeToSpawn = 5f, timeToDestroy = 10f;
-    bool timerActive = false;
+    
+    public float minSpeed = 0.5f;
+    public float maxSpeed = 1.5f;
+    public float minTimeToSpawn = 1f;
+    public float maxTimeToSpawn = 5f;
+    public float timeToDestroy = 10f;
+
+    private int lastCarSpawnedRight;
+    private int lastCarSpawnedStraight;
+    private bool timerActive = false;
     private CarPool pool;
 
+    private const string CAR_SPAWNER_STRAIGHT_TAG = "CarSpawnerStraight";
+    private const string CAR_SPAWNER_RIGHT_TAG = "CarSpawnerRight";
+    private const float RANDOM_INIT_RANGE = 1f;
+    private const int MIN_RANDOM_INDEX = 0;
+    private const int ARRAY_ADJUST_OFFSET = 1;
 
     private void Awake()
     {
-        GameObject[] spawnerObjectStraight = GameObject.FindGameObjectsWithTag("CarSpawnerStraight");
+        InitializeSpawners();
+        InitializeCarModels();
+    }
+
+    private void InitializeSpawners()
+    {
+        GameObject[] spawnerObjectStraight = GameObject.FindGameObjectsWithTag(CAR_SPAWNER_STRAIGHT_TAG);
         spawnerStraight = new Transform[spawnerObjectStraight.Length];
-        for (int i = 0; i < spawnerObjectStraight.Length; i++) { spawnerStraight[i] = spawnerObjectStraight[i].transform; }
-        foreach (GameObject car in carModelStraight)
+        
+        for (int i = 0; i < spawnerObjectStraight.Length; i++)
         {
-            car.SetActive(false);
+            if (spawnerObjectStraight[i] != null)
+            {
+                spawnerStraight[i] = spawnerObjectStraight[i].transform;
+            }
         }
-        GameObject[] spawnerObjectRight = GameObject.FindGameObjectsWithTag("CarSpawnerRight");
+
+        GameObject[] spawnerObjectRight = GameObject.FindGameObjectsWithTag(CAR_SPAWNER_RIGHT_TAG);
         spawnerRight = new Transform[spawnerObjectRight.Length];
-        for (int i = 0; i < spawnerObjectRight.Length; i++) { spawnerRight[i] = spawnerObjectRight[i].transform; }
-        foreach (GameObject car in carModelRight)
+        
+        for (int i = 0; i < spawnerObjectRight.Length; i++)
         {
-            car.SetActive(false);
+            if (spawnerObjectRight[i] != null)
+            {
+                spawnerRight[i] = spawnerObjectRight[i].transform;
+            }
         }
     }
 
+    private void InitializeCarModels()
+    {
+        if (carModelStraight != null)
+        {
+            foreach (GameObject car in carModelStraight)
+            {
+                if (car != null)
+                {
+                    car.SetActive(false);
+                }
+            }
+        }
 
-    void Start()
+        if (carModelRight != null)
+        {
+            foreach (GameObject car in carModelRight)
+            {
+                if (car != null)
+                {
+                    car.SetActive(false);
+                }
+            }
+        }
+    }
+
+    private void Start()
     {
         pool = gameObject.AddComponent<CarPool>();
     }
 
-    void Update()
+    private void Update()
     {
         spawnCars();
     }
-    void spawnCars()
+
+    private void spawnCars()
     {
-        if (timerActive == true) timer += Time.deltaTime;
+        if (timerActive)
+        {
+            timer += Time.deltaTime;
+        }
+
         if (timer <= timeToSpawn)
         {
             timerActive = true;
-
         }
         else
         {
             timeToSpawn = Random.Range(minTimeToSpawn, maxTimeToSpawn);
-            float randomInit = Random.Range(0, 1f);
-            Invoke("spawnCarRight", randomInit);
-            randomInit = Random.Range(0, 1f);
-            Invoke("spawnCarStraight", randomInit);
+            float randomInit = Random.Range(MIN_RANDOM_INDEX, RANDOM_INIT_RANGE);
+            Invoke(nameof(SpawnCarRight), randomInit);
+            randomInit = Random.Range(MIN_RANDOM_INDEX, RANDOM_INIT_RANGE);
+            Invoke(nameof(SpawnCarStraight), randomInit);
             resetTimer();
         }
     }
-    IEnumerator destroyObject(GameObject objectToDesrtoy)
+
+    private IEnumerator DestroyObject(GameObject objectToDestroy)
     {
         yield return new WaitForSeconds(timeToDestroy);
-        Destroy(objectToDesrtoy);
+        
+        if (objectToDestroy != null)
+        {
+            Destroy(objectToDestroy);
+        }
     }
-    void resetTimer()
+
+    private void resetTimer()
     {
         timer = 0;
+        timerActive = false;
     }
-    void spawnCarStraight()
+
+    private void SpawnCarStraight()
     {
-        int randNum = Mathf.FloorToInt(Random.Range(0, carModelStraight.Length));
-        if (randNum == lastCarSpawnedStraight)
+        if (carModelStraight == null || carModelStraight.Length == 0 || spawnerStraight == null || spawnerStraight.Length == 0 || pool == null)
         {
-            int upOrDown = Mathf.FloorToInt(Random.Range(0, 1));
-
-            if (upOrDown == 1) randNum -= 1;
-            if (upOrDown == 0) randNum += 1;
-
-            if (randNum < 0)
-            {
-                randNum = carModelStraight.Length - 1;
-            }
-            else if (randNum > carModelStraight.Length - 1)
-            {
-                randNum = 0;
-            }
-
+            return;
         }
 
-
+        int randNum = GetRandomCarIndex(carModelStraight.Length, lastCarSpawnedStraight);
         lastCarSpawnedStraight = randNum;
-        int randSpawn = Mathf.FloorToInt(Random.Range(0, spawnerStraight.Length));
-        GameObject mostRecentObject = pool.Get(
-    carModelStraight[randNum],
-    spawnerStraight[randSpawn].position,
-    spawnerStraight[randSpawn].rotation
-);
-        mostRecentObject.SetActive(true);
-        pool.Return(mostRecentObject, timeToDestroy);
-    }
-    void spawnCarRight()
-    {
-        int randNum = Mathf.FloorToInt(Random.Range(0, carModelRight.Length));
-        if (randNum == lastCarSpawnedRight)
-        {
-            int upOrDown = Mathf.FloorToInt(Random.Range(0, 1));
 
-            if (upOrDown == 1) randNum -= 1;
-            if (upOrDown == 0) randNum += 1;
+        int randSpawn = Mathf.FloorToInt(Random.Range(MIN_RANDOM_INDEX, spawnerStraight.Length));
+        
+        if (randSpawn >= 0 && randSpawn < spawnerStraight.Length && spawnerStraight[randSpawn] != null &&
+            randNum >= 0 && randNum < carModelStraight.Length && carModelStraight[randNum] != null)
+        {
+            GameObject mostRecentObject = pool.Get(
+                carModelStraight[randNum],
+                spawnerStraight[randSpawn].position,
+                spawnerStraight[randSpawn].rotation
+            );
+            
+            if (mostRecentObject != null)
+            {
+                mostRecentObject.SetActive(true);
+                pool.Return(mostRecentObject, timeToDestroy);
+            }
+        }
+    }
+
+    private void SpawnCarRight()
+    {
+        if (carModelRight == null || carModelRight.Length == 0 || spawnerRight == null || spawnerRight.Length == 0)
+        {
+            return;
+        }
+
+        int randNum = GetRandomCarIndex(carModelRight.Length, lastCarSpawnedRight);
+        lastCarSpawnedRight = randNum;
+
+        int randSpawn = Mathf.FloorToInt(Random.Range(MIN_RANDOM_INDEX, spawnerRight.Length));
+        
+        if (randSpawn >= 0 && randSpawn < spawnerRight.Length && spawnerRight[randSpawn] != null &&
+            randNum >= 0 && randNum < carModelRight.Length && carModelRight[randNum] != null)
+        {
+            GameObject mostRecentObject = Instantiate(
+                carModelRight[randNum], 
+                spawnerRight[randSpawn].position, 
+                spawnerRight[randSpawn].rotation
+            );
+            
+            if (mostRecentObject != null)
+            {
+                mostRecentObject.SetActive(true);
+                StartCoroutine(DestroyObject(mostRecentObject));
+            }
+        }
+    }
+
+    private int GetRandomCarIndex(int arrayLength, int lastIndex)
+    {
+        if (arrayLength <= 0) return 0;
+
+        int randNum = Mathf.FloorToInt(Random.Range(MIN_RANDOM_INDEX, arrayLength));
+
+        if (randNum == lastIndex)
+        {
+            int upOrDown = Mathf.FloorToInt(Random.Range(MIN_RANDOM_INDEX, 2));
+
+            if (upOrDown == 1)
+            {
+                randNum -= 1;
+            }
+            else
+            {
+                randNum += 1;
+            }
 
             if (randNum < 0)
             {
-                randNum = carModelRight.Length - 1;
+                randNum = arrayLength - ARRAY_ADJUST_OFFSET;
             }
-            else if (randNum > carModelRight.Length - 1)
+            else if (randNum >= arrayLength)
             {
                 randNum = 0;
             }
-
         }
-        lastCarSpawnedRight = randNum;
-        int randSpawn = Mathf.FloorToInt(Random.Range(0, spawnerRight.Length));
-        GameObject mostRecentObject = Instantiate(carModelRight[randNum], spawnerRight[randSpawn].position, spawnerRight[randSpawn].rotation);
-        mostRecentObject.SetActive(true);
-        StartCoroutine(destroyObject(mostRecentObject));
+
+        return randNum;
     }
 }

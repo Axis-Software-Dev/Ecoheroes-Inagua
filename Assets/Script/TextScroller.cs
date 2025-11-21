@@ -10,10 +10,14 @@ public class TextScroller : MonoBehaviour
     }
 
     [Header("Scroll Settings")]
-    [SerializeField] private ScrollMode scrollMode = ScrollMode.Scrolling;
-    [SerializeField] private float scrollSpeed = 50f;
-    [SerializeField] private bool autoStart = true;
-    [SerializeField] private bool loop = false;
+    [SerializeField] 
+    private ScrollMode scrollMode = ScrollMode.Scrolling;
+    [SerializeField] 
+    private float scrollSpeed = 50f;
+    [SerializeField] 
+    private bool autoStart = true;
+    [SerializeField] 
+    private bool loop = false;
 
     private RectTransform textRectTransform;
     private RectTransform canvasRectTransform;
@@ -21,6 +25,8 @@ public class TextScroller : MonoBehaviour
     private float startY;
     private float textHeight;
     private bool isScrolling;
+
+    private const float CANVAS_HEIGHT_DIVISOR = 2f;
 
     private void Awake()
     {
@@ -65,7 +71,7 @@ public class TextScroller : MonoBehaviour
         textRectTransform.anchoredPosition = currentPos;
 
         float canvasHeight = canvasRectTransform != null ? canvasRectTransform.sizeDelta.y : 0;
-        float endY = canvasHeight / 2f + textHeight;
+        float endY = (canvasHeight / CANVAS_HEIGHT_DIVISOR) + textHeight;
 
         if (currentPos.y >= endY)
         {
@@ -82,14 +88,19 @@ public class TextScroller : MonoBehaviour
 
     private void CalculateTextHeight()
     {
-        textComponent.ForceMeshUpdate();
-        textHeight = textComponent.preferredHeight;
+        if (textComponent != null)
+        {
+            textComponent.ForceMeshUpdate();
+            textHeight = textComponent.preferredHeight;
+        }
     }
 
     public void StartScrolling()
     {
         if (scrollMode == ScrollMode.Scrolling)
+        {
             isScrolling = true;
+        }
     }
 
     public void StopScrolling()
@@ -99,10 +110,12 @@ public class TextScroller : MonoBehaviour
 
     public void ResetScroll()
     {
+        if (textRectTransform == null) return;
+
         if (canvasRectTransform != null)
         {
             float canvasHeight = canvasRectTransform.sizeDelta.y;
-            textRectTransform.anchoredPosition = new Vector2(0, -(canvasHeight / 2f + textHeight / 2f));
+            textRectTransform.anchoredPosition = new Vector2(0, -(canvasHeight / CANVAS_HEIGHT_DIVISOR + textHeight / CANVAS_HEIGHT_DIVISOR));
         }
         else
         {
@@ -123,7 +136,10 @@ public class TextScroller : MonoBehaviour
         if (scrollMode == ScrollMode.Fixed)
         {
             StopScrolling();
-            textRectTransform.anchoredPosition = new Vector2(0, startY);
+            if (textRectTransform != null)
+            {
+                textRectTransform.anchoredPosition = new Vector2(0, startY);
+            }
         }
         else if (autoStart)
         {
