@@ -25,6 +25,31 @@ public class CreditsController : MonoBehaviour
 
     private RectTransform creditsRectTransform;
     private bool isScrolling = false;
+    
+    private void ConfigureTextLayoutAndScrollDistance()
+    {
+        if (creditsText == null || creditsRectTransform == null || creditsCanvasGroup == null)
+        {
+            return;
+        }
+
+        creditsText.ForceMeshUpdate();
+
+        float contentWidth = creditsRectTransform.rect.width > 0f ? creditsRectTransform.rect.width : creditsRectTransform.sizeDelta.x;
+        Vector2 preferred = creditsText.GetPreferredValues(creditsContent, contentWidth, Mathf.Infinity);
+        float preferredHeight = preferred.y;
+        if (preferredHeight <= 0f)
+        {
+            preferredHeight = creditsRectTransform.sizeDelta.y;
+        }
+
+        creditsRectTransform.sizeDelta = new Vector2(creditsRectTransform.sizeDelta.x, preferredHeight);
+
+        RectTransform viewportRect = creditsCanvasGroup.GetComponent<RectTransform>();
+        float viewportHeight = viewportRect != null ? viewportRect.rect.height : 0f;
+
+        scrollDistance = Mathf.Max(0f, preferredHeight - viewportHeight);
+    }
 
     private void Awake()
     {
@@ -46,6 +71,7 @@ public class CreditsController : MonoBehaviour
         if (creditsText != null && !string.IsNullOrEmpty(creditsContent))
         {
             creditsText.text = creditsContent;
+            ConfigureTextLayoutAndScrollDistance();
         }
 
         if (creditsCanvasGroup != null)
@@ -87,6 +113,7 @@ public class CreditsController : MonoBehaviour
         if (creditsText != null && !string.IsNullOrEmpty(creditsContent))
         {
             creditsText.text = creditsContent;
+            ConfigureTextLayoutAndScrollDistance();
         }
 
         if (creditsCanvasGroup != null)
