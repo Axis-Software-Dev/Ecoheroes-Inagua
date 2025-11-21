@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 [CreateAssetMenu(fileName = "persistanceData", menuName = "Scriptable Objects/persistanceData")]
 public class persistanceData : ScriptableObject
@@ -10,17 +9,22 @@ public class persistanceData : ScriptableObject
         aguita,
         none
     }
-    [SerializeField]
-    Character character;
-    public SceneField sceneToLoad;
-    public void changeCharacter(Character newSelection) {
 
+    [SerializeField]
+    private Character character;
+    
+    public SceneField sceneToLoad;
+
+    public void changeCharacter(Character newSelection)
+    {
         character = newSelection;
     }
+
     public void changeSceneToLoad(SceneField scene)
     {
         sceneToLoad = scene;
     }
+
     public string getSelectedCharacter()
     {
         return character.ToString();

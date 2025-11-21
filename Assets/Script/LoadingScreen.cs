@@ -8,7 +8,8 @@ public class LoadingScreen : MonoBehaviour
     public GameObject LoadingPanel;
 
     private Image loadingImage;
-    private Color fadeColor = Color.white;
+    private const Color FADE_COLOR = Color.white;
+    private const float FADE_DURATION = 2f;
 
     private void Awake()
     {
@@ -36,7 +37,7 @@ public class LoadingScreen : MonoBehaviour
         StartCoroutine(LoadSceneAsync(sceneId));
     }
 
-    IEnumerator LoadSceneAsync(int sceneId)
+    private IEnumerator LoadSceneAsync(int sceneId)
     {
         yield return StartCoroutine(FadeToWhite());
 
@@ -56,50 +57,45 @@ public class LoadingScreen : MonoBehaviour
         }
 
         yield return Resources.UnloadUnusedAssets();
-
         System.GC.Collect();
     }
 
     private IEnumerator FadeToWhite()
     {
-        const float fadeDuration = 2f;
-        float elapsed = 0f;
-
         if (loadingImage == null) yield break;
 
         LoadingPanel.SetActive(true);
-        loadingImage.color = new Color(fadeColor.r, fadeColor.g, fadeColor.b, 0f);
+        loadingImage.color = new Color(FADE_COLOR.r, FADE_COLOR.g, FADE_COLOR.b, 0f);
 
-        while (elapsed < fadeDuration)
+        float elapsed = 0f;
+        while (elapsed < FADE_DURATION)
         {
             elapsed += Time.deltaTime;
-            float alpha = Mathf.Clamp01(elapsed / fadeDuration);
-            loadingImage.color = new Color(fadeColor.r, fadeColor.g, fadeColor.b, alpha);
+            float alpha = Mathf.Clamp01(elapsed / FADE_DURATION);
+            loadingImage.color = new Color(FADE_COLOR.r, FADE_COLOR.g, FADE_COLOR.b, alpha);
             yield return null;
         }
 
-        loadingImage.color = new Color(fadeColor.r, fadeColor.g, fadeColor.b, 1f);
+        loadingImage.color = new Color(FADE_COLOR.r, FADE_COLOR.g, FADE_COLOR.b, 1f);
     }
 
     private IEnumerator FadeFromWhite()
     {
-        const float fadeDuration = 2f;
-        float elapsed = 0f;
-
         if (loadingImage == null) yield break;
 
         LoadingPanel.SetActive(true);
-        loadingImage.color = new Color(fadeColor.r, fadeColor.g, fadeColor.b, 1f);
+        loadingImage.color = new Color(FADE_COLOR.r, FADE_COLOR.g, FADE_COLOR.b, 1f);
 
-        while (elapsed < fadeDuration)
+        float elapsed = 0f;
+        while (elapsed < FADE_DURATION)
         {
             elapsed += Time.deltaTime;
-            float alpha = 1f - Mathf.Clamp01(elapsed / fadeDuration);
-            loadingImage.color = new Color(fadeColor.r, fadeColor.g, fadeColor.b, alpha);
+            float alpha = 1f - Mathf.Clamp01(elapsed / FADE_DURATION);
+            loadingImage.color = new Color(FADE_COLOR.r, FADE_COLOR.g, FADE_COLOR.b, alpha);
             yield return null;
         }
 
-        loadingImage.color = new Color(fadeColor.r, fadeColor.g, fadeColor.b, 0f);
+        loadingImage.color = new Color(FADE_COLOR.r, FADE_COLOR.g, FADE_COLOR.b, 0f);
         LoadingPanel.SetActive(false);
     }
 }

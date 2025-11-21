@@ -2,6 +2,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using System.Collections.Generic;
 
 public class CharacterSelector : MonoBehaviour
 {
@@ -12,18 +13,22 @@ public class CharacterSelector : MonoBehaviour
     [Header("Spawn Position")]
     public Transform spawnPoint;
 
-    // Belt settings
     private const float BELT_RADIUS = 3f;
     private const float BELT_HEIGHT = 2f;
     private const float BELT_THICKNESS = 0.1f;
     private const float BELT_ROTATION_SPEED = 10f;
     private static readonly Color BELT_GLOW_COLOR = Color.yellow;
     private const float BELT_EMISSION_INTENSITY = 5f;
-    private const int TOTAL_TEXT_INSTANCES = 3; // Total text instances, not per band
+    private const int TOTAL_TEXT_INSTANCES = 3;
     private const float TEXT_OFFSET_FROM_BAND = 0.15f;
-    private const float TEXT_SIZE = 0.15f; // Smaller text
-    private const float BAND_Y_OFFSET = -1.3f; // Move both bands down by 1.3f
-    private const float TEXT_Z_OFFSET = -2.3f; // Move text closer to cylinders in Z
+    private const float TEXT_SIZE = 0.2f;
+    private const float BAND_Y_OFFSET = -1.3f;
+    private const float TEXT_Z_OFFSET = -2.3f;
+    private const float TEXT_Y_OFFSET = 0.6f;
+    private const float BAND_SEPARATION = 1.0f;
+    private const float TORUS_CROSS_SECTION_RADIUS = 0.05f;
+    private const int TORUS_SEGMENTS = 32;
+    private const int TORUS_RING_SEGMENTS = 16;
 
     private persistanceData characterData;
     private persistanceData.Character selectedCharacter = persistanceData.Character.none;
@@ -85,7 +90,10 @@ public class CharacterSelector : MonoBehaviour
             currentCharacterInstance = Instantiate(prefabToInstantiate, spawnPoint.position + new Vector3(0f, 0.78f, 0f), spawnPoint.rotation);
 
             Animator anim = currentCharacterInstance.GetComponent<Animator>();
-            anim.SetTrigger("selected");
+            if (anim != null)
+            {
+                anim.SetTrigger("selected");
+            }
 
             var interactable = currentCharacterInstance.GetComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable>();
 
@@ -114,10 +122,21 @@ public class CharacterSelector : MonoBehaviour
 
     public void GameStart()
     {
-        characterData.changeCharacter(selectedCharacter);
-        if (selectedCharacter != persistanceData.Character.none)
+        if (characterData != null)
         {
-            GameObject.Find("SceneManager").GetComponent<LoadingScreen>().LoadScene(1);
+            characterData.changeCharacter(selectedCharacter);
+            if (selectedCharacter != persistanceData.Character.none)
+            {
+                GameObject sceneManager = GameObject.Find("SceneManager");
+                if (sceneManager != null)
+                {
+                    LoadingScreen loadingScreen = sceneManager.GetComponent<LoadingScreen>();
+                    if (loadingScreen != null)
+                    {
+                        loadingScreen.LoadScene(1);
+                    }
+                }
+            }
         }
     }
 
@@ -139,88 +158,143 @@ public class CharacterSelector : MonoBehaviour
         currentBeltInstance.transform.position = currentCharacterInstance.transform.position;
         currentBeltInstance.transform.SetParent(currentCharacterInstance.transform);
 
-        CreateBeltBand(0.3f);
-        CreateBeltBand(-0.3f);
+        CreateBeltBand(BAND_SEPARATION / 2f);
+        CreateBeltBand(-BAND_SEPARATION / 2f);
         
-        // Create 3 text instances total, separated from the cylinders
         CreateTextInstances();
     }
 
     private void CreateBeltBand(float yOffset)
     {
-        GameObject band = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-        band.name = yOffset > 0 ? "TopBand" : "BottomBand";
+        GameObject band = new GameObject(yOffset > 0 ? "TopBand" : "BottomBand");
         band.transform.SetParent(currentBeltInstance.transform);
         band.transform.localPosition = new Vector3(0, BELT_HEIGHT + yOffset + BAND_Y_OFFSET, 0);
         band.transform.localRotation = Quaternion.identity;
-        band.transform.localScale = new Vector3(BELT_RADIUS * 2, BELT_THICKNESS, BELT_RADIUS * 2);
 
-        Destroy(band.GetComponent<Collider>());
+        Mesh torusMesh = CreateTorusMesh(BELT_RADIUS, TORUS_CROSS_SECTION_RADIUS, TORUS_SEGMENTS, TORUS_RING_SEGMENTS);
+        
+        MeshFilter meshFilter = band.AddComponent<MeshFilter>();
+        meshFilter.mesh = torusMesh;
 
-        // Create neon glowing material
         Material bandMaterial = new Material(Shader.Find("Universal Render Pipeline/Lit"));
         bandMaterial.SetColor("_BaseColor", BELT_GLOW_COLOR);
         bandMaterial.SetColor("_EmissionColor", BELT_GLOW_COLOR * BELT_EMISSION_INTENSITY);
         bandMaterial.EnableKeyword("_EMISSION");
         bandMaterial.globalIlluminationFlags = MaterialGlobalIlluminationFlags.RealtimeEmissive;
 
-        MeshRenderer renderer = band.GetComponent<MeshRenderer>();
+        MeshRenderer renderer = band.AddComponent<MeshRenderer>();
         renderer.material = bandMaterial;
+    }
+
+    private Mesh CreateTorusMesh(float majorRadius, float minorRadius, int majorSegments, int minorSegments)
+    {
+        Mesh mesh = new Mesh();
+        mesh.name = "Torus";
+
+        List<Vector3> vertices = new List<Vector3>();
+        List<int> triangles = new List<int>();
+        List<Vector3> normals = new List<Vector3>();
+
+        for (int i = 0; i <= majorSegments; i++)
+        {
+            float u = (float)i / majorSegments * 2f * Mathf.PI;
+            float cosU = Mathf.Cos(u);
+            float sinU = Mathf.Sin(u);
+
+            for (int j = 0; j <= minorSegments; j++)
+            {
+                float v = (float)j / minorSegments * 2f * Mathf.PI;
+                float cosV = Mathf.Cos(v);
+                float sinV = Mathf.Sin(v);
+
+                float x = (majorRadius + minorRadius * cosV) * cosU;
+                float z = (majorRadius + minorRadius * cosV) * sinU;
+                float y = minorRadius * sinV;
+
+                vertices.Add(new Vector3(x, y, z));
+
+                Vector3 normal = new Vector3(cosV * cosU, sinV, cosV * sinU);
+                normals.Add(normal.normalized);
+            }
+        }
+
+        for (int i = 0; i < majorSegments; i++)
+        {
+            for (int j = 0; j < minorSegments; j++)
+            {
+                int current = i * (minorSegments + 1) + j;
+                int next = current + minorSegments + 1;
+
+                triangles.Add(current);
+                triangles.Add(next);
+                triangles.Add(current + 1);
+
+                triangles.Add(next);
+                triangles.Add(next + 1);
+                triangles.Add(current + 1);
+            }
+        }
+
+        mesh.vertices = vertices.ToArray();
+        mesh.triangles = triangles.ToArray();
+        mesh.normals = normals.ToArray();
+        mesh.RecalculateBounds();
+
+        return mesh;
     }
 
     private void CreateTextInstances()
     {
-        // Get default font asset for TextMeshPro
-        TMP_FontAsset defaultFont = TMP_Settings.defaultFontAsset;
-        if (defaultFont == null)
+        TMP_FontAsset font = Resources.Load<TMP_FontAsset>("Fonts & Materials/OTHorizontalUnlicensedTrial-Thin SDF");
+        if (font == null)
         {
-            Debug.LogError("TextMeshPro default font asset not found! Text will not render.");
+            font = Resources.Load<TMP_FontAsset>("TextMesh Pro/Fonts/Omnitype/OTHorizontalUnlicensedTrial-Thin SDF");
+        }
+        if (font == null)
+        {
+            font = TMP_Settings.defaultFontAsset;
+            Debug.LogWarning("Thin font not found, using default font.");
+        }
+        
+        if (font == null)
+        {
+            Debug.LogError("TextMeshPro font asset not found! Text will not render.");
             return;
         }
 
-        // Calculate spacing for 3 text instances total
         float angleStep = 360f / TOTAL_TEXT_INSTANCES;
-        // Move text 2.3 units closer to the cylinders (reduce radius)
         float radius = BELT_RADIUS + TEXT_OFFSET_FROM_BAND + TEXT_Z_OFFSET;
 
         for (int i = 0; i < TOTAL_TEXT_INSTANCES; i++)
         {
             GameObject textObj = new GameObject($"Text_{i}");
-            // Parent to belt instance, not the cylinder bands
             textObj.transform.SetParent(currentBeltInstance.transform);
 
-            // Calculate position around the cylinder (like a soup can label)
             float angle = i * angleStep;
             float radians = angle * Mathf.Deg2Rad;
             
-            // Position text on the outer surface of the cylinder
-            // Text is positioned closer to cylinders due to reduced radius
             float x = Mathf.Sin(radians) * radius;
             float z = Mathf.Cos(radians) * radius;
+            float y = TEXT_Y_OFFSET;
 
-            textObj.transform.localPosition = new Vector3(x, 0, z);
+            textObj.transform.localPosition = new Vector3(x, y, z);
             
-            // Rotate text to face outward from the cylinder surface (soup can label effect)
-            // Rotation in X is now 0, not 90
             Vector3 outwardDirection = new Vector3(x, 0, z).normalized;
             Quaternion lookRotation = Quaternion.LookRotation(outwardDirection);
             textObj.transform.localRotation = lookRotation * Quaternion.Euler(0f, 0f, 0f);
             textObj.transform.localScale = Vector3.one * TEXT_SIZE;
 
-            // Create TextMeshPro component
             TextMeshPro textMesh = textObj.AddComponent<TextMeshPro>();
             textMesh.text = "INICIAR";
-            textMesh.font = defaultFont;
-            textMesh.fontSize = 10; // Smaller font size
+            textMesh.font = font;
+            textMesh.fontSize = 14;
             textMesh.alignment = TextAlignmentOptions.Center;
             textMesh.color = BELT_GLOW_COLOR;
-            textMesh.fontStyle = FontStyles.Bold;
+            textMesh.fontStyle = FontStyles.Normal;
             textMesh.textWrappingMode = TextWrappingModes.NoWrap;
 
-            // Force text to update
             textMesh.ForceMeshUpdate();
 
-            // Create glowing emissive material for text (neon effect)
             if (textMesh.fontSharedMaterial != null)
             {
                 Material textMaterial = new Material(textMesh.fontSharedMaterial);
