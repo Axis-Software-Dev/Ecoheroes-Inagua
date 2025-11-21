@@ -25,6 +25,7 @@ public class CreditsController : MonoBehaviour
 
     private RectTransform creditsRectTransform;
     private bool isScrolling = false;
+    private float initialOffsetY = 0f;
     
     private void ConfigureTextLayoutAndScrollDistance()
     {
@@ -49,6 +50,7 @@ public class CreditsController : MonoBehaviour
         float viewportHeight = viewportRect != null ? viewportRect.rect.height : 0f;
 
         scrollDistance = Mathf.Max(0f, preferredHeight - viewportHeight);
+        initialOffsetY = -scrollDistance;
     }
 
     private void Awake()
@@ -152,7 +154,7 @@ public class CreditsController : MonoBehaviour
         
         buttonCanvasGroup.gameObject.SetActive(false);
 
-        creditsRectTransform.anchoredPosition = Vector2.zero;
+        creditsRectTransform.anchoredPosition = new Vector2(creditsRectTransform.anchoredPosition.x, initialOffsetY);
         creditsCanvasGroup.gameObject.SetActive(true);
 
         yield return StartCoroutine(FadeIn(creditsCanvasGroup));
