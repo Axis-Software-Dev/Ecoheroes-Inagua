@@ -4,40 +4,71 @@ public class ShowCharacter : MonoBehaviour
 {
     public SkinnedMeshRenderer aguita;
     public SkinnedMeshRenderer lluvia;
+
     private Animator lluviaAnimator;
     private Animator aguitaAnimator;
     private persistanceData persistanceData;
+
     private void Awake()
     {
         persistanceData = Resources.Load<persistanceData>("persistanceData");
-        lluvia.enabled = false;
-        lluviaAnimator = lluvia.GetComponentInParent<Animator>();
-        lluviaAnimator.enabled = false;
-        aguita.enabled = false;
-        aguitaAnimator = aguita.GetComponentInParent<Animator>();
-        aguitaAnimator.enabled = false;
+
+        if (lluvia != null)
+        {
+            lluvia.enabled = false;
+            lluviaAnimator = lluvia.GetComponentInParent<Animator>();
+            if (lluviaAnimator != null)
+            {
+                lluviaAnimator.enabled = false;
+            }
+        }
+
+        if (aguita != null)
+        {
+            aguita.enabled = false;
+            aguitaAnimator = aguita.GetComponentInParent<Animator>();
+            if (aguitaAnimator != null)
+            {
+                aguitaAnimator.enabled = false;
+            }
+        }
     }
+
     public void showCharacters()
     {
-        switch (persistanceData.getSelectedCharacter().ToLower())
+        if (persistanceData == null)
+        {
+            Debug.LogWarning("No persistence data found.");
+            return;
+        }
+
+        string selectedCharacter = persistanceData.getSelectedCharacter()?.ToLower();
+
+        switch (selectedCharacter)
         {
             case "aguita":
-                
-                aguita.enabled = true;
-                aguitaAnimator.enabled = true;
-
+                if (aguita != null)
+                {
+                    aguita.enabled = true;
+                }
+                if (aguitaAnimator != null)
+                {
+                    aguitaAnimator.enabled = true;
+                }
                 break;
             case "lluvia":
-                lluvia.enabled = true;
-                lluviaAnimator.enabled = true;
+                if (lluvia != null)
+                {
+                    lluvia.enabled = true;
+                }
+                if (lluviaAnimator != null)
+                {
+                    lluviaAnimator.enabled = true;
+                }
                 break;
             default:
                 Debug.Log("No character selected");
                 break;
         }
-        
-        
     }
-
-
 }

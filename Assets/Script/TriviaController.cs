@@ -1,7 +1,6 @@
 using System.Collections;
 using UnityEngine;
 using TMPro;
-using System;
 using UnityEngine.UI;
 using Trivia;
 using Fluvio;
@@ -15,11 +14,10 @@ namespace Trivia
         public string question;
         public bool answer;
     }
-
 }
+
 public class TriviaController : MonoBehaviour
 {
-
     [Header("Questions")]
     public Questions[] q;
 
@@ -30,7 +28,6 @@ public class TriviaController : MonoBehaviour
 
     [Header("Text Display Settings")]
     [TextArea(3, 10)]
-
     public GameObject dialoguePanel;
     public TextMeshProUGUI dialogueTextMesh;
     public float typingSpeed = 0.05f;
@@ -42,9 +39,7 @@ public class TriviaController : MonoBehaviour
     public AudioSource triviaAudioSource;
 
     [Header("Audio Clips")]
-    [Tooltip("Audio played when trivia starts")]
     public AudioClip triviaStartAudio;
-    [Tooltip("Audio played when asking questions")]
     public AudioClip questionAudio;
     public AudioClip correctAnswerAudio;
     public AudioClip wrongAnswerAudio;
@@ -56,15 +51,11 @@ public class TriviaController : MonoBehaviour
 
     [Header("Audio Settings")]
     [Range(0f, 1f)]
-    [Tooltip("Volume for trivia audio")]
     public float triviaVolume = 1f;
     [Range(0f, 1f)]
-    [Tooltip("Volume for UI sound effects")]
     public float uiVolume = 0.8f;
-    [Tooltip("Play typing sound for each character")]
     public bool enableTypingSounds = true;
 
-    [Header("State Management")]
     private bool isTextVisible = false;
     private bool isTyping = false;
     private bool correctAnswer;
@@ -77,36 +68,71 @@ public class TriviaController : MonoBehaviour
     private FluvioController fluvio;
     private int mistakeCount = 0;
 
+    private const float SCREEN_APPEAR_DELAY = 4.5f;
+    private const float KEYBOARD_APPEAR_DELAY = 1f;
+    private const float COLOR_FLASH_DURATION = 0.1f;
+    private const float AFTER_CHOICE_DELAY = 1f;
+    private const float KEYBOARD_DISAPPEAR_DELAY = 1f;
+    private const float SCREEN_DISAPPEAR_DELAY = 2f;
+    private const float FINAL_DELAY = 6f;
+    private const int MAX_MISTAKES = 2;
+    private const int RESTART_SCENE_ID = 0;
+    private const float AUDIO_SPATIAL_BLEND = 1f;
+    private const float AUDIO_MAX_DISTANCE = 20f;
+    private const float UNTYPE_SPEED_MULTIPLIER = 4f;
+
+    private static readonly Color RIGHT_COLOR = new Color(0.52f, 0.717f, 0.615f, 0.2f);
+    private static readonly Color WRONG_COLOR = new Color(0.639f, 0.2f, 0.239f, 0.2f);
+    private static readonly Color EMISSION_RIGHT = new Color(0.486f, 0.616f, 0.49f);
+    private static readonly Color EMISSION_WRONG = new Color(0.61f, 0.223f, 0.174f);
+    private static readonly Color TRANSPARENT = new Color(1f, 1f, 1f, 0f);
+
     private void Start()
     {
-        buttonsPanel.SetActive(false);
+        if (buttonsPanel != null)
+        {
+            buttonsPanel.SetActive(false);
+        }
+
         if (planeRenderer != null && planeRenderer.material != null)
         {
             planeMaterial = planeRenderer.material;
-            Debug.Log("Plane material set to " + planeMaterial);
         }
-        else Debug.Log("Can't set plane material, material is empty");
 
         if (dialoguePanel != null)
         {
             dialoguePanel.SetActive(false);
         }
+
         xrOrigin = FindAnyObjectByType<Unity.XR.CoreUtils.XROrigin>();
-        if (xrOrigin != null) playerTransform = xrOrigin.transform;
-        else Debug.LogWarning("TriviaController: Could not find XR Origin. Player transportation will not work.");
+        if (xrOrigin != null)
+        {
+            playerTransform = xrOrigin.transform;
+        }
 
         triviaAudioSource = gameObject.AddComponent<AudioSource>();
-        Debug.Log("TriviaController: Created AudioSource component");
-        triviaAudioSource.spatialBlend = 1f;
+        triviaAudioSource.spatialBlend = AUDIO_SPATIAL_BLEND;
         triviaAudioSource.rolloffMode = AudioRolloffMode.Linear;
-        triviaAudioSource.maxDistance = 20f;
+        triviaAudioSource.maxDistance = AUDIO_MAX_DISTANCE;
         triviaAudioSource.volume = triviaVolume;
-        Button[] buttons = buttonsPanel.GetComponentsInChildren<Button>(true);
-        foreach (Button button in buttons)
+
+        if (buttonsPanel != null)
         {
-            button.onClick.AddListener(() => PlayUISound(buttonClickAudio));
+            Button[] buttons = buttonsPanel.GetComponentsInChildren<Button>(true);
+            foreach (Button button in buttons)
+            {
+                if (button != null)
+                {
+                    button.onClick.AddListener(() => PlayUISound(buttonClickAudio));
+                }
+            }
         }
-        fluvio = GameObject.Find("Fluvi-o").GetComponent<FluvioController>();
+
+        GameObject fluvioObj = GameObject.Find("Fluvi-o");
+        if (fluvioObj != null)
+        {
+            fluvio = fluvioObj.GetComponent<FluvioController>();
+        }
     }
 
     public void InitiateTrivia()
@@ -116,24 +142,26 @@ public class TriviaController : MonoBehaviour
 
     private IEnumerator InitiateTriviaCoroutine()
     {
-        Color rightColor = new Color(.52f, .717f, .615f, .2f);
-        Color wrongColor = new Color(.639f, .2f, .239f, .2f);
-        Color emisionRight = new Color(.486f, .616f, .49f);
-        Color emisionWrong = new Color(.61f, .223f, .174f);
-        Color transparent = new Color(1f, 1f, 1f, 0f);
-
         Debug.Log("Trivia started");
-        if (screenAnimator && keyboardAnimator && buttonsPanel)
+
+        if (screenAnimator != null && keyboardAnimator != null && buttonsPanel != null)
         {
             screenAnimator.SetTrigger("Appear");
-            yield return new WaitForSeconds(4.5f);
+            yield return new WaitForSeconds(SCREEN_APPEAR_DELAY);
             keyboardAnimator.SetTrigger("Appear");
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(KEYBOARD_APPEAR_DELAY);
             buttonsPanel.SetActive(true);
+        }
+
+        if (q == null)
+        {
+            yield break;
         }
 
         for (int i = 0; i < q.Length; i++)
         {
+            if (q[i] == null) continue;
+
             Debug.Log("Question " + q[i].position + " asked");
             correctAnswer = q[i].answer;
             PlayTriviaAudio(questionAudio);
@@ -149,45 +177,21 @@ public class TriviaController : MonoBehaviour
             if (userChoice == correctAnswer)
             {
                 PlayTriviaAudio(correctAnswerAudio);
-                ChangePlaneColor(rightColor);
-                planeMaterial.EnableKeyword("_EMISSION");
-                planeMaterial.SetColor("_EmissionColor", emisionRight * 0f);
-                yield return new WaitForSeconds(.1f);
-                ChangePlaneColor(transparent);
-                planeMaterial.DisableKeyword("_EMISSION");
-                yield return new WaitForSeconds(.1f);
-                ChangePlaneColor(rightColor);
-                planeMaterial.EnableKeyword("_EMISSION");
-                planeMaterial.SetColor("_EmissionColor", emisionRight * 0f);
-                yield return new WaitForSeconds(.1f);
-                ChangePlaneColor(transparent);
-                planeMaterial.DisableKeyword("_EMISSION");
+                FlashPlaneColor(RIGHT_COLOR, EMISSION_RIGHT);
                 Debug.Log("Correct answer");
             }
             else
             {
                 PlayTriviaAudio(wrongAnswerAudio);
-                ChangePlaneColor(wrongColor);
-                planeMaterial.EnableKeyword("_EMISSION");
-                planeMaterial.SetColor("_EmissionColor", emisionWrong * 0f);
-                yield return new WaitForSeconds(.1f);
-                ChangePlaneColor(transparent);
-                planeMaterial.DisableKeyword("_EMISSION");
-                yield return new WaitForSeconds(.1f);
-                ChangePlaneColor(wrongColor);
-                planeMaterial.EnableKeyword("_EMISSION");
-                planeMaterial.SetColor("_EmissionColor", emisionWrong * 0f);
-                yield return new WaitForSeconds(.1f);
-                ChangePlaneColor(transparent);
-                planeMaterial.DisableKeyword("_EMISSION");
+                FlashPlaneColor(WRONG_COLOR, EMISSION_WRONG);
 
                 mistakeCount++;
-                Debug.Log($"Wrong answer. Mistakes: {mistakeCount}/2");
+                Debug.Log($"Wrong answer. Mistakes: {mistakeCount}/{MAX_MISTAKES}");
 
                 HideText();
                 yield return new WaitUntil(() => !isTextVisible);
 
-                if (mistakeCount >= 2)
+                if (mistakeCount >= MAX_MISTAKES)
                 {
                     ShowText("Necesitas seguirte preparando para convertirte en un Ecohéroe. Empieza el juego nuevamente y presta más atención para el siguiente turno.");
                     yield return new WaitUntil(() => !isTyping);
@@ -195,14 +199,36 @@ public class TriviaController : MonoBehaviour
                     HideText();
                     yield return new WaitUntil(() => !isTextVisible);
 
-                    buttonsPanel.SetActive(false);
-                    yield return new WaitForSeconds(1f);
-                    keyboardAnimator.SetTrigger("Disappear");
-                    yield return new WaitForSeconds(2f);
-                    screenAnimator.SetTrigger("Disappear");
-                    yield return new WaitForSeconds(6f);
+                    if (buttonsPanel != null)
+                    {
+                        buttonsPanel.SetActive(false);
+                    }
 
-                    GameObject.Find("SceneManager").GetComponent<LoadingScreen>().LoadScene(0);
+                    yield return new WaitForSeconds(KEYBOARD_DISAPPEAR_DELAY);
+
+                    if (keyboardAnimator != null)
+                    {
+                        keyboardAnimator.SetTrigger("Disappear");
+                    }
+
+                    yield return new WaitForSeconds(SCREEN_DISAPPEAR_DELAY);
+
+                    if (screenAnimator != null)
+                    {
+                        screenAnimator.SetTrigger("Disappear");
+                    }
+
+                    yield return new WaitForSeconds(FINAL_DELAY);
+
+                    GameObject sceneManagerObj = GameObject.Find("SceneManager");
+                    if (sceneManagerObj != null)
+                    {
+                        LoadingScreen loadingScreen = sceneManagerObj.GetComponent<LoadingScreen>();
+                        if (loadingScreen != null)
+                        {
+                            loadingScreen.LoadScene(RESTART_SCENE_ID);
+                        }
+                    }
                 }
                 else
                 {
@@ -212,18 +238,55 @@ public class TriviaController : MonoBehaviour
                     HideText();
                     yield return new WaitUntil(() => !isTextVisible);
 
-                    yield return new WaitForSeconds(1f);
+                    yield return new WaitForSeconds(AFTER_CHOICE_DELAY);
                 }
             }
 
             HideText();
             yield return new WaitUntil(() => !isTextVisible);
 
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(AFTER_CHOICE_DELAY);
         }
+
         Debug.Log("Trivia completed");
         PlayTriviaAudio(triviaCompleteAudio);
-        fluvio.PlayVictorySequence();
+        
+        if (fluvio != null)
+        {
+            fluvio.PlayVictorySequence();
+        }
+    }
+
+    private IEnumerator FlashPlaneColor(Color color, Color emissionColor)
+    {
+        ChangePlaneColor(color);
+        if (planeMaterial != null)
+        {
+            planeMaterial.EnableKeyword("_EMISSION");
+            planeMaterial.SetColor("_EmissionColor", emissionColor * 0f);
+        }
+        yield return new WaitForSeconds(COLOR_FLASH_DURATION);
+
+        ChangePlaneColor(TRANSPARENT);
+        if (planeMaterial != null)
+        {
+            planeMaterial.DisableKeyword("_EMISSION");
+        }
+        yield return new WaitForSeconds(COLOR_FLASH_DURATION);
+
+        ChangePlaneColor(color);
+        if (planeMaterial != null)
+        {
+            planeMaterial.EnableKeyword("_EMISSION");
+            planeMaterial.SetColor("_EmissionColor", emissionColor * 0f);
+        }
+        yield return new WaitForSeconds(COLOR_FLASH_DURATION);
+
+        ChangePlaneColor(TRANSPARENT);
+        if (planeMaterial != null)
+        {
+            planeMaterial.DisableKeyword("_EMISSION");
+        }
     }
 
     private void PlayTriviaAudio(AudioClip clip)
@@ -232,7 +295,6 @@ public class TriviaController : MonoBehaviour
         {
             triviaAudioSource.volume = triviaVolume;
             triviaAudioSource.PlayOneShot(clip);
-            Debug.Log($"Playing trivia audio: {clip.name}");
         }
     }
 
@@ -247,9 +309,12 @@ public class TriviaController : MonoBehaviour
         }
     }
 
-    private void ShowText(String text)
+    private void ShowText(string text)
     {
-        if (!isTyping && text != null && text.Length > 0) StartCoroutine(DisplayTextSequence(text));
+        if (!isTyping && !string.IsNullOrEmpty(text))
+        {
+            StartCoroutine(DisplayTextSequence(text));
+        }
     }
 
     public void Choice(bool c)
@@ -261,12 +326,10 @@ public class TriviaController : MonoBehaviour
             waitingForChoice = false;
             Debug.Log($"User chose: {c}");
             PlayUISound(buttonClickAudio);
-            return;
         }
         else
         {
             PlayUISound(buttonClickAudio);
-            throw new Exception("Question still onscreen.");
         }
     }
 
@@ -278,35 +341,33 @@ public class TriviaController : MonoBehaviour
         }
     }
 
-    public void ChangePlaneColor(Color color)
+    private void ChangePlaneColor(Color color)
     {
-        if (planeMaterial != null)
+        if (planeMaterial == null) return;
+
+        if (planeMaterial.HasProperty("_BaseColor"))
         {
-            if (planeMaterial.HasProperty("_BaseColor"))
-            {
-                planeMaterial.SetColor("_BaseColor", color);
-            }
-            else if (planeMaterial.HasProperty("_Color"))
-            {
-                planeMaterial.SetColor("_Color", color);
-            }
-            else if (planeMaterial.HasProperty("_MainColor"))
-            {
-                planeMaterial.SetColor("_MainColor", color);
-            }
-            Debug.Log($"Changed plane color to {color}");
+            planeMaterial.SetColor("_BaseColor", color);
         }
-        else
+        else if (planeMaterial.HasProperty("_Color"))
         {
-            Debug.LogWarning("Plane material is null!");
+            planeMaterial.SetColor("_Color", color);
+        }
+        else if (planeMaterial.HasProperty("_MainColor"))
+        {
+            planeMaterial.SetColor("_MainColor", color);
         }
     }
 
-    private IEnumerator DisplayTextSequence(String text)
+    private IEnumerator DisplayTextSequence(string text)
     {
         isTyping = true;
         isTextVisible = true;
-        dialoguePanel.SetActive(true);
+
+        if (dialoguePanel != null)
+        {
+            dialoguePanel.SetActive(true);
+        }
 
         yield return StartCoroutine(TypeText(text));
 
@@ -330,27 +391,31 @@ public class TriviaController : MonoBehaviour
 
     private IEnumerator TypeText(string textToType)
     {
-        if (dialogueTextMesh != null)
+        if (dialogueTextMesh == null || string.IsNullOrEmpty(textToType))
         {
-            dialogueTextMesh.text = "";
+            yield break;
+        }
 
-            foreach (char letter in textToType.ToCharArray())
-            {
-                dialogueTextMesh.text += letter;
-                yield return new WaitForSeconds(typingSpeed);
-            }
+        dialogueTextMesh.text = "";
+
+        foreach (char letter in textToType.ToCharArray())
+        {
+            dialogueTextMesh.text += letter;
+            yield return new WaitForSeconds(typingSpeed);
         }
     }
 
     private IEnumerator UntypeText()
     {
-        if (dialogueTextMesh != null)
+        if (dialogueTextMesh == null)
         {
-            while (dialogueTextMesh.text.Length > 0)
-            {
-                dialogueTextMesh.text = dialogueTextMesh.text.Substring(0, dialogueTextMesh.text.Length - 1);
-                yield return new WaitForSeconds(typingSpeed / 4);
-            }
+            yield break;
+        }
+
+        while (!string.IsNullOrEmpty(dialogueTextMesh.text))
+        {
+            dialogueTextMesh.text = dialogueTextMesh.text.Substring(0, dialogueTextMesh.text.Length - 1);
+            yield return new WaitForSeconds(typingSpeed / UNTYPE_SPEED_MULTIPLIER);
         }
     }
 }

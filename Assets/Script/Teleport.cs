@@ -7,7 +7,11 @@ public class Teleport : MonoBehaviour
     private Vector3 originalPosition;
     private float cylinderHeight;
 
-    void Start()
+    private const float APPEAR_DURATION = 0.2f;
+    private const float STAY_DURATION = 0.7f;
+    private const float DISAPPEAR_DURATION = 0.2f;
+
+    private void Start()
     {
         gameObject.SetActive(false);
         originalScale = transform.localScale;
@@ -23,18 +27,12 @@ public class Teleport : MonoBehaviour
 
     private IEnumerator CurtainAnimation()
     {
-        float appearDuration = .2f;
-        float stayDuration = .7f;
-        float disappearDuration = .2f;
-
         transform.localScale = new Vector3(originalScale.x, 0f, originalScale.z);
         transform.position = originalPosition + Vector3.up * (cylinderHeight / 2f);
 
-        yield return StartCoroutine(AppearFromTop(appearDuration));
-
-        yield return new WaitForSeconds(stayDuration);
-
-        yield return StartCoroutine(DisappearFromBottom(disappearDuration));
+        yield return StartCoroutine(AppearFromTop(APPEAR_DURATION));
+        yield return new WaitForSeconds(STAY_DURATION);
+        yield return StartCoroutine(DisappearFromBottom(DISAPPEAR_DURATION));
     }
 
     private IEnumerator AppearFromTop(float duration)
