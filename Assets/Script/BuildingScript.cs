@@ -12,7 +12,6 @@ public class BuildingScript : MonoBehaviour
     private Vector3 _worldPosition;
     private Transform _player;
     private Transform _mainCamera;
-    private bool _isMovingPlayer = false;
     private TeleportationProvider _teleportationProvider;
     public string textToShow;
     
