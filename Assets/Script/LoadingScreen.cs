@@ -8,7 +8,7 @@ public class LoadingScreen : MonoBehaviour
     public GameObject LoadingPanel;
 
     private Image loadingImage;
-    private const Color FADE_COLOR = Color.white;
+    private static readonly Color FADE_COLOR = Color.white;
     private const float FADE_DURATION = 2f;
 
     private void Awake()
