@@ -3,13 +3,6 @@ using UnityEngine;
 
 public class SpeechBubbleAnimator : MonoBehaviour
 {
-    private Vector3 originalScale;
-    private Vector3 originalPosition;
-    private void Awake()
-    {
-        originalScale = transform.localScale;
-        originalPosition = transform.localPosition;
-    }
     [Header("Animation Settings")]
     public Vector3 growScale = new Vector3(0.003f, 0.003f, 0.003f);
     public float growDuration = 1f;
@@ -17,7 +10,14 @@ public class SpeechBubbleAnimator : MonoBehaviour
     public float shakeIntensity = 0.005f;
     public float shrinkDuration = 1f;
 
+    private Vector3 originalScale;
+    private Vector3 originalPosition;
 
+    private void Awake()
+    {
+        originalScale = transform.localScale;
+        originalPosition = transform.localPosition;
+    }
 
     public void AnimateIn()
     {
@@ -33,7 +33,6 @@ public class SpeechBubbleAnimator : MonoBehaviour
 
     private IEnumerator GrowAndShake()
     {
-
         float timer = 0f;
         while (timer < growDuration)
         {
@@ -44,27 +43,32 @@ public class SpeechBubbleAnimator : MonoBehaviour
         }
         transform.localScale = growScale;
 
-
         float shakeTimer = 0f;
+        Vector3 shakeStartPosition = transform.localPosition;
+        
         while (shakeTimer < shakeDuration)
         {
-            transform.localPosition += Random.insideUnitSphere * shakeIntensity;
+            transform.localPosition = shakeStartPosition + Random.insideUnitSphere * shakeIntensity;
             shakeTimer += Time.deltaTime;
             yield return null;
         }
+        
         transform.localPosition = originalPosition;
     }
 
     private IEnumerator Shrink()
     {
         float timer = 0f;
+        Vector3 startScale = transform.localScale;
+
         while (timer < shrinkDuration)
         {
             float progress = timer / shrinkDuration;
-            transform.localScale = Vector3.Lerp(growScale, Vector3.zero, progress);
+            transform.localScale = Vector3.Lerp(startScale, Vector3.zero, progress);
             timer += Time.deltaTime;
             yield return null;
         }
+        
         transform.localScale = Vector3.zero;
     }
 }

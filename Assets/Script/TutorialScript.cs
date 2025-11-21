@@ -6,39 +6,92 @@ public class TutorialScript : MonoBehaviour
     public RawImage tutorialImage;
     public SpeechBubbleAnimator speechBubbleAnimator;
     public GameObject tutorialPanel;
+
     private bool isTutorialActive = false;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private Transform playerCamera;
+
+    private const float SHOW_IMAGE_DELAY = 1f;
+
+    private void Start()
     {
-     tutorialImage.enabled = false;
+        if (tutorialImage != null)
+        {
+            tutorialImage.enabled = false;
+        }
+
+        if (Camera.main != null)
+        {
+            playerCamera = Camera.main.transform;
+        }
     }
-    
-    // Update is called once per frame
-    void Update()
+
+    private void Update()
     {
-        if(isTutorialActive)LookAtPlayer();
+        if (isTutorialActive)
+        {
+            LookAtPlayer();
+        }
     }
 
     public void ActivateTutorial()
     {
         isTutorialActive = true;
-        tutorialPanel?.SetActive(true);
-        speechBubbleAnimator.AnimateIn();
-        Invoke("ShowGif", 1f);
+
+        if (tutorialPanel != null)
+        {
+            tutorialPanel.SetActive(true);
+        }
+
+        if (speechBubbleAnimator != null)
+        {
+            speechBubbleAnimator.AnimateIn();
+        }
+
+        Invoke(nameof(ShowTutorialImage), SHOW_IMAGE_DELAY);
     }
+
     public void DeactivateTutorial()
     {
         isTutorialActive = false;
-        speechBubbleAnimator.AnimateOut();
-        tutorialImage.enabled = false;
+
+        if (speechBubbleAnimator != null)
+        {
+            speechBubbleAnimator.AnimateOut();
+        }
+
+        if (tutorialImage != null)
+        {
+            tutorialImage.enabled = false;
+        }
     }
+
     private void LookAtPlayer()
     {
-       transform.rotation = Quaternion.LookRotation(transform.position - Camera.main.transform.position);
+        if (playerCamera == null)
+        {
+            if (Camera.main != null)
+            {
+                playerCamera = Camera.main.transform;
+            }
+            else
+            {
+                return;
+            }
+        }
+
+        Vector3 direction = transform.position - playerCamera.position;
+        
+        if (direction.sqrMagnitude > 0.001f)
+        {
+            transform.rotation = Quaternion.LookRotation(direction);
+        }
     }
-    private void ShowGif()
+
+    private void ShowTutorialImage()
     {
-        tutorialImage.enabled = true;
+        if (tutorialImage != null)
+        {
+            tutorialImage.enabled = true;
+        }
     }
-    
 }

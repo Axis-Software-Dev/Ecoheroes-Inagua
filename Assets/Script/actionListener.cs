@@ -1,31 +1,36 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+
 public class actionListener : MonoBehaviour
 {
     public InputActionReference actionReference;
+    
     private MeshRenderer meshRenderer;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+
+    private void Start()
     {
         meshRenderer = GetComponent<MeshRenderer>();
-        actionReference.action.performed += ctx => OnActionTriggered();
-        actionReference.action.canceled += ctx => OnActionUnTriggered();
-        
 
+        if (actionReference != null && actionReference.action != null)
+        {
+            actionReference.action.performed += ctx => OnActionTriggered();
+            actionReference.action.canceled += ctx => OnActionUnTriggered();
+        }
     }
 
     public void OnActionTriggered()
     {
-        meshRenderer.enabled = false;
-    }
-    public void OnActionUnTriggered()
-    {
-        meshRenderer.enabled = true;
+        if (meshRenderer != null)
+        {
+            meshRenderer.enabled = false;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void OnActionUnTriggered()
     {
-        
+        if (meshRenderer != null)
+        {
+            meshRenderer.enabled = true;
+        }
     }
 }
