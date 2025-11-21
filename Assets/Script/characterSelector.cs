@@ -13,7 +13,7 @@ public class CharacterSelector : MonoBehaviour
     [Header("Spawn Position")]
     public Transform spawnPoint;
 
-    private const float BELT_RADIUS = 3f;
+    private const float BELT_RADIUS = 2f;
     private const float BELT_HEIGHT = 2f;
     private const float BELT_THICKNESS = 0.1f;
     private const float BELT_ROTATION_SPEED = 10f;
@@ -21,9 +21,9 @@ public class CharacterSelector : MonoBehaviour
     private const float BELT_EMISSION_INTENSITY = 5f;
     private const int TOTAL_TEXT_INSTANCES = 3;
     private const float TEXT_OFFSET_FROM_BAND = 0.15f;
-    private const float TEXT_SIZE = 0.2f;
+    private const float TEXT_SIZE = 0.3f;
     private const float BAND_Y_OFFSET = -1.3f;
-    private const float TEXT_Z_OFFSET = -2.3f;
+    private const float TEXT_Z_OFFSET = 2.3f;
     private const float TEXT_Y_OFFSET = 0.6f;
     private const float BAND_SEPARATION = 1.0f;
     private const float TORUS_CROSS_SECTION_RADIUS = 0.05f;
@@ -281,7 +281,7 @@ public class CharacterSelector : MonoBehaviour
             
             Vector3 outwardDirection = new Vector3(x, 0, z).normalized;
             Quaternion lookRotation = Quaternion.LookRotation(outwardDirection);
-            textObj.transform.localRotation = lookRotation * Quaternion.Euler(0f, 0f, 0f);
+            textObj.transform.localRotation = lookRotation * Quaternion.Euler(0f, 180f, 0f);
             textObj.transform.localScale = Vector3.one * TEXT_SIZE;
 
             TextMeshPro textMesh = textObj.AddComponent<TextMeshPro>();
@@ -302,7 +302,7 @@ public class CharacterSelector : MonoBehaviour
                 textMaterial.SetColor("_EmissionColor", BELT_GLOW_COLOR * BELT_EMISSION_INTENSITY);
                 textMaterial.EnableKeyword("UNDERLAY_ON");
                 textMaterial.SetColor("_UnderlayColor", BELT_GLOW_COLOR * BELT_EMISSION_INTENSITY);
-                textMaterial.SetFloat("_UnderlayDilate", 0.8f);
+                textMaterial.SetFloat("_UnderlayDilate", 0.3f);
                 textMaterial.SetFloat("_UnderlaySoftness", 0.3f);
                 
                 textMesh.fontSharedMaterial = textMaterial;
