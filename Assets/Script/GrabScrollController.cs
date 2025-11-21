@@ -4,13 +4,18 @@ using UnityEngine.XR.Interaction.Toolkit.Interactables;
 public class GrabScrollController : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private Canvas targetCanvas;
-    [SerializeField] private TextScroller textScroller;
+    [SerializeField] 
+    private Canvas targetCanvas;
+    [SerializeField] 
+    private TextScroller textScroller;
 
     [Header("Settings")]
-    [SerializeField] private bool hideOnRelease = true;
-    [SerializeField] private bool resetScrollOnRelease = true;
-    [SerializeField] private bool useFixedText = false;
+    [SerializeField] 
+    private bool hideOnRelease = true;
+    [SerializeField] 
+    private bool resetScrollOnRelease = true;
+    [SerializeField] 
+    private bool useFixedText = false;
 
     private XRGrabInteractable grabInteractable;
 
@@ -55,14 +60,20 @@ public class GrabScrollController : MonoBehaviour
 
     private void OnEnable()
     {
-        grabInteractable.selectEntered.AddListener(OnGrabbed);
-        grabInteractable.selectExited.AddListener(OnReleased);
+        if (grabInteractable != null)
+        {
+            grabInteractable.selectEntered.AddListener(OnGrabbed);
+            grabInteractable.selectExited.AddListener(OnReleased);
+        }
     }
 
     private void OnDisable()
     {
-        grabInteractable.selectEntered.RemoveListener(OnGrabbed);
-        grabInteractable.selectExited.RemoveListener(OnReleased);
+        if (grabInteractable != null)
+        {
+            grabInteractable.selectEntered.RemoveListener(OnGrabbed);
+            grabInteractable.selectExited.RemoveListener(OnReleased);
+        }
     }
 
     private void OnGrabbed(UnityEngine.XR.Interaction.Toolkit.SelectEnterEventArgs args)
