@@ -23,7 +23,7 @@ public class CharacterSelector : MonoBehaviour
     private const float TEXT_OFFSET_FROM_BAND = 0.15f;
     private const float TEXT_SIZE = 0.3f;
     private const float BAND_Y_OFFSET = -1.3f;
-    private const float TEXT_Z_OFFSET = 1f;
+    private const float TEXT_Z_OFFSET = 0f;
     private const float TEXT_Y_OFFSET = 0.6f;
     private const float BAND_SEPARATION = 1.0f;
     private const float TORUS_CROSS_SECTION_RADIUS = 0.05f;
