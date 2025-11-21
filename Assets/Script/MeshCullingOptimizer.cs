@@ -1,17 +1,24 @@
 using UnityEngine;
+
 public class MeshCullingOptimizer : MonoBehaviour
 {
     private SkinnedMeshRenderer _renderer;
     private Animator _animator;
     private Transform _camera;
 
-    void Start()
+    private const float RENDER_DISTANCE = 30f;
+    private const float ANIMATION_DISTANCE = 20f;
+
+    private void Start()
     {
         _renderer = GetComponentInChildren<SkinnedMeshRenderer>();
         _animator = GetComponent<Animator>();
-        _camera = Camera.main.transform;
 
-        // Critical setting
+        if (Camera.main != null)
+        {
+            _camera = Camera.main.transform;
+        }
+
         if (_renderer != null)
         {
             _renderer.updateWhenOffscreen = false;
@@ -19,16 +26,20 @@ public class MeshCullingOptimizer : MonoBehaviour
         }
     }
 
-    void Update()
+    private void Update()
     {
+        if (_camera == null) return;
+
         float distance = Vector3.Distance(transform.position, _camera.position);
 
-        // Disable rendering beyond 30m
         if (_renderer != null)
-            _renderer.enabled = distance < 30f;
+        {
+            _renderer.enabled = distance < RENDER_DISTANCE;
+        }
 
-        // Disable animation beyond 20m
         if (_animator != null)
-            _animator.enabled = distance < 20f;
+        {
+            _animator.enabled = distance < ANIMATION_DISTANCE;
+        }
     }
 }

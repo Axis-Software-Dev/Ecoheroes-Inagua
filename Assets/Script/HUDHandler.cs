@@ -5,27 +5,33 @@ using UnityEngine;
 public class HUDHandler : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private TextMeshProUGUI textComponent;
-    [SerializeField] private Animator animator;
+    [SerializeField] 
+    private TextMeshProUGUI textComponent;
+    [SerializeField] 
+    private Animator animator;
 
     [Header("Settings")]
-    [SerializeField] private float typewriterSpeed = 0.05f;
+    [SerializeField] 
+    private float typewriterSpeed = 0.05f;
 
     private string currentFullText = "";
     private bool isShowingText = false;
     private bool isHidingText = false;
     private Coroutine activeCoroutine;
 
+    private const float ANIMATION_DELAY = 2f;
+
     private void Awake()
     {
-        if (textComponent == null) throw new System.Exception("Text component required to invoke HUD");
+        if (textComponent == null)
+        {
+            throw new System.Exception("Text component required to invoke HUD");
+        }
     }
 
     public void ShowText(string text)
     {
-        if (isShowingText) return;
-
-        if (activeCoroutine != null)
+        if (isShowingText || activeCoroutine != null || string.IsNullOrEmpty(text))
         {
             return;
         }
@@ -36,9 +42,7 @@ public class HUDHandler : MonoBehaviour
 
     public void HideText()
     {
-        if (isHidingText) return;
-
-        if (activeCoroutine != null)
+        if (isHidingText || activeCoroutine != null)
         {
             return;
         }
@@ -48,19 +52,25 @@ public class HUDHandler : MonoBehaviour
 
     private IEnumerator TypewriterForward()
     {
-        Debug.Log("TypewriterForward coroutine started");
-        animator.SetTrigger("open");
-        new WaitForSeconds(2);
+        if (animator != null)
+        {
+            animator.SetTrigger("open");
+        }
+
+        yield return new WaitForSeconds(ANIMATION_DELAY);
 
         isShowingText = true;
         isHidingText = false;
 
-        textComponent.text = "";
-
-        for (int i = 0; i <= currentFullText.Length; i++)
+        if (textComponent != null)
         {
-            textComponent.text = currentFullText.Substring(0, i);
-            yield return new WaitForSeconds(typewriterSpeed);
+            textComponent.text = "";
+
+            for (int i = 0; i <= currentFullText.Length; i++)
+            {
+                textComponent.text = currentFullText.Substring(0, i);
+                yield return new WaitForSeconds(typewriterSpeed);
+            }
         }
 
         isShowingText = false;
@@ -69,22 +79,26 @@ public class HUDHandler : MonoBehaviour
 
     private IEnumerator TypewriterReverse()
     {
-        Debug.Log("TypewriterReverse coroutine started");
-
         isHidingText = true;
         isShowingText = false;
 
-        currentFullText = textComponent.text;
-
-        for (int i = currentFullText.Length; i >= 0; i--)
+        if (textComponent != null)
         {
-            textComponent.text = currentFullText.Substring(0, i);
-            yield return new WaitForSeconds(typewriterSpeed);
+            currentFullText = textComponent.text;
+
+            for (int i = currentFullText.Length; i >= 0; i--)
+            {
+                textComponent.text = currentFullText.Substring(0, i);
+                yield return new WaitForSeconds(typewriterSpeed);
+            }
         }
 
         isHidingText = false;
         activeCoroutine = null;
 
-        animator.SetTrigger("close");
+        if (animator != null)
+        {
+            animator.SetTrigger("close");
+        }
     }
 }

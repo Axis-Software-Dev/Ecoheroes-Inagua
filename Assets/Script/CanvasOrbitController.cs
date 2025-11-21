@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.XR;
 
 public class CanvasOrbitController : MonoBehaviour
 {
@@ -19,18 +18,13 @@ public class CanvasOrbitController : MonoBehaviour
     {
         if (targetCamera == null) return;
 
-        // Desired position: always in front of the camera
         Vector3 forward = targetCamera.forward;
-        forward.y = 0; // keep level, so it doesn’t tilt up/down weirdly
+        forward.y = 0f;
         forward.Normalize();
 
         Vector3 targetPosition = targetCamera.position + forward * distance + Vector3.up * heightOffset;
 
-        // Smooth move
         transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * followSpeed);
-
-        // Always face the camera
         transform.LookAt(targetCamera);
-        transform.rotation = Quaternion.LookRotation(transform.position - targetCamera.position);
     }
 }

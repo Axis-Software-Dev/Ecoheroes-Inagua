@@ -7,14 +7,18 @@ using System.Collections.Generic;
 public class InteractorHUDController : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private HUDHandler hudHandler;
+    [SerializeField] 
+    private HUDHandler hudHandler;
 
     [Header("HUD Messages")]
-    [SerializeField] private string grabMessage = "Presiona el botón lateral para tomar";
-    [SerializeField] private string interactMessage = "Presiona el gatillo";
+    [SerializeField] 
+    private string grabMessage = "Presiona el botón lateral para tomar";
+    [SerializeField] 
+    private string interactMessage = "Presiona el gatillo";
 
     [Header("One-Time Display")]
-    [SerializeField] private bool onlyShowOnce = true;
+    [SerializeField] 
+    private bool onlyShowOnce = true;
 
     private NearFarInteractor nearFarInteractor;
     private IXRHoverInteractable currentHoverTarget;
@@ -23,7 +27,6 @@ public class InteractorHUDController : MonoBehaviour
     private void Awake()
     {
         nearFarInteractor = GetComponent<NearFarInteractor>();
-        Debug.Log("nearFarInteractor found: " + nearFarInteractor.gameObject);
 
         if (hudHandler == null)
         {
@@ -37,8 +40,6 @@ public class InteractorHUDController : MonoBehaviour
         {
             nearFarInteractor.hoverEntered.AddListener(OnHoverEntered);
             nearFarInteractor.hoverExited.AddListener(OnHoverExited);
-
-            Debug.Log("Listeners added");
         }
     }
 
@@ -53,8 +54,6 @@ public class InteractorHUDController : MonoBehaviour
 
     private void OnHoverEntered(HoverEnterEventArgs args)
     {
-        Debug.Log("Hover entered");
-
         if (hudHandler == null) return;
 
         currentHoverTarget = args.interactableObject;
@@ -64,7 +63,6 @@ public class InteractorHUDController : MonoBehaviour
 
         if (onlyShowOnce && shownObjects.Contains(targetObject))
         {
-            Debug.Log("HUD already shown for " + targetObject.name + ", skipping");
             return;
         }
 
@@ -77,28 +75,23 @@ public class InteractorHUDController : MonoBehaviour
             if (onlyShowOnce)
             {
                 shownObjects.Add(targetObject);
-                Debug.Log("HUD shown for " + targetObject.name + ", marked as shown");
             }
         }
     }
 
     private void OnHoverExited(HoverExitEventArgs args)
     {
-        Debug.Log("Hover exited");
-
-        if (hudHandler == null) return;
+        if (hudHandler != null)
+        {
+            hudHandler.HideText();
+        }
 
         currentHoverTarget = null;
-        hudHandler.HideText();
     }
 
     private string DetermineHUDMessage(IXRHoverInteractable interactable)
     {
-        if (interactable == null)
-        {
-            Debug.LogWarning("Interactable is empty, cannot determine HUD message");
-            return string.Empty;
-        }
+        if (interactable == null) return string.Empty;
 
         GameObject targetObject = (interactable as MonoBehaviour)?.gameObject;
         if (targetObject == null) return string.Empty;
@@ -107,7 +100,8 @@ public class InteractorHUDController : MonoBehaviour
         {
             return grabMessage;
         }
-        else if (targetObject.GetComponent<XRSimpleInteractable>() != null)
+        
+        if (targetObject.GetComponent<XRSimpleInteractable>() != null)
         {
             return interactMessage;
         }
@@ -118,14 +112,13 @@ public class InteractorHUDController : MonoBehaviour
     public void ResetShownObjects()
     {
         shownObjects.Clear();
-        Debug.Log("Cleared all shown objects");
     }
 
     public void ResetObject(GameObject obj)
     {
-        if (shownObjects.Remove(obj))
+        if (obj != null)
         {
-            Debug.Log("Reset shown status for " + obj.name);
+            shownObjects.Remove(obj);
         }
     }
 }
