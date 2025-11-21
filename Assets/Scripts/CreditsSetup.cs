@@ -25,7 +25,7 @@ public class CreditsSetup : MonoBehaviour
 
     private void Start()
     {
-        if (FindObjectOfType<CreditsController>() == null)
+        if (FindAnyObjectByType<CreditsController>() == null)
         {
             CreateCreditsUI();
         }
@@ -159,7 +159,7 @@ public class CreditsSetup : MonoBehaviour
         creditsText.color = Color.white;
         creditsText.alignment = TextAlignmentOptions.Center;
         creditsText.overflowMode = TextOverflowModes.Overflow;
-        creditsText.enableWordWrapping = true;
+        creditsText.textWrappingMode = TextWrappingModes.Normal;
 
         creditsObject.SetActive(false);
     }
