@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static GameManager;
 
 public class CalorInfernalScript : MonoBehaviour
 {
@@ -11,7 +10,6 @@ public class CalorInfernalScript : MonoBehaviour
     {
         public string name;
         public AudioClip clip;
-
         [Range(0f, 1f)] 
         public float volume = 1f;
         [Range(0f, 3f)]
@@ -19,17 +17,19 @@ public class CalorInfernalScript : MonoBehaviour
         public float timeToSkip = 0f;
         [Range(0f, 1f)]
         public float spatialSound = 0f;
-        [NonSerialized] public AudioSource source;
+        [NonSerialized] 
+        public AudioSource source;
     }
 
-    #region Variables
     public InfernalSound[] sounds;
+
     [Header("References")]
     private Animator calorInfAnimator;
-    public PipeBehavior[] pipeSection;  // Asigna en Inspector para evitar Find en runtime
+    public PipeBehavior[] pipeSection;
     private Transform _playerTransform;
-    private SkinnedMeshRenderer _meshRenderer;  // Cacheado para eficiencia
+    private SkinnedMeshRenderer _meshRenderer;
     private Rigidbody _calorInfernalRB;
+
     [Header("Settings")]
     public bool isLookingAtPlayer = false;
     public bool isMoving = false;
@@ -41,11 +41,10 @@ public class CalorInfernalScript : MonoBehaviour
     private int randObj = 0;
     private bool isInteracting = false;
     private Vector3 positionToGo;
-    private Coroutine selectObjectiveCoroutine;  // Referencia para detener
-    private Coroutine animationCoroutine;  // Referencia para detener
+    private Coroutine selectObjectiveCoroutine;
+    private Coroutine animationCoroutine;
 
     [Header("Behaviour Settings")]
-    // Constantes para valores mágicos
     public float INITIAL_WAIT = 10f;
     public float OBJECTIVE_INTERVAL = 20f;
     public float INTERACTION_DURATION = 10f;
@@ -53,95 +52,109 @@ public class CalorInfernalScript : MonoBehaviour
     public float RESTART_GAME_DELAY = 10f;
     public float ANIMATION_DELAY = 3f;
     public float VALVE_DELAY = 1f;
+    public float START_GAME_DELAY = 9.5f;
+    public float SKIN_ACTIVE_DELAY = 1f;
+    public float END_GAME_DELAY = 5f;
+    public float BGM_DELAY = 2f;
     
-    // Enum para tipos de objetos (mejor que strings)
     private enum ObjectType { Cables, Screw, Wheel, BigWheel }
     private Dictionary<string, InfernalSound> _soundMap;
-    #endregion
 
-    #region Initialization
+    private const float WHEEL_LOOK_OFFSET_X = -10f;
+    private const float WHEEL_LOOK_OFFSET_Z = -2f;
+    private const float SCREW_LOOK_OFFSET_X = -2f;
+    private const float SCREW_LOOK_OFFSET_Z = -10f;
+    private const float SCREW_ACTIVATION_HEIGHT_OFFSET = 0.05f;
+    private const float SCREW_DEACTIVATION_THRESHOLD = 0.01f;
+
     private void Awake()
     {
-
-        // Cachear referencias
         calorInfAnimator = GetComponent<Animator>();
         _meshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
         _playerTransform = Camera.main != null ? Camera.main.transform : GameObject.FindWithTag("MainCamera")?.transform;
         _calorInfernalRB = GetComponent<Rigidbody>();
-        // Inicializar posición
+        
         positionToGo = startPosition;
 
-        // Si no asignas pipeSection en Inspector, descomenta esto (pero es mejor asignarlo manualmente)
-        /*
-        if (pipeSection == null || pipeSection.Length == 0)
+        if (calorInfAnimator != null)
         {
-            GameObject[] pipes = GameObject.FindGameObjectsWithTag("Minijuego");
-            pipeSection = new PipeBehavior[pipes.Length];
-            for (int i = 0; i < pipes.Length; i++)
-            {
-                pipeSection[i] = pipes[i].GetComponent<PipeBehavior>();
-            }
+            calorInfAnimator.Play("CalorInfernalAnim");
         }
-        */
-
-        // Iniciar animación inicial
-        calorInfAnimator?.Play("CalorInfernalAnim");
         
         _soundMap = new Dictionary<string, InfernalSound>(StringComparer.OrdinalIgnoreCase);
+        
         if (sounds != null)
         {
             foreach (var s in sounds)
             {
                 if (s == null) continue;
-                // create audio source for each sound (small projects okay). Consider pooling if many sounds.
+
                 s.source = gameObject.AddComponent<AudioSource>();
                 s.source.clip = s.clip;
                 s.source.volume = s.volume;
                 s.source.pitch = s.pitch;
                 s.source.time = s.timeToSkip;
-           
                 s.source.spatialBlend = s.spatialSound;
 
                 if (!string.IsNullOrEmpty(s.name))
                 {
-                    if (!_soundMap.ContainsKey(s.name)) _soundMap.Add(s.name, s);
-                    else Debug.LogWarning($"Duplicate sound name '{s.name}' on {name}.");
+                    if (!_soundMap.ContainsKey(s.name))
+                    {
+                        _soundMap.Add(s.name, s);
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"Duplicate sound name '{s.name}' on {name}.");
+                    }
                 }
             }
         }
     }
 
-    void Start()
+    private void Start()
     {
-        _meshRenderer.enabled = false;
-        calorInfAnimator.enabled = false;
-        Invoke("StartGame",9.5f);  // Inicia el juego automáticamente o llama desde otro lugar
-    }
-    #endregion
+        if (_meshRenderer != null)
+        {
+            _meshRenderer.enabled = false;
+        }
+        
+        if (calorInfAnimator != null)
+        {
+            calorInfAnimator.enabled = false;
+        }
 
-    #region Update Loop
-    void Update()
+        Invoke(nameof(StartGame), START_GAME_DELAY);
+    }
+
+    private void Update()
     {
-        if (!isGameStarted) return;  // Early exit si el juego no está activo
+        if (!isGameStarted) return;
 
         HandleLooking();
         HandleMovement();
     }
+
     public void PlayAudio(string audioName)
     {
         if (string.IsNullOrEmpty(audioName) || _soundMap == null) return;
+        
         if (_soundMap.TryGetValue(audioName, out var s) && s?.source != null)
         {
-            if (!s.source.isPlaying) s.source.Play();
+            if (!s.source.isPlaying)
+            {
+                s.source.Play();
+            }
         }
         else
         {
             Debug.LogWarning($"PlayAudio: sound '{audioName}' not found on {name}");
         }
     }
+
     private void HandleLooking()
     {
-        Transform target = isLookingAtPlayer ? _playerTransform : pipeSection[randObj]?.transform;
+        Transform target = isLookingAtPlayer ? _playerTransform : (pipeSection != null && randObj < pipeSection.Length && pipeSection[randObj] != null ? pipeSection[randObj].transform : null);
+        
         if (target != null)
         {
             LookAtTarget(target);
@@ -155,9 +168,7 @@ public class CalorInfernalScript : MonoBehaviour
             MoveToPipe(positionToGo);
         }
     }
-    #endregion
 
-    #region Interactions
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Minijuego") && isGameStarted)
@@ -171,12 +182,11 @@ public class CalorInfernalScript : MonoBehaviour
             StopGame();
         }
     }
-    #endregion
 
-    #region Coroutines
     private IEnumerator SelectObjectiveRoutine()
     {
         yield return new WaitForSeconds(INITIAL_WAIT);
+        
         while (isGameStarted)
         {
             SelectObjective();
@@ -188,65 +198,85 @@ public class CalorInfernalScript : MonoBehaviour
     {
         yield return new WaitForSeconds(ANIMATION_DELAY);
 
+        if (pipeSection == null || randObj >= pipeSection.Length || pipeSection[randObj] == null)
+        {
+            yield break;
+        }
+
         switch (objectType)
         {
             case ObjectType.Cables:
-                calorInfAnimator.SetTrigger("Punch");
+                if (calorInfAnimator != null)
+                {
+                    calorInfAnimator.SetTrigger("Punch");
+                }
                 PlayAudio("Punch");
                 yield return new WaitForSeconds(ANIMATION_DELAY);
-                
-                pipeSection[randObj]?.activate();
+                pipeSection[randObj].activate();
                 break;
             case ObjectType.Screw:
-                calorInfAnimator.SetTrigger("Valve");
-                pipeSection[randObj]?.activate();
+                if (calorInfAnimator != null)
+                {
+                    calorInfAnimator.SetTrigger("Valve");
+                }
+                pipeSection[randObj].activate();
                 break;
             case ObjectType.Wheel:
-                calorInfAnimator.SetTrigger("Valve");
+                if (calorInfAnimator != null)
+                {
+                    calorInfAnimator.SetTrigger("Valve");
+                }
                 yield return new WaitForSeconds(VALVE_DELAY);
-                pipeSection[randObj]?.activate();
+                pipeSection[randObj].activate();
                 break;
             case ObjectType.BigWheel:
-                calorInfAnimator.SetTrigger("Crank");
+                if (calorInfAnimator != null)
+                {
+                    calorInfAnimator.SetTrigger("Crank");
+                }
                 yield return new WaitForSeconds(VALVE_DELAY);
-                pipeSection[randObj]?.activate();
+                pipeSection[randObj].activate();
                 break;
             default:
                 Debug.LogWarning("Tipo de objeto no reconocido: " + objectType);
                 break;
         }
     }
-    #endregion
 
-    #region Movement and Animation
-    private void SetSkinActive() { 
-        calorInfAnimator.enabled = true;
+    private void SetSkinActive()
+    {
+        if (calorInfAnimator != null)
+        {
+            calorInfAnimator.enabled = true;
+        }
     }
+
     private void LookAtTarget(Transform target)
     {
         Vector3 lookDir = target.position - transform.position;
-        if (target.GetComponent<PipeBehavior>() != null)
+        
+        PipeBehavior pipeBehavior = target.GetComponent<PipeBehavior>();
+        if (pipeBehavior != null)
         {
-            switch (target.gameObject.GetComponent<PipeBehavior>().getSectionType())
+            string sectionType = pipeBehavior.getSectionType();
+            switch (sectionType)
             {
                 case "wheel":
-                    lookDir = new Vector3(lookDir.x - 10f, lookDir.y, lookDir.z - 2f); // Ajuste específico para la rueda
+                    lookDir = new Vector3(lookDir.x + WHEEL_LOOK_OFFSET_X, lookDir.y, lookDir.z + WHEEL_LOOK_OFFSET_Z);
                     break;
                 case "screw":
-                    lookDir = new Vector3(lookDir.x-2f , lookDir.y, lookDir.z - 10f); // Ajuste específico para la rueda
-                    break;
-                default:
+                    lookDir = new Vector3(lookDir.x + SCREW_LOOK_OFFSET_X, lookDir.y, lookDir.z + SCREW_LOOK_OFFSET_Z);
                     break;
             }
         }
+        
         lookDir.y = 0f;
+        
         if (lookDir.sqrMagnitude > 0.001f)
-            {
-                Quaternion targetRot = Quaternion.LookRotation(lookDir);
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, Time.deltaTime);
-            }
-        
-        
+        {
+            Quaternion targetRot = Quaternion.LookRotation(lookDir);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, Time.deltaTime);
+        }
     }
 
     private void MoveToPipe(Vector3 position)
@@ -257,39 +287,52 @@ public class CalorInfernalScript : MonoBehaviour
     private void SelectObjective()
     {
         Debug.Log("Selecting new objective...");
+        
         if (pipeSection == null || pipeSection.Length == 0) return;
-        // Verifica si hay al menos un pipe inactivo
+
         bool hasInactive = false;
         for (int i = 0; i < pipeSection.Length; i++)
         {
-            if (!pipeSection[i].isActive)
+            if (pipeSection[i] != null && !pipeSection[i].isActive)
             {
                 hasInactive = true;
                 break;
             }
         }
+
         if (!hasInactive)
         {
-            Debug.Log("Reirse");  // No hay pipes inactivos
+            Debug.Log("No inactive pipes available");
             isMoving = false;
             return;
         }
-        // Si hay inactivos, selecciona aleatoriamente hasta encontrar uno
+
         int attempts = 0;
-        int maxAttempts = pipeSection.Length;  // Un poco más para asegurar
+        int maxAttempts = pipeSection.Length * 2;
+
         do
         {
             randObj = UnityEngine.Random.Range(0, pipeSection.Length);
             attempts++;
-        } while (pipeSection[randObj].isActive);
-        Debug.Log("Selected objective: " + randObj + " (" + pipeSection[randObj].getSectionType() + ")");
-        positionToGo = pipeSection[randObj].getInfernalPosition();
-        isMoving = true;
+            
+            if (attempts >= maxAttempts || (pipeSection[randObj] != null && !pipeSection[randObj].isActive))
+            {
+                break;
+            }
+        } 
+        while (pipeSection[randObj] == null || pipeSection[randObj].isActive);
+
+        if (pipeSection[randObj] != null)
+        {
+            Debug.Log("Selected objective: " + randObj + " (" + pipeSection[randObj].getSectionType() + ")");
+            positionToGo = pipeSection[randObj].getInfernalPosition();
+            isMoving = true;
+        }
     }
 
     private void objectInteract(int objectSelected)
     {
-        if (pipeSection == null || objectSelected >= pipeSection.Length) return;
+        if (pipeSection == null || objectSelected >= pipeSection.Length || pipeSection[objectSelected] == null) return;
 
         string typeString = pipeSection[objectSelected].getSectionType();
         ObjectType type = GetObjectTypeFromString(typeString);
@@ -301,115 +344,182 @@ public class CalorInfernalScript : MonoBehaviour
 
         if (isGameStarted)
         {
-            Invoke("stopMoving", INTERACTION_DURATION);
+            Invoke(nameof(stopMoving), INTERACTION_DURATION);
         }
     }
 
     private ObjectType GetObjectTypeFromString(string type)
     {
-        switch (type)
+        switch (type?.ToLower())
         {
-            case "cables": return ObjectType.Cables;
-            case "screw": return ObjectType.Screw;
-            case "wheel": return ObjectType.Wheel;
-            case "bigWheel": return ObjectType.BigWheel;
-            default: return ObjectType.Cables;  // Default
+            case "cables": 
+                return ObjectType.Cables;
+            case "screw": 
+                return ObjectType.Screw;
+            case "wheel": 
+                return ObjectType.Wheel;
+            case "bigwheel": 
+                return ObjectType.BigWheel;
+            default: 
+                return ObjectType.Cables;
         }
     }
 
     private void stopMoving()
     {
-        calorInfAnimator.SetTrigger("Idle");
+        if (calorInfAnimator != null)
+        {
+            calorInfAnimator.SetTrigger("Idle");
+        }
+        
         positionToGo = startPosition;
-        _calorInfernalRB.linearVelocity = Vector3.zero;
+        
+        if (_calorInfernalRB != null)
+        {
+            _calorInfernalRB.linearVelocity = Vector3.zero;
+        }
+        
         isLookingAtPlayer = true;
         isInteracting = false;
     }
-    #endregion
 
-    #region Game Control
     private void StopGame()
     {
-        calorInfAnimator.SetTrigger("FuckOff");
-        GameManager.Instance.AddMinigamePoint();
+        if (calorInfAnimator != null)
+        {
+            calorInfAnimator.SetTrigger("FuckOff");
+            calorInfAnimator.SetBool("isGameStarted", false);
+        }
+
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.AddMinigamePoint();
+        }
+
         PlayAudio("FuckOff");
-        calorInfAnimator.SetBool("isGameStarted", false);
         isGameStarted = false;
         isInteracting = false;
         isLookingAtPlayer = false;
         isMoving = false;
 
-        // Detener Coroutines de manera segura
-        if (selectObjectiveCoroutine != null) StopCoroutine(selectObjectiveCoroutine);
-        if (animationCoroutine != null) StopCoroutine(animationCoroutine);
+        if (selectObjectiveCoroutine != null) 
+        {
+            StopCoroutine(selectObjectiveCoroutine);
+        }
+        if (animationCoroutine != null) 
+        {
+            StopCoroutine(animationCoroutine);
+        }
 
-        Invoke("stopAnimator", STOP_ANIMATOR_DELAY);
+        Invoke(nameof(stopAnimator), STOP_ANIMATOR_DELAY);
         Debug.Log("Calor Infernal game stopped");
-        Invoke("StartGame", RESTART_GAME_DELAY);
+        Invoke(nameof(StartGame), RESTART_GAME_DELAY);
     }
 
     private void StartGame()
     {
         PlayAudio("Laugh");
-        calorInfAnimator.enabled = true;
+        
+        if (calorInfAnimator != null)
+        {
+            calorInfAnimator.enabled = true;
+        }
+
         Debug.Log("Calor Infernal game started");
         transform.position = startPosition;
-        _calorInfernalRB.linearVelocity = Vector3.zero;
-        Invoke("SetSkinActive", 1f);
-        calorInfAnimator.SetTrigger("Appear");
-        calorInfAnimator.SetBool("isGameStarted", true);
-        if (_meshRenderer != null) _meshRenderer.enabled = true;
+        
+        if (_calorInfernalRB != null)
+        {
+            _calorInfernalRB.linearVelocity = Vector3.zero;
+        }
+
+        Invoke(nameof(SetSkinActive), SKIN_ACTIVE_DELAY);
+        
+        if (calorInfAnimator != null)
+        {
+            calorInfAnimator.SetTrigger("Appear");
+            calorInfAnimator.SetBool("isGameStarted", true);
+        }
+
+        if (_meshRenderer != null)
+        {
+            _meshRenderer.enabled = true;
+        }
+
         isGameStarted = true;
         isLookingAtPlayer = true;
         selectObjectiveCoroutine = StartCoroutine(SelectObjectiveRoutine());
     }
+
     public void EndGame()
     {
-        float FinalDelay = 5f;
         isGameStarted = false;
         isInteracting = false;
         isLookingAtPlayer = false;
         isMoving = false;
         positionToGo = startPosition;
-        calorInfAnimator.SetTrigger("Goodbye");
-        Invoke("stopAnimator", FinalDelay);
-        Invoke("DisableCL", FinalDelay);
-        Invoke("PlayNewBGM", FinalDelay+2f);
-        Debug.Log("Calor Infernal game ended");
-        _calorInfernalRB.linearVelocity = Vector3.zero; 
-        PlayAudio("Scream");
-        foreach (var pipe in pipeSection)
+
+        if (calorInfAnimator != null)
         {
-            if (pipe != null)
-            {
-                pipe.deactivate();
-            }
+            calorInfAnimator.SetTrigger("Goodbye");
         }
 
+        Invoke(nameof(stopAnimator), END_GAME_DELAY);
+        Invoke(nameof(DisableCL), END_GAME_DELAY);
+        Invoke(nameof(PlayNewBGM), END_GAME_DELAY + BGM_DELAY);
+        
+        Debug.Log("Calor Infernal game ended");
+
+        if (_calorInfernalRB != null)
+        {
+            _calorInfernalRB.linearVelocity = Vector3.zero;
+        }
+
+        PlayAudio("Scream");
+
+        if (pipeSection != null)
+        {
+            foreach (var pipe in pipeSection)
+            {
+                if (pipe != null)
+                {
+                    pipe.deactivate();
+                }
+            }
+        }
     }
+
     private void stopAnimator()
     {
-        calorInfAnimator.Rebind();
-        calorInfAnimator.Update(0f);
-        calorInfAnimator.enabled = false;
-        if (_meshRenderer != null) _meshRenderer.enabled = false;
-        
+        if (calorInfAnimator != null)
+        {
+            calorInfAnimator.Rebind();
+            calorInfAnimator.Update(0f);
+            calorInfAnimator.enabled = false;
+        }
+
+        if (_meshRenderer != null)
+        {
+            _meshRenderer.enabled = false;
+        }
     }
+
     private void DisableCL()
     {
         gameObject.SetActive(false);
     }
+
     private void PlayNewBGM()
     {
-        GameManager.Instance.PlayAudio("Chill");
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.PlayAudio("Chill");
+        }
     }
-    #endregion
 
-    #region Gizmos
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawSphere(startPosition, 0.2f);
     }
-    #endregion
 }

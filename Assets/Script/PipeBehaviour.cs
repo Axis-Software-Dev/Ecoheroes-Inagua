@@ -1,111 +1,142 @@
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.XR;
-using static GameManager;
+
 public class PipeBehavior : MonoBehaviour
 {
-    enum sectionBehavior
+    private enum SectionBehavior
     {
         wheel,
         screw,
         cables,
         bigWheel
     }
+
     [Serializable]
     public class BackgroundSFX
     {
         public string name;
         public AudioClip clip;
-        [UnityEngine.Range(0f, 1f)] public float volume = 1f;
+        [Range(0f, 1f)] 
+        public float volume = 1f;
         public float pitch = 1f;
         public float timeToSkip = 0f;
-        [UnityEngine.Range(0f, 1f)] public float spatialSound = 0f;
+        [Range(0f, 1f)] 
+        public float spatialSound = 0f;
         public bool loop = false;
         public GameObject soundObject = null;
-        [NonSerialized] public AudioSource source;
+        [NonSerialized] 
+        public AudioSource source;
     }
+
     [Header("Type of pipe Minigame")]
-    [SerializeField] private sectionBehavior section;
+    [SerializeField] 
+    private SectionBehavior section;
 
     [Header("General Settings")]
     public InputActionReference leftGrip;
     public InputActionReference rightGrip;
     public Transform leftController;
     public Transform rightController;
-    private bool leftGrippedPressed = false;
-    private bool rightGrippedPressed = false;
-    private bool isLeftInPipe = false;
-    private bool isRightInPipe = false;
     public bool isActive = false;
     public Vector3 InfernalPosition;
-    private Vector3 worldPosition;
     public SphereCollider infernalCollider;
     public BackgroundSFX[] sounds;
-    private Dictionary<string, BackgroundSFX> _soundMap;
     public MeshRenderer arrowMesh;
-    private Animator arrowAnimator;
-    [Header("Wheel Settings")]
-    [SerializeField] private float currentWheelPosition = 0;
-    private Ray initialLeftControllerRay;
-    private Ray currentLeftControllerRay;
-    private Ray currentRightControllerRay;
-    private Ray initialRightControllerRay;
-    private float[] rotationRanges = { 0f, 60f, 120f, 180f, 240f, 300f, 360f };
-    [SerializeField] private const int MAX_CHECKPOINTS = 5;
-    private int checkPoints = 0;
-    private int lastCheckpoint = 0;
-    public float colliderRadiius = 0.3f;
     public Animator waterAnimator;
     public TutorialScript tutorialScript;
+
+    [Header("Wheel Settings")]
+    [SerializeField] 
+    private float currentWheelPosition = 0;
+    private float[] rotationRanges = { 0f, 60f, 120f, 180f, 240f, 300f, 360f };
+    private const int MAX_CHECKPOINTS = 5;
+    private int checkPoints = 0;
+    private int lastCheckpoint = 0;
+    public float colliderRadius = 0.3f;
 
     [Header("Screw Settings")]
     public float screwMinHeight;
     public float screwMaxHeight;
-    [SerializeField] private float screwSpeed = 0f;
+    [SerializeField] 
+    private float screwSpeed = 0f;
     private static float speedValue = 0f;
+    private const float SCREW_ACTIVATION_HEIGHT_OFFSET = 0.05f;
+    private const float SCREW_DEACTIVATION_THRESHOLD = 0.01f;
 
     [Header("Cable Settings")]
     public GameObject destination;
     public MeshRenderer cableMesh;
-    private LineRenderer cableRenderer;
-    [SerializeField] private bool cableGrabed;
-    private destinationDetection endDestination;
-    private bool previousCableState = false;
     public MeshRenderer brokenCable;
     public GameObject Chispas;
 
+    private bool leftGrippedPressed = false;
+    private bool rightGrippedPressed = false;
+    private bool isLeftInPipe = false;
+    private bool isRightInPipe = false;
+    private Vector3 worldPosition;
+    private Dictionary<string, BackgroundSFX> _soundMap;
+    private Animator arrowAnimator;
+    private Ray initialLeftControllerRay;
+    private Ray currentLeftControllerRay;
+    private Ray currentRightControllerRay;
+    private Ray initialRightControllerRay;
+    private LineRenderer cableRenderer;
+    private bool cableGrabed;
+    private destinationDetection endDestination;
+    private bool previousCableState = false;
 
-
+    private const float RAY_DEBUG_LENGTH = 1f;
+    private const float GIZMO_SPHERE_RADIUS = 0.3f;
 
     private void Awake()
     {
-        if(Chispas!=null)Chispas.SetActive(false);
+        if (Chispas != null)
+        {
+            Chispas.SetActive(false);
+        }
+
         if (arrowMesh != null)
         {
             arrowMesh.enabled = false;
             arrowAnimator = arrowMesh.gameObject.GetComponent<Animator>();
         }
-       
-        if(arrowAnimator!=null)arrowAnimator.enabled=false;
-        //infernalCollider.radius = colliderRadiius;
+
+        if (arrowAnimator != null)
+        {
+            arrowAnimator.enabled = false;
+        }
+
         worldPosition = transform.TransformPoint(InfernalPosition);
-        infernalCollider.transform.position = worldPosition;
-        if (brokenCable != null) brokenCable.enabled = false;
+        
+        if (infernalCollider != null)
+        {
+            infernalCollider.transform.position = worldPosition;
+        }
+
+        if (brokenCable != null)
+        {
+            brokenCable.enabled = false;
+        }
+
         _soundMap = new Dictionary<string, BackgroundSFX>(StringComparer.OrdinalIgnoreCase);
+        
         if (sounds != null)
         {
             foreach (var s in sounds)
             {
                 if (s == null) continue;
-                // create audio source for each sound (small projects okay). Consider pooling if many sounds.
 
                 if (s.soundObject == null)
+                {
                     s.source = gameObject.AddComponent<AudioSource>();
+                }
                 else
+                {
                     s.source = s.soundObject.AddComponent<AudioSource>();
+                }
+
                 s.source.clip = s.clip;
                 s.source.volume = s.volume;
                 s.source.pitch = s.pitch;
@@ -115,84 +146,107 @@ public class PipeBehavior : MonoBehaviour
 
                 if (!string.IsNullOrEmpty(s.name))
                 {
-                    if (!_soundMap.ContainsKey(s.name)) _soundMap.Add(s.name, s);
-                    else Debug.LogWarning($"Duplicate sound name '{s.name}' on {name}.");
+                    if (!_soundMap.ContainsKey(s.name))
+                    {
+                        _soundMap.Add(s.name, s);
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"Duplicate sound name '{s.name}' on {name}.");
+                    }
                 }
             }
         }
     }
 
-
-    #region Unity Callbacks
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void Start()
     {
-        leftGrip.action.performed += ctx => OnLeftGrip();
-        rightGrip.action.performed += ctx => OnRightGrip();
-        leftGrip.action.started += ctx => leftGrippedPressed = true;
-        rightGrip.action.started += ctx => rightGrippedPressed = true;
-        leftGrip.action.canceled += ctx => leftGrippedPressed = false;
-        rightGrip.action.canceled += ctx => rightGrippedPressed = false;
+        if (leftGrip != null && leftGrip.action != null)
+        {
+            leftGrip.action.performed += ctx => OnLeftGrip();
+            leftGrip.action.started += ctx => leftGrippedPressed = true;
+            leftGrip.action.canceled += ctx => leftGrippedPressed = false;
+        }
 
-        cableRenderer = this.GetComponent<LineRenderer>();
+        if (rightGrip != null && rightGrip.action != null)
+        {
+            rightGrip.action.performed += ctx => OnRightGrip();
+            rightGrip.action.started += ctx => rightGrippedPressed = true;
+            rightGrip.action.canceled += ctx => rightGrippedPressed = false;
+        }
+
+        cableRenderer = GetComponent<LineRenderer>();
 
         if (cableRenderer != null)
         {
-
             cableRenderer.enabled = false;
-            endDestination = destination?.GetComponent<destinationDetection>();
-
+            
+            if (destination != null)
+            {
+                endDestination = destination.GetComponent<destinationDetection>();
+            }
         }
-
 
         deactivate();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-
         switch (section)
         {
-            case sectionBehavior.wheel:
-            case sectionBehavior.bigWheel:
-                if (isActive) wheelBehaviour();
+            case SectionBehavior.wheel:
+            case SectionBehavior.bigWheel:
+                if (isActive)
+                {
+                    wheelBehaviour();
+                }
                 break;
-            case sectionBehavior.screw:
+            case SectionBehavior.screw:
                 screwBehaviour();
                 break;
-            case sectionBehavior.cables:
-                if (isActive) cableBehaviour();
-                break;
-            default:
+            case SectionBehavior.cables:
+                if (isActive)
+                {
+                    cableBehaviour();
+                }
                 break;
         }
-
     }
+
     public void PlayAudio(string audioName)
     {
         if (string.IsNullOrEmpty(audioName) || _soundMap == null) return;
+        
         if (_soundMap.TryGetValue(audioName, out var s) && s?.source != null)
         {
-            if (!s.source.isPlaying) s.source.Play();
+            if (!s.source.isPlaying)
+            {
+                s.source.Play();
+            }
         }
         else
         {
             Debug.LogWarning($"PlayAudio: sound '{audioName}' not found on {name}");
         }
     }
+
     public void StopAudio(string audioName)
     {
         if (string.IsNullOrEmpty(audioName) || _soundMap == null) return;
+        
         if (_soundMap.TryGetValue(audioName, out var s) && s?.source != null)
         {
-            if (s.source.isPlaying) s.source.Stop();
+            if (s.source.isPlaying)
+            {
+                s.source.Stop();
+            }
         }
         else
         {
-            Debug.LogWarning($"PlayAudio: sound '{audioName}' not found on {name}");
+            Debug.LogWarning($"StopAudio: sound '{audioName}' not found on {name}");
         }
     }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("LeftController"))
@@ -204,6 +258,7 @@ public class PipeBehavior : MonoBehaviour
             isRightInPipe = true;
         }
     }
+
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("LeftController"))
@@ -215,42 +270,48 @@ public class PipeBehavior : MonoBehaviour
             isRightInPipe = false;
         }
     }
-    #endregion
-    #region ControllerCallbacks
+
     private void OnLeftGrip()
     {
-        initialLeftControllerRay = GetRay(gameObject.transform.position,
-            getControllerPosition(leftController));
-        if (section == sectionBehavior.wheel && isActive) PlayAudio("ValveSFX");
+        if (leftController != null)
+        {
+            initialLeftControllerRay = GetRay(transform.position, getControllerPosition(leftController));
+        }
+        
+        if (section == SectionBehavior.wheel && isActive)
+        {
+            PlayAudio("ValveSFX");
+        }
     }
+
     private void OnRightGrip()
     {
-        initialRightControllerRay = GetRay(gameObject.transform.position,
-            getControllerPosition(rightController));
-        if (section == sectionBehavior.wheel && isActive) PlayAudio("ValveSFX");
+        if (rightController != null)
+        {
+            initialRightControllerRay = GetRay(transform.position, getControllerPosition(rightController));
+        }
+        
+        if (section == SectionBehavior.wheel && isActive)
+        {
+            PlayAudio("ValveSFX");
+        }
     }
 
-
-    #endregion
-    #region Behaviors
-    #region Wheel
     private Vector3 getControllerPosition(Transform controller)
     {
-        return controller.position;
+        return controller != null ? controller.position : Vector3.zero;
     }
-    private Ray GetRay(Vector3 RayOrigin, Vector3 RayDirectionObject)
-    {
-        
-        Ray ray = new Ray(RayOrigin, (RayDirectionObject-RayOrigin));
 
-        return ray;
+    private Ray GetRay(Vector3 rayOrigin, Vector3 rayDirectionObject)
+    {
+        return new Ray(rayOrigin, (rayDirectionObject - rayOrigin));
     }
+
     private float getAngle(Ray previous, Ray current)
     {
         Vector3 prevDir = previous.direction.normalized;
         Vector3 currDir = current.direction.normalized;
 
-       
         prevDir.y = 0;
         currDir.y = 0;
         prevDir.Normalize();
@@ -258,86 +319,76 @@ public class PipeBehavior : MonoBehaviour
 
         float angle = Vector3.SignedAngle(prevDir, currDir, Vector3.up);
 
-      
         if (angle > 180f) angle -= 360f;
         if (angle < -180f) angle += 360f;
 
         return angle;
     }
+
     private void setWheelRotation(float angle, float currentPosition)
     {
-        this.transform.rotation = Quaternion.Euler(0, (currentPosition + angle), 0);
-
-
+        transform.rotation = Quaternion.Euler(0, currentPosition + angle, 0);
     }
+
     private void wheelBehaviour()
     {
-
-
-
-        if (isLeftInPipe)
+        if (isLeftInPipe && leftGrippedPressed && leftController != null)
         {
-            if (leftGrippedPressed)
-            {
-                currentLeftControllerRay = GetRay(gameObject.transform.position,
-                    getControllerPosition(leftController));
-                Debug.DrawRay(currentLeftControllerRay.origin, currentLeftControllerRay.direction * 1, Color.blue);
-                Debug.DrawRay(initialLeftControllerRay.origin, initialLeftControllerRay.direction * 1, Color.green);
-                float angle = getAngle(initialLeftControllerRay, currentLeftControllerRay);
-
-                setWheelRotation(angle, currentWheelPosition);
-            }
-
+            currentLeftControllerRay = GetRay(transform.position, getControllerPosition(leftController));
+            Debug.DrawRay(currentLeftControllerRay.origin, currentLeftControllerRay.direction * RAY_DEBUG_LENGTH, Color.blue);
+            Debug.DrawRay(initialLeftControllerRay.origin, initialLeftControllerRay.direction * RAY_DEBUG_LENGTH, Color.green);
+            
+            float angle = getAngle(initialLeftControllerRay, currentLeftControllerRay);
+            setWheelRotation(angle, currentWheelPosition);
         }
-        if (isRightInPipe)
+
+        if (isRightInPipe && rightController != null)
         {
             if (rightGrippedPressed)
             {
-                currentRightControllerRay = GetRay(gameObject.transform.position,
-                        getControllerPosition(rightController));
-                Debug.DrawRay(currentRightControllerRay.origin, currentRightControllerRay.direction * 1, Color.blue);
-                Debug.DrawRay(initialRightControllerRay.origin, initialRightControllerRay.direction * 1, Color.green);
+                currentRightControllerRay = GetRay(transform.position, getControllerPosition(rightController));
+                Debug.DrawRay(currentRightControllerRay.origin, currentRightControllerRay.direction * RAY_DEBUG_LENGTH, Color.blue);
+                Debug.DrawRay(initialRightControllerRay.origin, initialRightControllerRay.direction * RAY_DEBUG_LENGTH, Color.green);
 
                 float angle = getAngle(initialRightControllerRay, currentRightControllerRay);
-
                 setWheelRotation(angle, currentWheelPosition);
             }
             else
             {
                 currentWheelPosition = transform.rotation.eulerAngles.y;
             }
-
         }
-        int currentRangeIndex = GetCurrentRangeIndex();  // Obtiene el indice del rango actual
-        UpdateCheckPoints(currentRangeIndex);  // Funcion para manejar checkpoints
+
+        int currentRangeIndex = GetCurrentRangeIndex();
+        UpdateCheckPoints(currentRangeIndex);
+
         if (checkPoints == MAX_CHECKPOINTS && lastCheckpoint == MAX_CHECKPOINTS - 1)
         {
-
-
             deactivate();
-
         }
+
         lastCheckpoint = checkPoints;
-
-
     }
 
     private int GetCurrentRangeIndex()
     {
-        float angleY = transform.rotation.eulerAngles.y;  // Obtiene el angulo Y
+        float angleY = transform.rotation.eulerAngles.y;
+        
         for (int i = 0; i < rotationRanges.Length - 1; i++)
         {
             if (angleY >= rotationRanges[i] && angleY < rotationRanges[i + 1])
             {
-
-                return i;  // Retorna el indice del rango (0-5)
+                return i;
             }
         }
-        return 5;  // Si esta entre 300-360, retorna 5
+        
+        return 5;
     }
+
     private void UpdateCheckPoints(int currentRangeIndex)
     {
-        int expectedCheckPoint = currentRangeIndex;  // El rango actual deberia coincidir con el checkpoint
+        int expectedCheckPoint = currentRangeIndex;
+        
         if (checkPoints == expectedCheckPoint + 1)
         {
             checkPoints--;
@@ -346,28 +397,18 @@ public class PipeBehavior : MonoBehaviour
         {
             checkPoints++;
         }
-
     }
 
-
-
-    #endregion
-    #region Screw
     private void screwBehaviour()
     {
         if (isActive)
         {
-            // Calcula la nueva posicion Y con SmoothDamp
             float newY = Mathf.SmoothDamp(transform.position.y, screwMaxHeight, ref speedValue, screwSpeed);
-
-            // Aplica el clamp inmediatamente para evitar sobrepasos
             newY = Mathf.Clamp(newY, screwMinHeight, screwMaxHeight);
 
-            // Actualiza la posicion con el valor clamped
             transform.position = new Vector3(transform.position.x, newY, transform.position.z);
 
-            // Verifica si ha llegado cerca del minimo para desactivar (ajusta el umbral si es necesario)
-            if (newY <= screwMinHeight + 0.01f)
+            if (newY <= screwMinHeight + SCREW_DEACTIVATION_THRESHOLD)
             {
                 deactivate();
                 transform.position = new Vector3(transform.position.x, screwMinHeight, transform.position.z);
@@ -375,80 +416,32 @@ public class PipeBehavior : MonoBehaviour
         }
         else
         {
-            // Si no esta activo, asegurate de que la posicion este clamped (por si acaso)
             transform.position = new Vector3(transform.position.x, screwMinHeight, transform.position.z);
         }
     }
-    #endregion
-    #region Cable
 
     private void cableBehaviour()
     {
         rightControllerLogic();
-
-
-
-
     }
 
-    private void leftControllerLogic()
-    {
-
-
-        if (isLeftInPipe)
-        {
-            if (leftGrippedPressed)
-            {
-                cableGrabed = true;
-            }
-        }
-
-        if (!leftGrippedPressed)
-        {
-            cableGrabed = false;
-        }
-
-        if (cableGrabed)
-        {
-            cableRenderer.enabled = true;
-            cableRenderer.SetPosition(0, transform.position);
-            cableRenderer.SetPosition(1, leftController.position);
-            if (endDestination?.isLeftInDestination == true)
-            {
-
-                // Detecta transicion de cable conectado
-                if (previousCableState && !leftGrippedPressed)
-                {
-                    Debug.Log("Cable connected");
-                }
-            }
-        }
-        else
-        {
-            cableRenderer.enabled = false;
-        }
-
-        previousCableState = leftGrippedPressed;
-    }
     private void rightControllerLogic()
     {
-        if (endDestination?.isRightInDestination == true)
+        if (endDestination != null && endDestination.isRightInDestination)
         {
-
-            // Detecta transicion de cable conectado
             if (previousCableState && !rightGrippedPressed)
             {
                 Debug.Log("Cable connected");
-                if (isActive) deactivate();
+                if (isActive)
+                {
+                    deactivate();
+                }
             }
         }
 
-        if (isRightInPipe)
+        if (isRightInPipe && rightGrippedPressed)
         {
-            if (rightGrippedPressed)
-            {
-                cableGrabed = true;
-            }
+            cableGrabed = true;
         }
 
         if (!rightGrippedPressed)
@@ -456,101 +449,126 @@ public class PipeBehavior : MonoBehaviour
             cableGrabed = false;
         }
 
-        if (cableGrabed)
+        if (cableGrabed && cableRenderer != null && rightController != null)
         {
             cableRenderer.enabled = true;
             cableRenderer.SetPosition(0, transform.position);
             cableRenderer.SetPosition(1, rightController.position);
-            //Show indicator to grab cable
         }
-        else
+        else if (cableRenderer != null)
         {
             cableRenderer.enabled = false;
-            //Hide indicator to grab cable
         }
+
         previousCableState = rightGrippedPressed;
     }
-    #endregion
-    #endregion
-    #region Helpers
+
     public void activate()
     {
         isActive = true;
-        arrowMesh.enabled = true;
-        arrowAnimator.enabled = true;
+        
+        if (arrowMesh != null)
+        {
+            arrowMesh.enabled = true;
+        }
+        
+        if (arrowAnimator != null)
+        {
+            arrowAnimator.enabled = true;
+        }
+
         switch (section)
         {
-            case sectionBehavior.cables:
+            case SectionBehavior.cables:
                 if (cableMesh != null) cableMesh.enabled = false;
                 if (brokenCable != null) brokenCable.enabled = true;
                 PlayAudio("CableSFX");
-                Chispas?.SetActive(true);
+                if (Chispas != null) Chispas.SetActive(true);
                 break;
-            case sectionBehavior.screw:
-                transform.position = new Vector3(transform.position.x, screwMinHeight + 0.05f, transform.position.z);
+            case SectionBehavior.screw:
+                transform.position = new Vector3(transform.position.x, screwMinHeight + SCREW_ACTIVATION_HEIGHT_OFFSET, transform.position.z);
                 PlayAudio("ScrewSFX");
-
                 break;
-            case sectionBehavior.wheel:
-            case sectionBehavior.bigWheel:
-                tutorialScript?.ActivateTutorial();
+            case SectionBehavior.wheel:
+            case SectionBehavior.bigWheel:
+                if (tutorialScript != null)
+                {
+                    tutorialScript.ActivateTutorial();
+                }
                 checkPoints = 0;
                 lastCheckpoint = 0;
                 PlayAudio("WaterSFX");
-                if (waterAnimator != null) waterAnimator.SetTrigger("Open");
+                if (waterAnimator != null)
+                {
+                    waterAnimator.SetTrigger("Open");
+                }
                 break;
         }
-
-
     }
+
     public void deactivate()
     {
         isActive = false;
-        arrowMesh.enabled = false;
-        arrowAnimator.enabled= false;
-        GameManager.Instance.AddMinigamePoint();
+        
+        if (arrowMesh != null)
+        {
+            arrowMesh.enabled = false;
+        }
+        
+        if (arrowAnimator != null)
+        {
+            arrowAnimator.enabled = false;
+        }
+
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.AddMinigamePoint();
+        }
+
         switch (section)
         {
-            case sectionBehavior.cables:
-                Chispas?.SetActive(false);
+            case SectionBehavior.cables:
+                if (Chispas != null) Chispas.SetActive(false);
                 if (cableMesh != null) cableMesh.enabled = true;
                 if (brokenCable != null) brokenCable.enabled = false;
                 StopAudio("CableSFX");
                 break;
-            case sectionBehavior.screw:
+            case SectionBehavior.screw:
                 transform.position = new Vector3(transform.position.x, screwMinHeight, transform.position.z);
                 StopAudio("ScrewSFX");
                 break;
-            case sectionBehavior.wheel:
-            case sectionBehavior.bigWheel:
-                tutorialScript?.DeactivateTutorial();
+            case SectionBehavior.wheel:
+            case SectionBehavior.bigWheel:
+                if (tutorialScript != null)
+                {
+                    tutorialScript.DeactivateTutorial();
+                }
                 StopAudio("WaterSFX");
                 checkPoints = 0;
                 lastCheckpoint = 0;
                 Debug.Log("Wheel spinned 1 time");
-                if (waterAnimator != null) waterAnimator.SetTrigger("Close");
+                if (waterAnimator != null)
+                {
+                    waterAnimator.SetTrigger("Close");
+                }
                 break;
-
         }
     }
+
     public string getSectionType()
     {
         return section.ToString();
     }
+
     public Vector3 getInfernalPosition()
     {
-
         return worldPosition;
     }
 
     private void OnDrawGizmos()
     {
-
         Gizmos.color = Color.red;
         Vector3 newWorldPosition = transform.TransformPoint(InfernalPosition);
-
-        Gizmos.DrawWireSphere(newWorldPosition, 0.3f);
-
+        Gizmos.DrawWireSphere(newWorldPosition, GIZMO_SPHERE_RADIUS);
     }
-    #endregion
 }

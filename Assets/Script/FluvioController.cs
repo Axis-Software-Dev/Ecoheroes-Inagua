@@ -1,14 +1,14 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
+
+#if UNITY_EDITOR
 using UnityEditor;
-using TMPro;
-using UnityEngine.UIElements;
-using UnityEngine.Splines;
-using System.Collections;
+#endif
 
 namespace Fluvio
 {
@@ -17,12 +17,15 @@ namespace Fluvio
     {
         public string name;
         public AudioClip clip;
-        [Range(0f, 1f)] public float volume = 1f;
+        [Range(0f, 1f)] 
+        public float volume = 1f;
         public float pitch = 1f;
         public float timeToSkip = 0f;
-        [Range(0f, 1f)] public float spatialSound = 0f;
+        [Range(0f, 1f)] 
+        public float spatialSound = 0f;
 
-        [NonSerialized] public AudioSource source;
+        [NonSerialized] 
+        public AudioSource source;
     }
 
     [Serializable]
@@ -43,20 +46,14 @@ namespace Fluvio
         }
 
         public ActionType Type;
-
-        // Common fields used by various actions
-        public string stringArg;          // e.g., audio name, method name, animator param
-        public int intArg;                // e.g., target index
-        public float floatArg;            // e.g., speed or misc
-        public bool boolArg;              // toggle value
-        public Vector3 vectorArg;         // control point or offset (for curve)
-        public UnityEvent unityEvent;     // designer assigned event
+        public string stringArg;
+        public int intArg;
+        public float floatArg;
+        public bool boolArg;
+        public Vector3 vectorArg;
+        public UnityEvent unityEvent;
     }
 
-    /// <summary>
-    /// Robust FluvioController: safe runtime script with data-driven actions and both straight and curved walking.
-    /// Replace older scripts with this; wire ActionEntry lists in inspector (or call StartWalkingTo/StartWalkingCurve from code).
-    /// </summary>
     public class FluvioController : MonoBehaviour
     {
         [Header("Audio Settings")]
@@ -79,7 +76,6 @@ namespace Fluvio
         [Tooltip("List of actions that can be executed by an external caller or by OnEnterRange.")]
         public ActionEntry[] actions;
 
-        // internals
         private Dictionary<string, FluvioSound> _soundMap;
         private Transform _playerTransform;
         private float _timer = 0f;
@@ -89,30 +85,34 @@ namespace Fluvio
         private bool _allowLookAtPlayer;
         private int _lastRangeIndex = -1;
 
-        // walking internals
         private bool _activeWalkShouldLook = false;
         private bool _useCurve = false;
         private float _walkProgress = 0f;
         private Vector3 _activeWalkTarget;
         private persistanceData _persistanceData;
 
-        // curve internals
         private Vector3 _curveStart, _curveControl, _curveEnd;
 
-        // reflection cache for invoking local methods
         private readonly Dictionary<string, MethodInfo> _methodCache = new Dictionary<string, MethodInfo>(StringComparer.Ordinal);
 
-        #region Unity callbacks
+        private const float LOOK_ROTATION_SPEED = 2f;
+        private const float DISTANCE_THRESHOLD = 0.01f;
+        private const float VICTORY_INITIAL_DELAY = 3f;
+        private const float VICTORY_MID_DELAY = 6.5f;
+        private const float VICTORY_AFTER_PANIC = 2f;
+        private const float VICTORY_FINAL_DELAY = 9f;
+        private const int VICTORY_SCENE_ID = 3;
+
+        #region Unity Callbacks
         private void Awake()
         {
-            // Build audio map
             _soundMap = new Dictionary<string, FluvioSound>(StringComparer.OrdinalIgnoreCase);
             if (sounds != null)
             {
                 foreach (var s in sounds)
                 {
                     if (s == null) continue;
-                    // create audio source for each sound (small projects okay). Consider pooling if many sounds.
+
                     s.source = gameObject.AddComponent<AudioSource>();
                     s.source.clip = s.clip;
                     s.source.volume = s.volume;
@@ -122,14 +122,22 @@ namespace Fluvio
 
                     if (!string.IsNullOrEmpty(s.name))
                     {
-                        if (!_soundMap.ContainsKey(s.name)) _soundMap.Add(s.name, s);
-                        else Debug.LogWarning($"Duplicate sound name '{s.name}' on {name}.");
+                        if (!_soundMap.ContainsKey(s.name))
+                        {
+                            _soundMap.Add(s.name, s);
+                        }
+                        else
+                        {
+                            Debug.LogWarning($"Duplicate sound name '{s.name}' on {name}.");
+                        }
                     }
                 }
             }
 
             if (Animator == null)
+            {
                 Animator = GetComponentInChildren<Animator>();
+            }
 
             _defaultSpeed = speed;
 
@@ -141,9 +149,6 @@ namespace Fluvio
 
         private void Update()
         {
-#if UNITY_EDITOR
-#endif
-            // timer & animation start flag handling
             if (StartAnimationOnFlag && !_animationHasStarted)
             {
                 StartAnimation();
@@ -156,7 +161,6 @@ namespace Fluvio
 
             _timer += Time.deltaTime;
 
-            // stop if we've passed the final threshold
             if (_timer >= interval[interval.Length - 1])
             {
                 StopTimer();
@@ -175,13 +179,14 @@ namespace Fluvio
                 _lastRangeIndex = currentRange;
             }
 
-            if (_playerTransform != null)
+            if (_useCurve) 
             {
-                Vector3 look = _playerTransform.position - transform.position;
+                MoveAlongCurve();
             }
-
-            if (_useCurve) MoveAlongCurve();
-            else MoveTowardsActiveTarget();
+            else 
+            {
+                MoveTowardsActiveTarget();
+            }
         }
 
         private void LateUpdate()
@@ -192,37 +197,41 @@ namespace Fluvio
                 if (lookDir.sqrMagnitude > 0.001f)
                 {
                     Quaternion targetRot = Quaternion.LookRotation(lookDir);
-                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, 2 * Time.deltaTime);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, LOOK_ROTATION_SPEED * Time.deltaTime);
                 }
             }
         }
 
         private void OnDrawGizmos()
         {
-            if (!drawPositionGizmos) return;
+            if (!drawPositionGizmos || actions == null) return;
 
             Gizmos.color = positionGizmosColor;
             for (int i = 0; i < actions.Length; i++)
             {
-                if (actions[i].vectorArg != null && actions[i].vectorArg != Vector3.zero)
+                if (actions[i] != null && actions[i].vectorArg != Vector3.zero)
                 {
                     Vector3 world = actions[i].vectorArg;
                     Gizmos.DrawWireSphere(world, 0.12f);
 #if UNITY_EDITOR
-                    UnityEditor.Handles.Label(world + Vector3.up * 0.15f, $"P[{i}]");
+                    Handles.Label(world + Vector3.up * 0.15f, $"P[{i}]");
 #endif
                 }
             }
         }
         #endregion
 
-        #region Range logic
+        #region Range Logic
         private int GetRangeIndexForTime(float t)
         {
             if (interval == null) return -1;
+            
             for (int i = 0; i < interval.Length - 1; i++)
             {
-                if (t >= interval[i] && t < interval[i + 1]) return i;
+                if (t >= interval[i] && t < interval[i + 1]) 
+                {
+                    return i;
+                }
             }
             return -1;
         }
@@ -233,17 +242,11 @@ namespace Fluvio
             {
                 foreach (var entry in actions)
                 {
-                    if (entry.intArg == rangeIndex)
+                    if (entry != null && entry.intArg == rangeIndex)
                     {
                         ExecuteAction(entry);
                     }
                 }
-            }
-
-            switch (rangeIndex)
-            {
-                default:
-                    break;
             }
         }
         #endregion
@@ -252,10 +255,14 @@ namespace Fluvio
         private void ExecuteAction(ActionEntry entry)
         {
             if (entry == null) return;
+
             switch (entry.Type)
             {
                 case ActionEntry.ActionType.PlayAudio:
-                    if (!string.IsNullOrEmpty(entry.stringArg)) PlayAudio(entry.stringArg);
+                    if (!string.IsNullOrEmpty(entry.stringArg)) 
+                    {
+                        PlayAudio(entry.stringArg);
+                    }
                     break;
                 case ActionEntry.ActionType.ToggleSkins:
                     SetSkinsActive(entry.boolArg);
@@ -268,15 +275,21 @@ namespace Fluvio
                     break;
                 case ActionEntry.ActionType.SetAnimatorBool:
                     if (Animator != null && !string.IsNullOrEmpty(entry.stringArg))
+                    {
                         Animator.SetBool(entry.stringArg, entry.boolArg);
+                    }
                     break;
                 case ActionEntry.ActionType.SetAnimatorTrigger:
                     if (Animator != null && !string.IsNullOrEmpty(entry.stringArg))
+                    {
                         Animator.SetTrigger(entry.stringArg);
+                    }
                     break;
                 case ActionEntry.ActionType.InvokeLocalMethod:
                     if (!string.IsNullOrEmpty(entry.stringArg))
+                    {
                         InvokeLocalMethodSafe(entry.stringArg);
+                    }
                     break;
                 case ActionEntry.ActionType.AllowLookAtPlayer:
                     _allowLookAtPlayer = entry.boolArg;
@@ -285,81 +298,75 @@ namespace Fluvio
                     entry.unityEvent?.Invoke();
                     break;
                 case ActionEntry.ActionType.playVarAudio:
-                    if (_persistanceData?.getSelectedCharacter() != null ||
-                        _persistanceData?.getSelectedCharacter() != "none")
-                        playVarAudio(_persistanceData.getSelectedCharacter());
+                    if (_persistanceData != null)
+                    {
+                        string selectedChar = _persistanceData.getSelectedCharacter();
+                        if (!string.IsNullOrEmpty(selectedChar) && selectedChar != "none")
+                        {
+                            playVarAudio(selectedChar);
+                        }
+                    }
                     break;
             }
         }
         #endregion
 
-        #region Audio helpers
+        #region Audio
         public void PlayAudio(string audioName)
         {
             if (string.IsNullOrEmpty(audioName) || _soundMap == null) return;
+            
             if (_soundMap.TryGetValue(audioName, out var s) && s?.source != null)
             {
-                if (!s.source.isPlaying) s.source.Play();
+                if (!s.source.isPlaying)
+                {
+                    s.source.Play();
+                }
             }
             else
             {
                 Debug.LogWarning($"PlayAudio: sound '{audioName}' not found on {name}");
             }
         }
+
         private void playVarAudio(string characterSelected)
         {
             PlayAudio(characterSelected);
         }
         #endregion
 
-        #region Walking / movement (public API)
-        /// <summary>Begin straight-line walk toward the indexed follow position.</summary>
+        #region Movement
         public void StartWalkingTo(Vector3 target, bool lookTowardsTarget)
         {
-            if (target == null)
-            {
-                Debug.LogWarning($"StartWalkingTo: invalid target {target}.");
-                _activeWalkTarget = transform.position;
-                _activeWalkShouldLook = false;
-                _useCurve = false;
-                return;
-            }
-
             _activeWalkTarget = target;
             _activeWalkShouldLook = lookTowardsTarget;
             _useCurve = false;
         }
 
-        /// <summary>Begin curved walk using a quadratic Bezier curve (controlPoint is world-space).</summary>
         public void StartWalkingCurve(Vector3 target, bool lookTowardsTarget, string curveDirection, float arcHeight = 1f)
         {
-            if (target == null)
-            {
-                Debug.LogWarning($"StartWalkingCurve: invalid target {target}.");
-                _useCurve = false;
-                return;
-            }
-
             _activeWalkShouldLook = lookTowardsTarget;
             _walkProgress = 0f;
             _curveStart = transform.position;
             _curveEnd = target;
-
             _useCurve = true;
+
+            Vector3 midPoint = (_curveStart + _curveEnd) * 0.5f;
+
             switch (curveDirection.ToLower())
             {
                 case "left":
-                    _curveControl = ((_curveStart + _curveEnd) * .5f) - transform.right * arcHeight;
+                    _curveControl = midPoint - transform.right * arcHeight;
                     break;
                 case "right":
-                    _curveControl = ((_curveStart + _curveEnd) * .5f) + transform.right * arcHeight;
+                    _curveControl = midPoint + transform.right * arcHeight;
                     break;
                 case "up":
-                    _curveControl = ((_curveStart + _curveEnd) * .5f) + Vector3.up * arcHeight;
+                    _curveControl = midPoint + Vector3.up * arcHeight;
                     break;
                 default:
                     Debug.LogWarning($"Unknown curve direction '{curveDirection}', defaulting to up.");
-                    _curveControl = ((_curveStart + _curveEnd) * .5f) + Vector3.up * arcHeight;
+                    _curveControl = midPoint + Vector3.up * arcHeight;
                     break;
             }
         }
@@ -373,6 +380,7 @@ namespace Fluvio
         private void MoveTowardsActiveTarget()
         {
             if (_activeWalkTarget == Vector3.zero) return;
+
             float moveStep = speed * Time.deltaTime;
 
             if (_activeWalkShouldLook)
@@ -387,7 +395,7 @@ namespace Fluvio
 
             transform.position = Vector3.MoveTowards(transform.position, _activeWalkTarget, moveStep);
 
-            if (Vector3.Distance(transform.position, _activeWalkTarget) < 0.01f)
+            if (Vector3.Distance(transform.position, _activeWalkTarget) < DISTANCE_THRESHOLD)
             {
                 StopWalking();
             }
@@ -397,10 +405,10 @@ namespace Fluvio
         {
             float denom = Vector3.Distance(_curveStart, _curveEnd);
             if (denom <= 0.0001f) denom = 0.0001f;
+
             _walkProgress += Time.deltaTime * (speed / denom);
             _walkProgress = Mathf.Clamp01(_walkProgress);
 
-            // Quadratic Bezier: (1-t)^2 * P0 + 2(1-t)t * P1 + t^2 * P2
             float t = _walkProgress;
             float u = 1f - t;
             Vector3 pos = u * u * _curveStart + 2f * u * t * _curveControl + t * t * _curveEnd;
@@ -424,15 +432,20 @@ namespace Fluvio
         }
         #endregion
 
-        #region Helpers & utilities
-
+        #region Helpers
         private void SetSkinsActive(bool active)
         {
             if (skinMeshRenderedArray == null) return;
-            foreach (var s in skinMeshRenderedArray) if (s != null) s.enabled = active;
+            
+            foreach (var s in skinMeshRenderedArray)
+            {
+                if (s != null)
+                {
+                    s.enabled = active;
+                }
+            }
         }
 
-        /// <summary>Public: start the controller animation sequence.</summary>
         public void StartAnimation()
         {
             StartAnimationOnFlag = true;
@@ -450,24 +463,38 @@ namespace Fluvio
         private IEnumerator VictorySequenceCoroutine()
         {
             Debug.Log("Starting victory sequence");
-            yield return new WaitForSeconds(3f);
+            yield return new WaitForSeconds(VICTORY_INITIAL_DELAY);
 
             PlayAudio("14");
 
-            Animator.SetTrigger("mb");
+            if (Animator != null)
+            {
+                Animator.SetTrigger("mb");
+            }
 
-            yield return new WaitForSeconds(6.5f);
+            yield return new WaitForSeconds(VICTORY_MID_DELAY);
 
             PlayAudio("alarm");
-            Animator.SetTrigger("Panico1");
+            
+            if (Animator != null)
+            {
+                Animator.SetTrigger("Panico1");
+            }
 
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(VICTORY_AFTER_PANIC);
 
             PlayAudio("15");
-            yield return new WaitForSeconds(9);
+            yield return new WaitForSeconds(VICTORY_FINAL_DELAY);
 
-
-            GameObject.Find("SceneManager").GetComponent<LoadingScreen>().LoadScene(3);
+            GameObject sceneManagerObj = GameObject.Find("SceneManager");
+            if (sceneManagerObj != null)
+            {
+                LoadingScreen loadingScreen = sceneManagerObj.GetComponent<LoadingScreen>();
+                if (loadingScreen != null)
+                {
+                    loadingScreen.LoadScene(VICTORY_SCENE_ID);
+                }
+            }
         }
 
         public void StopTimer()
