@@ -10,6 +10,7 @@ public class TaladroAnimationScript : MonoBehaviour
     public float[] intervals;
     public AudioSource drillSound;
     public AudioSource rockSound;
+    public GameObject videoObject;
 
     private const int FIRST_INTERVAL_INDEX = 0;
     private const int SECOND_INTERVAL_INDEX = 1;
@@ -34,6 +35,11 @@ public class TaladroAnimationScript : MonoBehaviour
         if (rockParticle != null)
         {
             rockParticle.SetActive(false);
+        }
+
+        if(videoObject != null)
+        {
+            videoObject.SetActive(false);
         }
     }
 
@@ -82,6 +88,18 @@ public class TaladroAnimationScript : MonoBehaviour
         if (rockParticle != null)
         {
             rockParticle.SetActive(true);
+        }
+
+        if (videoObject != null)
+        {
+            videoObject.SetActive(true);
+        }
+
+        yield return new WaitForSeconds(28f);
+
+        if (videoObject != null)
+        {
+            videoObject.SetActive(false);
         }
     }
 }
