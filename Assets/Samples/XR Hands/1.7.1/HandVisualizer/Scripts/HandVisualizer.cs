@@ -1,11 +1,16 @@
 using System.Collections.Generic;
 using UnityEngine.Serialization;
-#if OPENXR_AVAILABLE
-using UnityEngine.XR.OpenXR;
-#endif
 
 namespace UnityEngine.XR.Hands.Samples.VisualizerSample
 {
+    // Hand rig setups can differ between platforms. In these cases, the HandVisualizer supports displaying unique hands on a per-platform basis.
+    // If you would like to customize the hand meshes that are displayed by the HandVisualizer, based on the platform you are using,
+    // you will need to replace the rigged hand mesh references assigned to the corresponding fields for that platform.
+    // For Meta Quest devices, assign your rigged hand meshes to the "m_MetaQuestLeftHandMesh" & "m_MetaQuestRightHandMesh" fields.
+    // For Android XR devices, assign your rigged hand meshes to the "m_AndroidXRLeftHandMesh" & "m_AndroidXRRightHandMesh" fields.
+    // The rigged hand meshes that are assigned for a given platform will be displayed when that platform is detected,
+    // and any other rigged hand meshes assigned for other undetected platforms will not be displayed.
+
     /// <summary>
     /// This component visualizes the hand joints and mesh for the left and right hands.
     /// </summary>
@@ -32,29 +37,6 @@ namespace UnityEngine.XR.Hands.Samples.VisualizerSample
             None,
         }
 
-#if !XRHANDS_1_6_0
-        /// <summary>
-        /// Describes which version of authored hand meshes is detected for use by the provider.
-        /// </summary>
-        public enum XRDetectedHandMeshLayout
-        {
-            /// <summary>
-            /// The system was unable to detect a hand mesh layout to use.
-            /// </summary>
-            Unknown,
-
-            /// <summary>
-            /// The originally shipped version of sample meshes provided by the XR Hands package, compatible with Meta Quest in OpenXR.
-            /// </summary>
-            OpenXRMetaQuest,
-
-            /// <summary>
-            /// The version of sample meshes that is meant for use with the Android XR runtime in OpenXR.
-            /// </summary>
-            OpenXRAndroidXR,
-        }
-#endif
-
         [SerializeField]
         [Tooltip("If this is enabled, this component will enable the Input System internal feature flag 'USE_OPTIMIZED_CONTROLS'. You must have at least version 1.5.0 of the Input System and have its backend enabled for this to take effect.")]
         bool m_UseOptimizedControls;
@@ -68,11 +50,13 @@ namespace UnityEngine.XR.Hands.Samples.VisualizerSample
         GameObject m_MetaQuestRightHandMesh;
 
         [SerializeField]
-        [Tooltip("References either a prefab or a GameObject in the scene that will be used to visualize the left hand.")]
+        [Tooltip("References either a prefab or a GameObject in the scene that will be used to visualize the left hand on Android XR devices." +
+                 "<br><br><b>Instructions for how to setup and use these meshes can be found at the top of the <b>HandVisualizer.cs class</b>")]
         GameObject m_AndroidXRLeftHandMesh;
 
         [SerializeField]
-        [Tooltip("References either a prefab or a GameObject in the scene that will be used to visualize the right hand.")]
+        [Tooltip("References either a prefab or a GameObject in the scene that will be used to visualize the right hand on Android XR devices." +
+                 "<br><br><b>Instructions for how to setup and use these meshes can be found at the top of the <b>HandVisualizer.cs class</b>")]
         GameObject m_AndroidXRRightHandMesh;
 
         [SerializeField]
@@ -218,9 +202,8 @@ namespace UnityEngine.XR.Hands.Samples.VisualizerSample
             if (!foundRunningHandSubsystem)
                 return;
 
-            var meshType = GetProviderLayoutMesh();
             GameObject selectedLeftHandMesh = null, selectedRightHandMesh = null;
-            if (meshType == XRDetectedHandMeshLayout.OpenXRAndroidXR)
+            if (m_Subsystem.detectedHandMeshLayout == XRDetectedHandMeshLayout.OpenXRAndroidXR)
             {
                 selectedLeftHandMesh = m_AndroidXRLeftHandMesh;
                 selectedRightHandMesh = m_AndroidXRRightHandMesh;
@@ -261,26 +244,6 @@ namespace UnityEngine.XR.Hands.Samples.VisualizerSample
             m_PreviousVelocityType = m_VelocityType;
 
             SubscribeHandSubsystem();
-        }
-
-        XRDetectedHandMeshLayout GetProviderLayoutMesh()
-        {
-#if XRHANDS_1_6_0
-            return m_Subsystem.detectedHandMeshLayout;
-#elif OPENXR_AVAILABLE
-            var openXRRuntimeName = OpenXRRuntime.name;
-            if (openXRRuntimeName == "Oculus")
-            {
-                return XRDetectedHandMeshLayout.OpenXRMetaQuest;
-            }
-            else if (openXRRuntimeName == "Android XR")
-            {
-                return XRDetectedHandMeshLayout.OpenXRAndroidXR;
-            }
-            return XRDetectedHandMeshLayout.Unknown;
-#else
-            return XRDetectedHandMeshLayout.Unknown;
-#endif
         }
 
         void SubscribeHandSubsystem()
