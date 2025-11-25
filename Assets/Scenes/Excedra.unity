@@ -2362,7 +2362,7 @@ PrefabInstance:
     - target: {fileID: -361728287347844624, guid: 6938b108260b5c246ba6c6f8af0d1668, type: 3}
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
-      objectReference: {fileID: 2100000, guid: 81afe56c72b93e1469e29fd429b8ef23, type: 2}
+      objectReference: {fileID: 2100000, guid: b060ba9ba5cb43840b806c314cb0980b, type: 2}
     - target: {fileID: 211190886275874670, guid: 6938b108260b5c246ba6c6f8af0d1668, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -6757,16 +6757,16 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: d4df29cf71fcf6e4b8eb84d792b42b7c, type: 3}
     volume: 1
     pitch: 1
-    source: {fileID: 0}
     timeToSkip: 0
     spatialSound: 1
+    source: {fileID: 0}
   - name: depart
     clip: {fileID: 8300000, guid: 33a114b692ad25b48b42d76e947878ce, type: 3}
     volume: 1
     pitch: 1
-    source: {fileID: 0}
     timeToSkip: 0
     spatialSound: 1
+    source: {fileID: 0}
   toFollowPositions:
   - {x: 7.12, y: 12.9, z: 0.1}
   - {x: 61.86, y: 29.91, z: 19.51}
