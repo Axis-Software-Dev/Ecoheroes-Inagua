@@ -485,10 +485,10 @@ namespace Fluvio
             PlayAudio("15");
             yield return new WaitForSeconds(VICTORY_FINAL_DELAY);
 
-            GameObject sceneManagerObj = GameObject.Find("SceneManager");
-            if (sceneManagerObj != null)
+            GameObject sceneManager = GameObject.Find("SceneManager");
+            if (sceneManager != null)
             {
-                LoadingScreen loadingScreen = sceneManagerObj.GetComponent<LoadingScreen>();
+                LoadingScreen loadingScreen = sceneManager.GetComponent<LoadingScreen>();
                 if (loadingScreen != null)
                 {
                     loadingScreen.LoadScene(3);
