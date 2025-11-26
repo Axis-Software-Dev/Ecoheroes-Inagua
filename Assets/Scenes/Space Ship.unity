@@ -7729,7 +7729,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 4c9d3c2257100714fab8061179ceca83, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8924,6 +8924,42 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8ab59f4184d160743a4ab969308afc13, type: 3}
+--- !u!1 &400954926 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 92a40f1663beadf4f88c69380689b3c5, type: 3}
+  m_PrefabInstance: {fileID: 857461809}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &400954927
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 400954926}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c4b3ce792d442544ab02df314c831d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HologramAuraTorus
+  torusRadius: 1.7
+  tubeRadius: 0.1
+  torusHeight: 1
+  radialSegments: 48
+  tubularSegments: 24
+  offsetX: -0.3
+  offsetY: 0.75
+  offsetZ: 0
+  controlObject: {fileID: 97625698}
+  waveAmplitude: 0.2
+  waveFrequency: 4
+  waveSpeed: 2
+  rotationSpeed: 30
+  baseColor: {r: 0, g: 0.5, b: 1, a: 0.3}
+  emissionColor: {r: 0, g: 0.8, b: 1, a: 1}
+  emissionIntensity: 2
+  pulseSpeed: 2
+  minAlpha: 0.001
+  maxAlpha: 0.02
 --- !u!1001 &535893208
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9845,15 +9881,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 92a40f1663beadf4f88c69380689b3c5, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.7
+      value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 92a40f1663beadf4f88c69380689b3c5, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.7
+      value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 92a40f1663beadf4f88c69380689b3c5, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.7
+      value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 92a40f1663beadf4f88c69380689b3c5, type: 3}
       propertyPath: m_LocalPosition.x
@@ -9861,7 +9897,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 92a40f1663beadf4f88c69380689b3c5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.219
+      value: 0.55
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 92a40f1663beadf4f88c69380689b3c5, type: 3}
       propertyPath: m_LocalPosition.z
@@ -9906,7 +9942,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 92a40f1663beadf4f88c69380689b3c5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 400954927}
   m_SourcePrefab: {fileID: 100100000, guid: 92a40f1663beadf4f88c69380689b3c5, type: 3}
 --- !u!1 &881152033
 GameObject:
