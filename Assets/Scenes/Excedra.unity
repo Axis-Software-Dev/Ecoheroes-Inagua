@@ -766,6 +766,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1007743728496211383, guid: a0533defe17738e4a92d45539479a8a1, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1007743728496211383, guid: a0533defe17738e4a92d45539479a8a1, type: 3}
+      propertyPath: 'm_BlendShapeWeights.Array.data[0]'
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 8275628569695225524, guid: a0533defe17738e4a92d45539479a8a1, type: 3}
       propertyPath: m_Name
       value: woman_5
@@ -1743,6 +1751,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6020121176082869363, guid: 2f965f5298d251443b012c09c6c3a392, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6020121176082869363, guid: 2f965f5298d251443b012c09c6c3a392, type: 3}
+      propertyPath: 'm_BlendShapeWeights.Array.data[0]'
+      value: 100
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1800,6 +1816,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: b9decd620c68a89438829babbe0f530e, type: 2}
+    - target: {fileID: -3006745861866609063, guid: 383c7f370a0ad614493cf8f7ad40af3a, type: 3}
+      propertyPath: 'm_BlendShapeWeights.Array.data[0]'
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 383c7f370a0ad614493cf8f7ad40af3a, type: 3}
       propertyPath: m_Name
       value: 251126_MESH_HOMBRE_3
@@ -2465,6 +2485,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: man_5 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 6180187551825643074, guid: a4553e1d67eb1d84f80e531f6ef0a0a7, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6180187551825643074, guid: a4553e1d67eb1d84f80e531f6ef0a0a7, type: 3}
+      propertyPath: 'm_BlendShapeWeights.Array.data[0]'
+      value: 100
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2611,6 +2639,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: b9decd620c68a89438829babbe0f530e, type: 2}
+    - target: {fileID: 1753750083406263586, guid: 9707917c7b03618468fb7e236d7b98bc, type: 3}
+      propertyPath: 'm_BlendShapeWeights.Array.data[0]'
+      value: 100
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3354,6 +3386,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: b9decd620c68a89438829babbe0f530e, type: 2}
+    - target: {fileID: 6347049897775638737, guid: 58da99f4f3919704f8b9a2375272d132, type: 3}
+      propertyPath: 'm_BlendShapeWeights.Array.data[0]'
+      value: 100
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3628,6 +3664,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: b9decd620c68a89438829babbe0f530e, type: 2}
+    - target: {fileID: 3339750756486031761, guid: 40e0645886e42034a9c8b3fcf0639ec0, type: 3}
+      propertyPath: 'm_BlendShapeWeights.Array.data[0]'
+      value: 100
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5774,6 +5814,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: b9decd620c68a89438829babbe0f530e, type: 2}
+    - target: {fileID: 6347049897775638737, guid: 58da99f4f3919704f8b9a2375272d132, type: 3}
+      propertyPath: 'm_BlendShapeWeights.Array.data[0]'
+      value: 100
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6316,6 +6360,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: b9decd620c68a89438829babbe0f530e, type: 2}
+    - target: {fileID: -6036597713248977045, guid: 84678cac9b800e749bea707b82d29cb3, type: 3}
+      propertyPath: 'm_BlendShapeWeights.Array.data[0]'
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 84678cac9b800e749bea707b82d29cb3, type: 3}
       propertyPath: m_Name
       value: 251126_MESH_MUJER_2
@@ -6380,6 +6428,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: b9decd620c68a89438829babbe0f530e, type: 2}
+    - target: {fileID: -5745421101525551161, guid: c2e5df0bb441a3141a94b7a40b7fe2df, type: 3}
+      propertyPath: 'm_BlendShapeWeights.Array.data[0]'
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: c2e5df0bb441a3141a94b7a40b7fe2df, type: 3}
       propertyPath: m_Name
       value: 251126_MESH_HOMBRE_4
@@ -7856,6 +7908,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8372247121772756397, guid: 281134a50d12c154f9c694d662143ab4, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8372247121772756397, guid: 281134a50d12c154f9c694d662143ab4, type: 3}
+      propertyPath: 'm_BlendShapeWeights.Array.data[0]'
+      value: 100
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -7912,6 +7972,14 @@ PrefabInstance:
     - target: {fileID: 5416427763320045229, guid: a4553e1d67eb1d84f80e531f6ef0a0a7, type: 3}
       propertyPath: m_Name
       value: man_5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6180187551825643074, guid: a4553e1d67eb1d84f80e531f6ef0a0a7, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6180187551825643074, guid: a4553e1d67eb1d84f80e531f6ef0a0a7, type: 3}
+      propertyPath: 'm_BlendShapeWeights.Array.data[0]'
+      value: 100
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8225,6 +8293,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: b9decd620c68a89438829babbe0f530e, type: 2}
+    - target: {fileID: 3339750756486031761, guid: 40e0645886e42034a9c8b3fcf0639ec0, type: 3}
+      propertyPath: 'm_BlendShapeWeights.Array.data[0]'
+      value: 100
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -8357,6 +8429,14 @@ PrefabInstance:
     - target: {fileID: 3328921646890050308, guid: 49ae00cf1d32cc044926643628b74764, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9222784302336484022, guid: 49ae00cf1d32cc044926643628b74764, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9222784302336484022, guid: 49ae00cf1d32cc044926643628b74764, type: 3}
+      propertyPath: 'm_BlendShapeWeights.Array.data[0]'
+      value: 100
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
