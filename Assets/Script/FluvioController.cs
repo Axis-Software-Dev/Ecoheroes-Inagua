@@ -101,7 +101,6 @@ namespace Fluvio
         private const float VICTORY_MID_DELAY = 6.5f;
         private const float VICTORY_AFTER_PANIC = 2f;
         private const float VICTORY_FINAL_DELAY = 9f;
-        private const int VICTORY_SCENE_ID = 3;
 
         #region Unity Callbacks
         private void Awake()
@@ -492,7 +491,7 @@ namespace Fluvio
                 LoadingScreen loadingScreen = sceneManagerObj.GetComponent<LoadingScreen>();
                 if (loadingScreen != null)
                 {
-                    loadingScreen.LoadScene(VICTORY_SCENE_ID);
+                    loadingScreen.LoadScene(3);
                 }
             }
         }
