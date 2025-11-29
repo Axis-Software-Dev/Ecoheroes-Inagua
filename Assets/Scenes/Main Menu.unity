@@ -401,6 +401,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: LluviaCombatPose
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d5f47352567e55c44b04b6f52f075cb3, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7993478961484444229, guid: d5f47352567e55c44b04b6f52f075cb3, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -1418,6 +1422,223 @@ Transform:
   - {fileID: 870869123}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 25.357, y: -88.047, z: 0}
+--- !u!1001 &471128316
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: da5bdbc6703c2214d8eddd9d9c78ea53, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.2613798
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: da5bdbc6703c2214d8eddd9d9c78ea53, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.2613798
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: da5bdbc6703c2214d8eddd9d9c78ea53, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.2613798
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: da5bdbc6703c2214d8eddd9d9c78ea53, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -9.493
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: da5bdbc6703c2214d8eddd9d9c78ea53, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.3852
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: da5bdbc6703c2214d8eddd9d9c78ea53, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -4.2789993
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: da5bdbc6703c2214d8eddd9d9c78ea53, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.8331682
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: da5bdbc6703c2214d8eddd9d9c78ea53, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: da5bdbc6703c2214d8eddd9d9c78ea53, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.55301976
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: da5bdbc6703c2214d8eddd9d9c78ea53, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: da5bdbc6703c2214d8eddd9d9c78ea53, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: da5bdbc6703c2214d8eddd9d9c78ea53, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 67.149
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: da5bdbc6703c2214d8eddd9d9c78ea53, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: da5bdbc6703c2214d8eddd9d9c78ea53, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: da5bdbc6703c2214d8eddd9d9c78ea53, type: 3}
+      propertyPath: m_Name
+      value: LluviaMisticaTpose
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: da5bdbc6703c2214d8eddd9d9c78ea53, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 471128320}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: da5bdbc6703c2214d8eddd9d9c78ea53, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 471128319}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: da5bdbc6703c2214d8eddd9d9c78ea53, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 471128318}
+  m_SourcePrefab: {fileID: 100100000, guid: da5bdbc6703c2214d8eddd9d9c78ea53, type: 3}
+--- !u!1 &471128317 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: da5bdbc6703c2214d8eddd9d9c78ea53, type: 3}
+  m_PrefabInstance: {fileID: 471128316}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &471128318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 471128317}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a35f6cfbfba9b548aaa00d52cfe8a50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable
+  m_InteractionManager: {fileID: 1928628947}
+  m_Colliders:
+  - {fileID: 194686291}
+  m_InteractionLayers:
+    m_Bits: 1
+  m_DistanceCalculationMode: 1
+  m_SelectMode: 0
+  m_FocusMode: 1
+  m_CustomReticle: {fileID: 0}
+  m_AllowGazeInteraction: 0
+  m_AllowGazeSelect: 0
+  m_OverrideGazeTimeToSelect: 0
+  m_GazeTimeToSelect: 0.5
+  m_OverrideTimeToAutoDeselectGaze: 0
+  m_TimeToAutoDeselectGaze: 3
+  m_AllowGazeAssistance: 0
+  m_FirstHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstSelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastSelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstFocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastFocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Activated:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1623409522}
+        m_TargetAssemblyTypeName: CharacterSelector, Assembly-CSharp
+        m_MethodName: LluviaSelected
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_Deactivated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_StartingHoverFilters: []
+  m_StartingSelectFilters: []
+  m_StartingInteractionStrengthFilters: []
+--- !u!136 &471128319
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 471128317}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.01
+  m_Height: 2.81
+  m_Direction: 1
+  m_Center: {x: 0, y: 1.06, z: 0}
+--- !u!95 &471128320
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 471128317}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d9e27609ca3df488b94e45543cfb93c4, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &662992727
 GameObject:
   m_ObjectHideFlags: 0
@@ -1643,6 +1864,223 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 671234820}
   m_CullTransparentMesh: 1
+--- !u!1001 &866151399
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 0a0eeab666f45774492aadc7b3187d98, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.3447
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0a0eeab666f45774492aadc7b3187d98, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.3447
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0a0eeab666f45774492aadc7b3187d98, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.3447
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0a0eeab666f45774492aadc7b3187d98, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.98
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0a0eeab666f45774492aadc7b3187d98, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.54
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0a0eeab666f45774492aadc7b3187d98, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -8.8
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0a0eeab666f45774492aadc7b3187d98, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.99245316
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0a0eeab666f45774492aadc7b3187d98, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0a0eeab666f45774492aadc7b3187d98, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.12262495
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0a0eeab666f45774492aadc7b3187d98, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0a0eeab666f45774492aadc7b3187d98, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0a0eeab666f45774492aadc7b3187d98, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 14.087
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0a0eeab666f45774492aadc7b3187d98, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0a0eeab666f45774492aadc7b3187d98, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 0a0eeab666f45774492aadc7b3187d98, type: 3}
+      propertyPath: m_Name
+      value: AguitaSagradaTpose
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0a0eeab666f45774492aadc7b3187d98, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 866151403}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0a0eeab666f45774492aadc7b3187d98, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 866151402}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0a0eeab666f45774492aadc7b3187d98, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 866151401}
+  m_SourcePrefab: {fileID: 100100000, guid: 0a0eeab666f45774492aadc7b3187d98, type: 3}
+--- !u!1 &866151400 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 0a0eeab666f45774492aadc7b3187d98, type: 3}
+  m_PrefabInstance: {fileID: 866151399}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &866151401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 866151400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a35f6cfbfba9b548aaa00d52cfe8a50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable
+  m_InteractionManager: {fileID: 1928628947}
+  m_Colliders:
+  - {fileID: 1185830265}
+  m_InteractionLayers:
+    m_Bits: 1
+  m_DistanceCalculationMode: 1
+  m_SelectMode: 0
+  m_FocusMode: 1
+  m_CustomReticle: {fileID: 0}
+  m_AllowGazeInteraction: 0
+  m_AllowGazeSelect: 0
+  m_OverrideGazeTimeToSelect: 0
+  m_GazeTimeToSelect: 0.5
+  m_OverrideTimeToAutoDeselectGaze: 0
+  m_TimeToAutoDeselectGaze: 3
+  m_AllowGazeAssistance: 0
+  m_FirstHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstSelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastSelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstFocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastFocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Activated:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1623409522}
+        m_TargetAssemblyTypeName: CharacterSelector, Assembly-CSharp
+        m_MethodName: AguitaSelected
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_Deactivated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_StartingHoverFilters: []
+  m_StartingSelectFilters: []
+  m_StartingInteractionStrengthFilters: []
+--- !u!136 &866151402
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 866151400}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.91
+  m_Height: 2.54
+  m_Direction: 1
+  m_Center: {x: 0, y: 1.06, z: 0}
+--- !u!95 &866151403
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 866151400}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 4a35c1fbf3cbf41c98ce6a95f521cc74, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &870869122
 GameObject:
   m_ObjectHideFlags: 0
@@ -2251,6 +2689,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 5fd310031b652414a9b75800039a784e, type: 3}
       propertyPath: m_Name
       value: AguitaCombatPose
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 5fd310031b652414a9b75800039a784e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4672476287356427478, guid: 5fd310031b652414a9b75800039a784e, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -2904,8 +3346,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 720483beec683df449514d547a24a761, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::characterSelector
-  lluviaPrefab: {fileID: 194686288}
-  aguitaPrefab: {fileID: 1185830262}
+  lluviaPrefab: {fileID: 471128317}
+  aguitaPrefab: {fileID: 866151400}
   spawnPoint: {fileID: 279778672}
 --- !u!4 &1623409523
 Transform:
@@ -3870,3 +4312,5 @@ SceneRoots:
   - {fileID: 1267002870}
   - {fileID: 1505171172}
   - {fileID: 87539333}
+  - {fileID: 866151399}
+  - {fileID: 471128316}
