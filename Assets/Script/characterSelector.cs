@@ -87,7 +87,15 @@ public class CharacterSelector : MonoBehaviour
 
         if (prefabToInstantiate != null && spawnPoint != null)
         {
-            currentCharacterInstance = Instantiate(prefabToInstantiate, spawnPoint.position + new Vector3(0f, 0.78f, 0f), spawnPoint.rotation);
+
+            currentCharacterInstance = Instantiate(prefabToInstantiate, spawnPoint.position + new Vector3(0f, 0.4f, 0f), Quaternion.Euler(0f, 200f, 0f));
+
+            Renderer instanceRenderer = currentCharacterInstance.GetComponentInChildren<Renderer>();
+            Material instanceMaterial = new Material(instanceRenderer.material);
+
+            instanceMaterial.SetColor("_EmissionColor", new Color(0.55f, 0.55f, 0.55f));
+
+            instanceRenderer.material = instanceMaterial;
 
             Animator anim = currentCharacterInstance.GetComponent<Animator>();
             if (anim != null)
