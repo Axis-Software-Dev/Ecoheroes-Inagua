@@ -6826,6 +6826,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c2e5df0bb441a3141a94b7a40b7fe2df, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1203714384}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c2e5df0bb441a3141a94b7a40b7fe2df, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1203714386}
   m_SourcePrefab: {fileID: 100100000, guid: c2e5df0bb441a3141a94b7a40b7fe2df, type: 3}
 --- !u!1 &1203714383 stripped
 GameObject:
@@ -6854,6 +6857,61 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1203714386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1203714383}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04f34a4d095d6cd47a8fd1b2093db231, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WaypointMover
+  waypoints:
+  - {x: -10.5, y: 0.37, z: -12.5}
+  - {x: -10.5, y: 0.37, z: 2.55}
+  - {x: -9.26, y: 0.37, z: 2.55}
+  - {x: -9.26, y: 0.37, z: 6.55}
+  - {x: -10.5, y: 0.37, z: -12.5}
+  speed: 2
+  loopPath: 1
+  startOnAwake: 1
+  accelerationType: 0
+  customCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  animator: {fileID: 0}
+  movementAnimationName: Walk
+  interactionAnimationName: Wave
+  interactionDuration: 3
+  facePlayerOnInteraction: 1
+  waypointColor: {r: 0, g: 1, b: 0, a: 1}
+  lineColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmoRadius: 0.3
+  showTimeLabels: 1
 --- !u!1001 &1208319961
 PrefabInstance:
   m_ObjectHideFlags: 0
