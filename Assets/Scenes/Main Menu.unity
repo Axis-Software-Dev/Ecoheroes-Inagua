@@ -810,11 +810,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!4 &279778672 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: e3f8415253b7b11498a464e889e3c774, type: 3}
-  m_PrefabInstance: {fileID: 279778669}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &349278471
 GameObject:
   m_ObjectHideFlags: 0
@@ -2614,6 +2609,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 758982828562914523, guid: b588eab963c642742a09b9c6e0433831, type: 3}
+      propertyPath: m_InteractionManager
+      value: 
+      objectReference: {fileID: 1928628947}
     - target: {fileID: 2759543005406544888, guid: b588eab963c642742a09b9c6e0433831, type: 3}
       propertyPath: far clip plane
       value: 759
@@ -2622,6 +2621,10 @@ PrefabInstance:
       propertyPath: m_CullingMask.m_Bits
       value: 4294963199
       objectReference: {fileID: 0}
+    - target: {fileID: 3346147072314694414, guid: b588eab963c642742a09b9c6e0433831, type: 3}
+      propertyPath: m_InteractionManager
+      value: 
+      objectReference: {fileID: 1928628947}
     - target: {fileID: 5462006690208740115, guid: b588eab963c642742a09b9c6e0433831, type: 3}
       propertyPath: m_LocalPosition.z
       value: 1.91
@@ -2634,6 +2637,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6488951748652665343, guid: b588eab963c642742a09b9c6e0433831, type: 3}
+      propertyPath: m_InteractionManager
+      value: 
+      objectReference: {fileID: 1928628947}
     - target: {fileID: 7547335998316742650, guid: b588eab963c642742a09b9c6e0433831, type: 3}
       propertyPath: m_Name
       value: XR Rig
@@ -2642,6 +2649,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7824734949214252402, guid: b588eab963c642742a09b9c6e0433831, type: 3}
+      propertyPath: m_InteractionManager
+      value: 
+      objectReference: {fileID: 1928628947}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3355,9 +3366,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 720483beec683df449514d547a24a761, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::characterSelector
-  lluviaPrefab: {fileID: 471128317}
-  aguitaPrefab: {fileID: 866151400}
-  spawnPoint: {fileID: 279778672}
+  lluviaPrefab: {fileID: 0}
+  aguitaPrefab: {fileID: 0}
+  spawnPoint: {fileID: 0}
 --- !u!4 &1623409523
 Transform:
   m_ObjectHideFlags: 0
