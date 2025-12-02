@@ -104,22 +104,19 @@ public class WaypointMover : MonoBehaviour
         isPaused = true;
         originalRotation = transform.rotation;
 
-        if (animator != null && !string.IsNullOrEmpty(movementAnimationName))
-        {
-            animator.Play(movementAnimationName, 0, 0f);
-        }
-
         if (animator != null && !string.IsNullOrEmpty(interactionAnimationName))
         {
-            animator.Play(interactionAnimationName, 0, 0f);
+            animator.SetTrigger(interactionAnimationName);
         }
 
+        // Rotate to Face Player
         if (facePlayerOnInteraction && playerTransform != null)
         {
             float elapsedTime = 0f;
             Quaternion startRotation = transform.rotation;
+
             Vector3 directionToPlayer = playerTransform.position - transform.position;
-            directionToPlayer.y = 0;
+            directionToPlayer.y = 0; // Keep rotation flat
             Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
 
             while (elapsedTime < 0.5f)
@@ -132,11 +129,32 @@ public class WaypointMover : MonoBehaviour
             transform.rotation = targetRotation;
         }
 
+        // Wait for Interaction
+        Debug.Log("Waiting for interaction...");
         yield return new WaitForSeconds(interactionDuration);
+        Debug.Log("Interaction completed!");
 
+        // Rotate Back to Original Position (The Fix)
+        // We check facePlayerOnInteraction again to see if we actually moved
+        if (facePlayerOnInteraction)
+        {
+            float elapsedTime = 0f;
+            Quaternion currentRotation = transform.rotation;
+
+            while (elapsedTime < 0.5f)
+            {
+                transform.rotation = Quaternion.Slerp(currentRotation, originalRotation, elapsedTime * 2f);
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+
+            transform.rotation = originalRotation;
+        }
+
+        // 5. Resume
         if (animator != null && !string.IsNullOrEmpty(movementAnimationName))
         {
-            animator.Play(movementAnimationName, 0, 0f);
+            animator.SetTrigger(movementAnimationName);
         }
 
         isPaused = false;
@@ -144,11 +162,6 @@ public class WaypointMover : MonoBehaviour
 
     private IEnumerator MoveAlongWaypoints()
     {
-        if (animator != null && !string.IsNullOrEmpty(movementAnimationName))
-        {
-            animator.Play(movementAnimationName, 0, 0f);
-        }
-
         while (isMoving)
         {
             if (currentWaypointIndex >= waypoints.Length)
@@ -250,7 +263,7 @@ public class WaypointMover : MonoBehaviour
             Gizmos.color = lineColor;
             Gizmos.DrawLine(previousPosition, waypoints[i]);
 
-            #if UNITY_EDITOR
+#if UNITY_EDITOR
             if (showTimeLabels)
             {
                 float timeToWaypoint = CalculateTimeToWaypoint(previousPosition, waypoints[i]);
@@ -265,7 +278,7 @@ public class WaypointMover : MonoBehaviour
                     }
                 );
             }
-            #endif
+#endif
 
             previousPosition = waypoints[i];
         }
