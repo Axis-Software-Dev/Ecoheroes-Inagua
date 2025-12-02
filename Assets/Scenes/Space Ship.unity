@@ -9296,6 +9296,118 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -107.128, z: 90}
+--- !u!1 &517912617
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 517912621}
+  - component: {fileID: 517912620}
+  - component: {fileID: 517912619}
+  - component: {fileID: 517912618}
+  m_Layer: 0
+  m_Name: Plane (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!64 &517912618
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 517912617}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &517912619
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 517912617}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 29203340b9714b34fa618348c5501291, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &517912620
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 517912617}
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &517912621
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 517912617}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.07587633, y: -0.703024, z: 0.703024, w: -0.07587633}
+  m_LocalPosition: {x: -5.363, y: 7.087, z: 30.919}
+  m_LocalScale: {x: 0.29, y: 0.29, z: 0.29}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: -12.32, z: 180}
 --- !u!1001 &535893208
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9908,22 +10020,33 @@ MonoBehaviour:
     question: "El agua dulce y salada est\xE1 dividida en mitad, 50% salada y 50%
       dulce."
     answer: 0
+    explanation: "FALSO: 97.5 % de toda el agua es salada y s\xF3lo el 2.5% del agua
+      es dulce. Esa es el agua que pueden usar las personas, las plantas y los animales
+      para vivir."
   - position: 1
     question: "El estado y la ciudad de Aguascalientes debe su nombre a la gran cantidad
       de aguas termales subterr\xE1neas que contiene."
     answer: 1
+    explanation: "CIERTO: El nombre de Aguascalientes es por la gran cantidad de
+      aguas subterr\xE1neas termales que hay por todo el estado."
   - position: 2
     question: "La filtraci\xF3n es el proceso en que la lluvia cae y se filtra por
       el suelo hasta acumularse en acu\xEDferos."
     answer: 1
+    explanation: "CIERTO: El agua se filtra y se va acumulando formando poco a poco
+      los mantos acu\xEDferos."
   - position: 3
     question: "Los acu\xEDferos se forman muy r\xE1pidamente gracias a la acumulaci\xF3n
       de agua desde tiempo atr\xE1s."
     answer: 0
+    explanation: "FALSO: La formaci\xF3n de un manto acu\xEDfero requiere mucho tiempo
+      y es m\xE1s f\xE1cil desgastarlo que reponerlo."
   - position: 4
     question: Si actualmente se excava a pocos metros podemos encontrar agua limpia
       lista para usarse.
     answer: 0
+    explanation: "FALSO: Actualmente, para poder encontrar agua, se debe cavar hasta
+      medio kil\xF3metro de profundidad."
   screenAnimator: {fileID: 597810239}
   keyboardAnimator: {fileID: 2040035019}
   buttonsPanel: {fileID: 24934046}
@@ -14716,3 +14839,4 @@ SceneRoots:
   - {fileID: 423360256}
   - {fileID: 1611533537}
   - {fileID: 671727000}
+  - {fileID: 517912621}

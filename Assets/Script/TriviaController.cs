@@ -14,6 +14,8 @@ namespace Trivia
         public int position;
         public string question;
         public bool answer;
+        [TextArea(2, 5)]
+        public string explanation;
     }
 }
 
@@ -194,6 +196,12 @@ public class TriviaController : MonoBehaviour
 
                 if (mistakeCount >= MAX_MISTAKES)
                 {
+                    ShowText("q[i].explanation");
+                    yield return new WaitUntil(() => !isTyping);
+
+                    HideText();
+                    yield return new WaitUntil(() => !isTextVisible);
+
                     ShowText("Necesitas seguirte preparando para convertirte en un Ecohéroe. Empieza el juego nuevamente y presta más atención para el siguiente turno.");
                     yield return new WaitUntil(() => !isTyping);
 
@@ -233,7 +241,7 @@ public class TriviaController : MonoBehaviour
                 }
                 else
                 {
-                    ShowText("Esa respuesta no es correcta. ¡Cuidado! Tienes una oportunidad más.");
+                    ShowText(q[i].explanation);
                     yield return new WaitUntil(() => !isTyping);
 
                     HideText();
