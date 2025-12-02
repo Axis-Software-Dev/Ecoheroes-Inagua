@@ -6749,7 +6749,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 84678cac9b800e749bea707b82d29cb3, type: 3}
       propertyPath: m_Name
-      value: 251126_MESH_MUJER_2
+      value: Woman walking salmon
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6817,7 +6817,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: c2e5df0bb441a3141a94b7a40b7fe2df, type: 3}
       propertyPath: m_Name
-      value: 251126_MESH_HOMBRE_4
+      value: Man walking pink
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6874,8 +6874,19 @@ MonoBehaviour:
   - {x: -10.5, y: 0.37, z: 2.55}
   - {x: -9.26, y: 0.37, z: 2.55}
   - {x: -9.26, y: 0.37, z: 6.55}
-  - {x: -10.5, y: 0.37, z: -12.5}
-  speed: 2
+  - {x: -10.7, y: 0.37, z: 6.55}
+  - {x: -9.48, y: 0.37, z: 11.28}
+  - {x: -4.71, y: 0.37, z: 12.5}
+  - {x: 5.85, y: 0.37, z: 10.1}
+  - {x: 14.9, y: 0.37, z: 13}
+  - {x: 23.7, y: 0.37, z: 13}
+  - {x: 20, y: 0.37, z: -13}
+  - {x: 9.2, y: 0.37, z: -13}
+  - {x: 5.41, y: 0.37, z: -10.9}
+  - {x: -1.13, y: 0.37, z: -11.78}
+  - {x: -5.17, y: 0.37, z: -15.1}
+  - {x: -10.21, y: 0.37, z: -15.1}
+  speed: 1
   loopPath: 1
   startOnAwake: 1
   accelerationType: 0
@@ -6903,9 +6914,9 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  animator: {fileID: 0}
-  movementAnimationName: Walk
-  interactionAnimationName: Wave
+  animator: {fileID: 1203714384}
+  movementAnimationName: walk
+  interactionAnimationName: wave
   interactionDuration: 3
   facePlayerOnInteraction: 1
   waypointColor: {r: 0, g: 1, b: 0, a: 1}
@@ -11248,6 +11259,6 @@ SceneRoots:
   - {fileID: 1545845035}
   - {fileID: 314553179}
   - {fileID: 1203714382}
-  - {fileID: 330864482}
   - {fileID: 1195450989}
+  - {fileID: 330864482}
   - {fileID: 597993499}
