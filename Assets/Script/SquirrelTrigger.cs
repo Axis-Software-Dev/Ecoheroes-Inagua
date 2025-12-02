@@ -68,7 +68,7 @@ public class SquirrelTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (hasTriggered)
+        if (hasTriggered || !isIndicatorActive)
         {
             return;
         }
