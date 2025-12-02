@@ -3751,8 +3751,9 @@ MonoBehaviour:
   dialogueText: {fileID: 1916526913}
   squirrelAnimator: {fileID: 449232526}
   animationTriggerName: Levantandose
-  dialogueMessage: "La fuente no tiene agua, est\xE1 seca. Sin agua, no puede haber
-    vida."
+  dialogueMessage: "Estoy muy preocupada... \xA1la fuente est\xE1 seca! Esto nunca
+    hab\xEDa pasado antes. Sin agua no puedo vivir. No s\xE9 qu\xE9 hacer... \xBFpuedes
+    ayudarme por favor?"
   dialogueDisplayTime: 5
   typingSpeed: 0.05
   speechBubbleAnimator: {fileID: 682078669}
@@ -12020,7 +12021,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: La fuente no tiene agua, esta seca. Sin agua, no puede haber vida.
+  m_text: "Estoy muy preocupada... \xA1la fuente est\xE1 seca! Esto nunca hab\xEDa
+    pasado antes. Sin agua no puedo vivir. No s\xE9 qu\xE9 hacer... \xBFpuedes ayudarme
+    por favor?"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 85673103f70c537449efd7e7ce05757a, type: 2}
   m_sharedMaterial: {fileID: -8252146339871063396, guid: 85673103f70c537449efd7e7ce05757a, type: 2}
@@ -12047,8 +12050,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.07
-  m_fontSizeBase: 0.07
+  m_fontSize: 0.055
+  m_fontSizeBase: 0.055
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -12065,7 +12068,7 @@ MonoBehaviour:
   m_charWidthMaxAdj: 0
   m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
+  m_overflowMode: 3
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
