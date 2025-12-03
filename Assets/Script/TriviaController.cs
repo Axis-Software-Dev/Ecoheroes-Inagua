@@ -196,7 +196,7 @@ public class TriviaController : MonoBehaviour
 
                 if (mistakeCount >= MAX_MISTAKES)
                 {
-                    ShowText("q[i].explanation");
+                    ShowText(q[i].explanation);
                     yield return new WaitUntil(() => !isTyping);
 
                     HideText();
