@@ -2867,7 +2867,7 @@ MonoBehaviour:
     loop: 0
     soundObject: {fileID: 0}
   arrowMesh: {fileID: 1453146687}
-  waterAnimator: {fileID: 0}
+  waterParticle: {fileID: 0}
   tutorialScript: {fileID: 0}
   currentWheelPosition: 0
   colliderRadius: 0.3
@@ -8848,7 +8848,7 @@ MonoBehaviour:
   infernalCollider: {fileID: 17461469}
   sounds: []
   arrowMesh: {fileID: 0}
-  waterAnimator: {fileID: 0}
+  waterParticle: {fileID: 0}
   tutorialScript: {fileID: 0}
   currentWheelPosition: 0
   colliderRadius: 0.3
@@ -16549,7 +16549,7 @@ MonoBehaviour:
     loop: 1
     soundObject: {fileID: 0}
   arrowMesh: {fileID: 528026005}
-  waterAnimator: {fileID: 0}
+  waterParticle: {fileID: 0}
   tutorialScript: {fileID: 0}
   currentWheelPosition: 0
   colliderRadius: 0.3
@@ -21705,7 +21705,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1075377680}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 0c426135b605b374e812e575e6d6cac7, type: 2}
   m_CullingMode: 0
@@ -30159,7 +30159,7 @@ MonoBehaviour:
     loop: 1
     soundObject: {fileID: 1887594609}
   arrowMesh: {fileID: 476627844}
-  waterAnimator: {fileID: 1887594611}
+  waterParticle: {fileID: 1688117148}
   tutorialScript: {fileID: 1621440391}
   currentWheelPosition: 0
   colliderRadius: 0.3
@@ -36112,7 +36112,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1688117148}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 0c426135b605b374e812e575e6d6cac7, type: 2}
   m_CullingMode: 0
@@ -36406,7 +36406,7 @@ MonoBehaviour:
     loop: 1
     soundObject: {fileID: 966373339}
   arrowMesh: {fileID: 157859408}
-  waterAnimator: {fileID: 966373341}
+  waterParticle: {fileID: 1075377680}
   tutorialScript: {fileID: 178541820}
   currentWheelPosition: 0
   colliderRadius: 0.3

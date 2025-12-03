@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -44,7 +45,7 @@ public class PipeBehavior : MonoBehaviour
     public SphereCollider infernalCollider;
     public BackgroundSFX[] sounds;
     public MeshRenderer arrowMesh;
-    public Animator waterAnimator;
+    public GameObject waterParticle;
     public TutorialScript tutorialScript;
 
     [Header("Wheel Settings")]
@@ -89,7 +90,7 @@ public class PipeBehavior : MonoBehaviour
 
     private const float RAY_DEBUG_LENGTH = 1f;
     private const float GIZMO_SPHERE_RADIUS = 0.3f;
-
+    private Vector3 speedRef = Vector3.zero;
     private void Awake()
     {
         if (Chispas != null)
@@ -157,6 +158,13 @@ public class PipeBehavior : MonoBehaviour
                 }
             }
         }
+        if (waterParticle != null) {
+            var particlesWater = waterParticle.GetComponent<ParticleSystem>().emission;
+            particlesWater.enabled = false;
+            waterParticle.transform.localScale = Vector3.zero;
+        }
+
+
     }
 
     private void Start()
@@ -462,7 +470,70 @@ public class PipeBehavior : MonoBehaviour
 
         previousCableState = rightGrippedPressed;
     }
+    
+    private IEnumerator ActivateWaterParticles()
+    {
+        if (waterParticle == null) yield break;
 
+        var ps = waterParticle.GetComponent<ParticleSystem>();
+        var emission = ps.emission;
+        emission.enabled = true;
+
+        // Aseguramos que empieza en 0
+        waterParticle.transform.localScale = Vector3.zero;
+
+        float duration = 0.4f;  // tiempo que tarda en aparecer
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / duration;              
+            t = Mathf.SmoothStep(0, 1, t);             
+
+            waterParticle.transform.localScale = Vector3.one * t;
+           
+
+            yield return null;
+        }
+
+        // Aseguramos valor final exacto
+        waterParticle.transform.localScale = Vector3.one;
+
+    }
+
+    private IEnumerator DeactivateWaterParticles()
+    {
+        if (waterParticle == null) yield break;
+
+        //Empieza en 1
+        waterParticle.transform.localScale = Vector3.one;
+
+        float duration = 0.45f;   // tiempo que tarda en desaparecer
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / duration;
+            t = Mathf.SmoothStep(0f, 1f, t);
+
+            
+            waterParticle.transform.localScale = Vector3.one * (1f - t);
+
+            yield return null;
+        }
+
+
+        waterParticle.transform.localScale = Vector3.zero;
+        var ps = waterParticle.GetComponent<ParticleSystem>();
+        var emission = ps.emission;
+        emission.enabled = false;
+
+
+
+
+    }
     public void activate()
     {
         isActive = true;
@@ -498,10 +569,7 @@ public class PipeBehavior : MonoBehaviour
                 checkPoints = 0;
                 lastCheckpoint = 0;
                 PlayAudio("WaterSFX");
-                if (waterAnimator != null)
-                {
-                    waterAnimator.SetTrigger("Open");
-                }
+                StartCoroutine(ActivateWaterParticles());
                 break;
         }
     }
@@ -547,10 +615,7 @@ public class PipeBehavior : MonoBehaviour
                 checkPoints = 0;
                 lastCheckpoint = 0;
                 Debug.Log("Wheel spinned 1 time");
-                if (waterAnimator != null)
-                {
-                    waterAnimator.SetTrigger("Close");
-                }
+                StartCoroutine(DeactivateWaterParticles());
                 break;
         }
     }
