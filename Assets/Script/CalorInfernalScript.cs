@@ -196,6 +196,7 @@ public class CalorInfernalScript : MonoBehaviour
 
     private IEnumerator StartAnimationInteraction(ObjectType objectType)
     {
+        if (!isGameStarted) yield return null;
         yield return new WaitForSeconds(ANIMATION_DELAY);
 
         if (pipeSection == null || randObj >= pipeSection.Length || pipeSection[randObj] == null)
@@ -455,16 +456,16 @@ public class CalorInfernalScript : MonoBehaviour
     {
         isGameStarted = false;
         isInteracting = false;
-        isLookingAtPlayer = false;
+        isLookingAtPlayer = true;
         isMoving = false;
-        positionToGo = startPosition;
+        
 
         if (calorInfAnimator != null)
         {
             calorInfAnimator.SetTrigger("Goodbye");
         }
 
-        Invoke(nameof(stopAnimator), END_GAME_DELAY);
+        //Invoke(nameof(stopAnimator), END_GAME_DELAY);
         Invoke(nameof(DisableCL), END_GAME_DELAY);
         Invoke(nameof(PlayNewBGM), END_GAME_DELAY + BGM_DELAY);
         
