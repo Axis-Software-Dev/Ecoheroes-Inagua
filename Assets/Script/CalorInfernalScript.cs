@@ -132,6 +132,7 @@ public class CalorInfernalScript : MonoBehaviour
 
         HandleLooking();
         HandleMovement();
+       
     }
 
     public void PlayAudio(string audioName)
@@ -163,10 +164,15 @@ public class CalorInfernalScript : MonoBehaviour
 
     private void HandleMovement()
     {
+        if (_calorInfernalRB != null && _calorInfernalRB.linearVelocity != Vector3.zero)
+        {
+            _calorInfernalRB.linearVelocity = Vector3.zero;
+        }
         if (isMoving)
         {
             MoveToPipe(positionToGo);
         }
+       
     }
 
     private void OnTriggerEnter(Collider other)
@@ -198,7 +204,8 @@ public class CalorInfernalScript : MonoBehaviour
     {
         if (!isGameStarted) yield return null;
         yield return new WaitForSeconds(ANIMATION_DELAY);
-
+        _calorInfernalRB.linearVelocity = Vector3.zero;
+        
         if (pipeSection == null || randObj >= pipeSection.Length || pipeSection[randObj] == null)
         {
             yield break;
@@ -308,15 +315,12 @@ public class CalorInfernalScript : MonoBehaviour
             return;
         }
 
-        int attempts = 0;
-        int maxAttempts = pipeSection.Length * 2;
-
+        
         do
         {
             randObj = UnityEngine.Random.Range(0, pipeSection.Length);
-            attempts++;
             
-            if (attempts >= maxAttempts || (pipeSection[randObj] != null && !pipeSection[randObj].isActive))
+            if ( pipeSection[randObj] != null && !pipeSection[randObj].isActive)
             {
                 break;
             }
@@ -333,6 +337,7 @@ public class CalorInfernalScript : MonoBehaviour
 
     private void objectInteract(int objectSelected)
     {
+        
         if (pipeSection == null || objectSelected >= pipeSection.Length || pipeSection[objectSelected] == null) return;
 
         string typeString = pipeSection[objectSelected].getSectionType();
@@ -425,6 +430,7 @@ public class CalorInfernalScript : MonoBehaviour
 
     private void StartGame()
     {
+        
         PlayAudio("Laugh");
         
         if (calorInfAnimator != null)
@@ -460,11 +466,13 @@ public class CalorInfernalScript : MonoBehaviour
 
     public void EndGame()
     {
+        CapsuleCollider calorCollider = GetComponent<CapsuleCollider>();
+
         isGameStarted = false;
         isInteracting = false;
         isLookingAtPlayer = true;
         isMoving = false;
-        
+        calorCollider.enabled = false;
 
         if (calorInfAnimator != null)
         {
