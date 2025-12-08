@@ -388,6 +388,7 @@ public class CalorInfernalScript : MonoBehaviour
     {
         if (calorInfAnimator != null)
         {
+
             calorInfAnimator.SetTrigger("FuckOff");
             calorInfAnimator.SetBool("isGameStarted", false);
         }
@@ -411,10 +412,15 @@ public class CalorInfernalScript : MonoBehaviour
         {
             StopCoroutine(animationCoroutine);
         }
-
-        Invoke(nameof(stopAnimator), STOP_ANIMATOR_DELAY);
-        Debug.Log("Calor Infernal game stopped");
-        Invoke(nameof(StartGame), RESTART_GAME_DELAY);
+        if (GameManager.Instance.minijuegosCompletados!=GameManager.Instance.POINTS_TO_WIN)
+        {
+            Invoke(nameof(stopAnimator), STOP_ANIMATOR_DELAY);
+            Debug.Log("Calor Infernal game stopped");
+            Invoke(nameof(StartGame), RESTART_GAME_DELAY);
+            
+        }
+        
+        
     }
 
     private void StartGame()
@@ -465,7 +471,7 @@ public class CalorInfernalScript : MonoBehaviour
             calorInfAnimator.SetTrigger("Goodbye");
         }
 
-        //Invoke(nameof(stopAnimator), END_GAME_DELAY);
+        Invoke(nameof(stopAnimator), END_GAME_DELAY);
         Invoke(nameof(DisableCL), END_GAME_DELAY);
         Invoke(nameof(PlayNewBGM), END_GAME_DELAY + BGM_DELAY);
         
